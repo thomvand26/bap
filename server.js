@@ -1,13 +1,10 @@
 // import Peer from "simple-peer";
 
-const socketIo = require('socket.io');
-
 const server = require('express')();
 const http = require('http').Server(server);
 const io = require('socket.io')(http);
 
 const next = require('next');
-const { Socket } = require('dgram');
 const { v4: uuidv4 } = require('uuid');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
@@ -66,7 +63,6 @@ const emitChatUpdate = (roomId, chat, message) => {
   if (room) {
     io.to(room.roomId).emit('chatUpdate', {
       chat,
-      // message: `${message} ${message} ${message} ${message} ${message} ${message} ${message} ${message} ${message} ${message}`,
       message,
     });
   }
@@ -79,8 +75,8 @@ const resetLastSocketRoom = (socket) => {
   }
 };
 
-app.prepare().then(() => {
-  // Socket.prototype.onclose =
+async function start() {
+  await app.prepare();
 
   io.on('connection', (socket) => {
     socket.emit('selfUpdate', { socketId: socket.id });
@@ -142,6 +138,8 @@ app.prepare().then(() => {
 
   http.listen(port, (err) => {
     if (err) throw err;
-    console.log(`ReAdY oN http://localhost:${port}`);
+    console.log(`Listening on http://localhost:${port}`);
   });
-});
+}
+
+start().catch((error) => console.error(error.stack));
