@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "node server.js -p $PORT",
     "export": "next export",
     "heroku-postbuild": "yarn build"
   },
