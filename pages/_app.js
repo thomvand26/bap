@@ -1,7 +1,13 @@
-import '../styles/globals.css'
+import '../styles/globals.scss';
+import { useEffect } from 'react';
+import { GlobalProvider } from '../context';
+import { SessionProvider } from '../context/SessionContext';
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+export default function MyApp({ Component, pageProps }) {
+
+  return (
+    <GlobalProvider>
+      <Component {...pageProps} />
+    </GlobalProvider>
+  );
 }
-
-export default MyApp

@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: $length-l;
+
+  &--hide {
+    width: 20px;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+.chatHeader {
+  color: $color-secondary-lightest;
+}
+
+.content {
+  flex: 1;
+  max-width: 400px;
+  width: 20vw;
+  min-width: 300px;
+  margin: $length-l 0;
+  overflow: auto;
+}
+
+.chatMessage {
+  font-size: $font-size-s;
+  line-height: $line-height-s;
+  color: $color-secondary-lightest;
+  padding: $length-xs 0;
+}
+
+.chatForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__input {
+    // flex: 1;
+    margin-bottom: $length-xs;
+  }
+
+  &__sendButton {
+    // flex: 1;
+    font-size: $font-size-m;
+    padding: $length-xs $length-m;
+    min-height: $input-min-height;
+    width: fit-content;
+    align-self: flex-end;
+  }
+}
