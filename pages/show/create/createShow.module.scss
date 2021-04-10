@@ -1,0 +1,39 @@
+$column-width: 20vw;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
+
+    & > * {
+      margin-bottom: $length-l;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .formContent {
+    display: flex;
+
+    & > * {
+      width: $column-width;
+      margin-right: $length-xl;
+    }
+  }
+
+  .youtubePreview {
+    width: $column-width;
+    height: $column-width * 0.6;
+    background-color: $color-secondary-lightest;
+    border-radius: $border-radius;
+  }
+}
