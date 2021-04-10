@@ -3,3 +3,9 @@
 //   // background-color: blue;
 //   height: 100%;
 // }
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

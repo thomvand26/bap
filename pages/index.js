@@ -1,19 +1,14 @@
-import Head from 'next/head';
-import { Chat, RoomList } from '../components';
+import { ShowList } from '../components';
+import { Layouts } from '../layouts';
 import styles from './index.module.scss';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className={styles.page}>
-      <Head>
-        <title>BAP-Thomvand26</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {/* <main className={styles.main}> */}
-      <main>
-        <RoomList showCreateRoomBtn />
-      </main>
+      <h2 className="pageHeader">Shows</h2>
+      <ShowList showCreateShowBtn />
     </div>
   );
 }
+
+HomePage.layout = Layouts.default;
