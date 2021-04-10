@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import { SHOW } from '../routes';
 
 export const SessionContext = createContext();
 export const useSession = () => useContext(SessionContext);
@@ -9,81 +10,90 @@ export const SessionProvider = ({ children }) => {
   const [sessionId, setSessionId] = useState();
   const [ownSocketData, setOwnSocketData] = useState();
   const [connectedSockets, setConnectedSockets] = useState([]);
-  const [rooms, setRooms] = useState([]);
-  const [currentRoom, setCurrentRoom] = useState();
+  const [shows, setShows] = useState([]);
+  const [currentShow, setCurrentShow] = useState();
   const [socket, setSocket] = useState(() => io());
   const router = useRouter();
 
   useEffect(() => {
+    const handleRouteChange = (url) => {
+      if (!url.startsWith(SHOW)) {
+        leaveCurrentShow();
+      }
+    };
+
     socket.on('selfUpdate', (data) => {
       setOwnSocketData((prev) => ({ ...prev, ...data }));
     });
 
-    socket.on('roomUpdate', (data) => {
-      setCurrentRoom(data);
-      // console.log('roomUpdate', data);
+    socket.on('showUpdate', (data) => {
+      setCurrentShow(data);
+      // console.log('showUpdate', data);
     });
 
     socket.on('clientsUpdate', (data) => {
       setConnectedSockets(data?.connectedSockets);
     });
 
-    socket.on('roomsUpdate', (data) => {
-      setRooms(data?.rooms);
+    socket.on('showsUpdate', (data) => {
+      console.log(data);
+      setShows(data?.shows);
     });
 
     socket.on('chatUpdate', ({ chat, message }) => {
       console.log(chat, message);
-      setCurrentRoom((prev) => {
+      setCurrentShow((prev) => {
         if (!prev || !chat || !message) return;
-        const updatedRoom = { ...prev };
-        const prevChat = updatedRoom?.chats?.[chat];
-        updatedRoom.chats = prev.chats ? prev.chats : {};
-        updatedRoom.chats[chat] = prevChat?.length
+        const updatedShow = { ...prev };
+        const prevChat = updatedShow?.chats?.[chat];
+        updatedShow.chats = prev.chats ? prev.chats : {};
+        updatedShow.chats[chat] = prevChat?.length
           ? [...prevChat, message]
           : [message];
-        return updatedRoom;
+        return updatedShow;
       });
     });
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(connectedSockets);
-  // }, [connectedSockets]);
-  // useEffect(() => {
-  //   console.log(rooms);
-  // }, [rooms]);
-  // useEffect(() => {
-  //   console.log(ownSocketData);
-  // }, [ownSocketData]);
-  // useEffect(() => {
-  //   const roomId = ownSocketData?.room?.id;
-  //   if (!roomId) return;
-  //   console.log(ownSocketData?.room);
-  //   router.push(`${ROUTE_ROOM}/${roomId}`);
-  // }, [ownSocketData?.room?.id]);
+  function leaveCurrentShow(callback) {
+    console.log('leaving');
+    socket.emit('leaveRequest', callback);
+  }
 
-  const createRoom = (callback) => {
-    socket.emit('createRequest', callback);
+  const createShow = (data, callback) => {
+    console.log('emitting');
+    socket.emit('createRequest', data, callback);
   };
 
-  const joinRoom = (roomId, callback) => {
-    socket.emit('joinRequest', roomId, callback);
+  const joinShow = (showId, callback) => {
+    socket.emit('joinRequest', showId, callback);
   };
 
   const sendChat = (chat, message) => {
-    socket.emit('sendChat', currentRoom?.roomId, chat, message);
+    socket.emit('sendChat', currentShow?.showId, chat, message);
+  };
+
+  const goToShow = (showId) => {
+    // console.log(showId);
+    router.push(`${SHOW}/${showId}`);
   };
 
   const exports = {
     sessionId,
     setSessionId,
     connectedSockets,
-    rooms,
-    createRoom,
-    joinRoom,
-    currentRoom,
+    shows,
+    createShow,
+    joinShow,
+    currentShow,
     sendChat,
+    goToShow,
   };
 
   return (
