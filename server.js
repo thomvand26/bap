@@ -6,72 +6,27 @@ const io = require('socket.io')(http);
 
 const next = require('next');
 const { v4: uuidv4 } = require('uuid');
+const { getAllShows, resetLastSocketShow, leaveShow, emitShowsUpdate, getShowById } = require('./utils/server');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const getAllRooms = () => {
-  let availableRooms = [];
-  const rooms = io.sockets.adapter.rooms;
-  if (rooms && rooms.size) {
-    rooms.forEach((value, key) => {
-      if (!value.has(key)) {
-        availableRooms.push({ roomId: key, clientIds: [...rooms.get(key)] });
-      }
-    });
-  }
-  return availableRooms;
-};
-
-const getRoomById = (roomId) => {
-  return getAllRooms().find((room) => {
-    return room.roomId === roomId;
-  });
-};
-
-// const getRoomBySocketId = (clientId) => {
-//   return getAllRooms().find((room) => {
-//     return room.clientIds.find((clientIdTest) => clientIdTest === clientId);
+// const emitClientsUpdate = () => {
+//   io.sockets.emit('clientsUpdate', {
+//     connectedSockets: [...io.sockets.sockets.keys()],
 //   });
 // };
 
-const emitClientsUpdate = () => {
-  io.sockets.emit('clientsUpdate', {
-    connectedSockets: [...io.sockets.sockets.keys()],
-  });
-};
+const emitChatUpdate = (io, showId, chat, message) => {
+  const show = getShowById(io, showId);
 
-// const emitRoomsUpdate = ({ socketId, roomId }) => {
-const emitRoomsUpdate = (roomId) => {
-  // const room = roomId ? getRoomById(roomId) : getRoomBySocketId(socketId);
-  const room = getRoomById(roomId);
-
-  io.sockets.emit('roomsUpdate', {
-    rooms: getAllRooms(),
-  });
-
-  if (room) {
-    io.to(room.roomId).emit('roomUpdate', room);
-  }
-};
-
-const emitChatUpdate = (roomId, chat, message) => {
-  const room = getRoomById(roomId);
-
-  if (room) {
-    io.to(room.roomId).emit('chatUpdate', {
+  if (show) {
+    io.to(show.showId).emit('chatUpdate', {
       chat,
       message,
     });
-  }
-};
-
-const resetLastSocketRoom = (socket) => {
-  if (socket.lastRoom) {
-    socket.leave(socket.lastRoom);
-    socket.lastRoom = null;
   }
 };
 
@@ -80,59 +35,78 @@ async function start() {
 
   io.on('connection', (socket) => {
     socket.emit('selfUpdate', { socketId: socket.id });
-    emitClientsUpdate();
-    socket.emit('roomsUpdate', {
-      rooms: getAllRooms(),
+    // emitClientsUpdate();
+    socket.emit('showsUpdate', {
+      shows: getAllShows(io),
     });
 
     socket.on('disconnect', () => {
-      // console.log('disconnecting', socket.lastRoom);
-      emitRoomsUpdate(socket.lastRoom);
-      emitClientsUpdate();
-      resetLastSocketRoom(socket);
+      // console.log('disconnecting', socket.lastShow);
+      leaveShow(io, socket);
+      // emitClientsUpdate();
     });
 
-    socket.on('createRequest', (callback) => {
-      resetLastSocketRoom(socket);
+    socket.on('createRequest', (data, callback) => {
+      resetLastSocketShow(socket);
 
-      const roomId = uuidv4();
-      socket.join(roomId);
-      socket.lastRoom = roomId;
+      const showId = uuidv4();
+      socket.join(showId);
+      console.log(showId);
+      socket.lastShow = showId;
 
-      // Send roomId back to client via a callback
-      if (callback instanceof Function) callback(roomId);
-      emitRoomsUpdate(roomId);
+      // Send showId back to client via a callback
+      if (callback instanceof Function) callback(showId);
+      emitShowsUpdate(io, showId);
     });
 
-    socket.on('joinRequest', (roomId, callback) => {
-      if (socket.lastRoom !== roomId) resetLastSocketRoom(socket);
+    socket.on('joinRequest', (showId, callback) => {
+      if (socket.lastShow !== showId) resetLastSocketShow(socket);
+      console.log(showId);
+      if (!getShowById(io, showId)) {
+        console.log('no such show');
 
-      if (!getRoomById(roomId)) {
-        console.log('no such room');
-        if (callback instanceof Function)
-          callback({ type: 'error', reason: 'room_not_found' });
-        socket.emit('roomUpdate', null);
+        if (callback instanceof Function) {
+          callback({ type: 'error', reason: 'show_not_found' });
+        }
+
+        socket.emit('showUpdate', null);
         return;
       }
 
-      socket.join(roomId);
-      socket.lastRoom = roomId;
+      socket.join(showId);
+      socket.lastShow = showId;
 
       if (callback instanceof Function) callback({ type: 'success' });
 
       // // Update client data
-      // io.to(roomId).emit('roomUpdate', getRoomById(roomId));
-      // console.log('roomUpdate');
+      // io.to(showId).emit('showUpdate', getShowById(showId));
+      // console.log('showUpdate');
 
-      emitRoomsUpdate(roomId);
+      emitShowsUpdate(io, showId);
     });
 
-    socket.on('sendChat', (roomId, chat, message) => {
-      emitChatUpdate(roomId, chat, message);
+    socket.on('leaveRequest', (callback) => {
+      leaveShow(io, socket);
+    });
+
+    socket.on('sendChat', (showId, chat, message) => {
+      emitChatUpdate(io, showId, chat, message);
     });
   });
 
   server.get('*', (req, res) => {
+    return handle(req, res);
+  });
+
+  server.post('*', (req, res) => {
+    return handle(req, res);
+  });
+
+  server.put('*', (req, res) => {
+    return handle(req, res);
+  });
+
+  server.delete('*', (req, res) => {
     return handle(req, res);
   });
 
