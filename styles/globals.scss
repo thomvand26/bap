@@ -7,7 +7,7 @@ body {
   // font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
   //   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   box-sizing: border-box;
-  background-color: $color-secondary-lightest;
+  background-color: $color-white;
 }
 
 // html {
@@ -55,7 +55,9 @@ a {
   text-decoration: none;
 }
 
-button {
+button,
+.button {
+  display: flex;
   background-color: $color-primary-light;
   border: none;
   border-radius: $border-radius;
@@ -63,6 +65,7 @@ button {
   font-size: $font-size-m;
   font-weight: bold;
   min-height: $input-min-height;
+  width: fit-content;
   cursor: pointer;
 
   &:hover {
@@ -77,23 +80,28 @@ button {
   }
 }
 
-input {
-  background-color: $color-secondary-dark;
-  border: none;
-  padding: $length-s $length-m;
-  font-size: $font-size-s;
-  border-radius: $border-radius;
-  min-height: $input-min-height;
-  color: $color-secondary-lightest;
+// input {
+//   background-color: $color-secondary-dark;
+//   border: none;
+//   padding: $length-s $length-m;
+//   font-size: $font-size-s;
+//   border-radius: $border-radius;
+//   min-height: $input-min-height;
+//   color: $color-secondary-lightest;
 
-  &::placeholder {
-    font-weight: bold;
-  }
+//   &::placeholder {
+//     font-weight: bold;
+//   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 $focus-border-width $color-secondary-lightest-t;
-  }
+//   &:focus {
+//     outline: none;
+//     box-shadow: 0 0 0 $focus-border-width $color-secondary-lightest-t;
+//   }
+// }
+
+.pageHeader {
+  text-align: center;
+  margin: $page-header-margin;
 }
 
 #__next {

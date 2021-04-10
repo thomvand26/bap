@@ -4,10 +4,13 @@ $color-primary-light:#ff9940;
 
 $color-black: #000;
 $color-secondary-darkest: #202020;
+// $color-secondary-darkest-t: #21212180;
+$color-secondary-darker: #898989;
 $color-secondary-dark: #3a3d3c;
 // $color-secondary-dark-t: #3a3d3c56;
 $color-secondary-lightest: #f2f2f2;
 $color-secondary-lightest-t: #f2f2f23f;
+$color-white: #fff;
 
 
 $length-xxs: .25rem; // 4px
@@ -23,8 +26,12 @@ $input-min-height: 2.5rem; // 40px
 $font-size-xs: .5rem; // 8px
 $font-size-s: .75rem; // 12px
 $font-size-m: 1rem; // 16px
+$font-size-l: 1.25rem; // 20px
 
 $line-height-s: 1.25rem; // 20px
 
+$page-header-margin: 100px 0 100px 0;
+
 $focus-border-width: 3px;
 $border-radius: 4px;
+$border-radius-l: 8px;
