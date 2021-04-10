@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.showList {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $length-xxl;
+
+  & > * {
+    margin-bottom: $length-m;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

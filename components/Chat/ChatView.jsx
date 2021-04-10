@@ -14,7 +14,7 @@ export const chatViewModes = {
 };
 
 export const ChatView = ({ type = chatViewTypes.general }) => {
-  const { currentRoom, sendChat } = useSession();
+  const { currentShow, sendChat } = useSession();
   const [mode, setMode] = useState(chatViewModes.default);
   const [show, setShow] = useState(true);
   const chatContentRef = useRef();
@@ -22,7 +22,7 @@ export const ChatView = ({ type = chatViewTypes.general }) => {
   useEffect(() => {
     if (!chatContentRef?.current) return;
     chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
-  }, [currentRoom]);
+  }, [currentShow]);
 
   const handelToggleShow = () => setShow((prev) => !prev);
 
@@ -49,7 +49,7 @@ export const ChatView = ({ type = chatViewTypes.general }) => {
         <h2 onClick={handelToggleShow}>CHATVIEW {type}</h2>
       </div>
       <div className={styles.content} ref={chatContentRef}>
-        {currentRoom?.chats?.[type]?.map?.((message, i) => {
+        {currentShow?.chats?.[type]?.map?.((message, i) => {
           return (
             <div key={i} className={styles.chatMessage}>
               {message}

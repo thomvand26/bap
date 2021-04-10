@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  background-color: $color-secondary-lightest;
+  border-radius: $border-radius-l;
+  padding: $length-m $length-xl;
+}
+
+.showName {
+  flex: 1;
+  font-size: $font-size-l;
+  font-weight: bold;
+}
+
+.watching {
+  margin: 0 $length-m;
+}
