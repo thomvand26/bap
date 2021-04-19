@@ -1,0 +1,10 @@
+.authSwitch {
+  display: flex;
+  font-size: $font-size-s;
+  margin-top: $length-xxl;
+
+  & a {
+    margin-left: $length-xxs;
+    font-size: $font-size-s;
+  }
+}

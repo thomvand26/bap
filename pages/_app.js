@@ -4,7 +4,7 @@ import { LayoutWrapper } from '../layouts';
 
 export default function MyApp({ Component, pageProps }) {
   return (
-    <GlobalProvider>
+    <GlobalProvider pageProps={pageProps} >
       <LayoutWrapper>
         <Component {...pageProps} />
       </LayoutWrapper>

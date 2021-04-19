@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "babel-node server/server.js",
-    "build": "next build && babel server/ -d dist/server",
+    "build": "next build && babel server/ -d dist/server && babel models/ -d dist/models",
     "start": "node dist/server/server.js -p $PORT",
     "start:local": "node dist/server/server.js",
     "export": "next export",
@@ -14,6 +14,8 @@
     "@babel/cli": "^7.13.14",
     "@babel/core": "^7.13.15",
     "@babel/node": "^7.13.13",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "formik": "^2.2.6",
     "mongoose": "^5.12.0",
