@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: $spacing-xxs;
+  background-color: $color-primary-light;
+}
+
+.inner {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  width: $container-width;
+  margin: 0 $length-xs;
+}
+
+.left {
+  flex: 1;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}

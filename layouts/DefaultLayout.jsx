@@ -1,3 +1,4 @@
+import { Header } from '@/components';
 import Head from 'next/head';
 import styles from './defaultLayout.module.scss';
 
@@ -10,7 +11,10 @@ export const DefaultLayout = ({ children }) => {
       </Head>
 
       {/* <main className={styles.main}> */}
-      <main>{children}</main>
+      <main>
+        <Header />
+        {children}
+      </main>
     </div>
   );
 };
