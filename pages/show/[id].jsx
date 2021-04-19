@@ -33,7 +33,7 @@ export default function ShowPage(params) {
   return loading ? (
     <></>
   ) : error ? (
-    <div className={`${styles.page} ${styles.pageError}`}>
+    <div className={`page ${styles.page} ${styles.pageError}`}>
       <h2>Error: show not found</h2>
       <Link href={`${LANDING}`}>
         <button>Go back</button>

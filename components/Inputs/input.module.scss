@@ -51,11 +51,12 @@
   }
 
   .error {
-    position: absolute;
+    // position: absolute;
     font-size: $font-size-s;
     color: $color-primary-dark;
     font-weight: bold;
-    bottom: 0;
+    // bottom: 0;
+    margin-top: $length-xs;
   }
 
   &--dark {

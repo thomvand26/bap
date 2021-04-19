@@ -39,6 +39,7 @@ main {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
 
   &.horizontal {
     flex-direction: row;
@@ -48,6 +49,25 @@ main {
 ol,
 ul {
   list-style: none;
+}
+
+button,
+input,
+textarea,
+select,
+a,
+button,
+.button {
+  &:hover {
+    filter: opacity(0.8);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 $focus-border-width $color-primary-dark;
+    // border: $focus-border-width solid $color-primary-dark;
+    // border-style: inset;
+  }
 }
 
 a {
@@ -68,15 +88,11 @@ button,
   width: fit-content;
   cursor: pointer;
 
-  &:hover {
-    filter: opacity(0.8);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 $focus-border-width $color-primary-dark;
-    // border: $focus-border-width solid $color-primary-dark;
-    // border-style: inset;
+  &--text {
+    padding: 0 $length-xxs;
+    min-height: fit-content;
+    background-color: transparent;
+    color: $color-primary;
   }
 }
 
@@ -99,9 +115,26 @@ button,
 //   }
 // }
 
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: $spacing-m;
+
+  &__title {
+    margin-bottom: $spacing-m;
+  }
+}
+
 .pageHeader {
   text-align: center;
   margin: $page-header-margin;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #__next {

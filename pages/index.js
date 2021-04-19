@@ -1,5 +1,6 @@
 import { ShowList } from '../components';
 import { Layouts } from '../layouts';
+// import styles from './index.module.scss';
 import { useSession } from 'next-auth/client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -15,7 +16,7 @@ export default function HomePage() {
   }, [session]);
 
   return (
-    <div className={styles.page}>
+    <div className="page">
       <h2 className="pageHeader">Shows</h2>
       <ShowList showCreateShowBtn />
     </div>
