@@ -1,43 +1,39 @@
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
 import { SHOW } from '../routes';
+import { useSocket } from './SocketContext';
 
-export const SessionContext = createContext();
-export const useSession = () => useContext(SessionContext);
+export const ShowContext = createContext();
+export const useShow = () => useContext(ShowContext);
 
-export const SessionProvider = ({ children }) => {
-  const [sessionId, setSessionId] = useState();
-  const [ownSocketData, setOwnSocketData] = useState();
-  const [connectedSockets, setConnectedSockets] = useState([]);
-  const [shows, setShows] = useState([]);
+export const ShowProvider = ({ children }) => {
+  const [playingShows, setPlayingShows] = useState([]);
   const [currentShow, setCurrentShow] = useState();
-  const [socket, setSocket] = useState(() => io());
+  const { socket } = useSocket();
   const router = useRouter();
 
   useEffect(() => {
+    console.log(socket);
+    if (!socket) return;
+
     const handleRouteChange = (url) => {
       if (!url.startsWith(SHOW)) {
         leaveCurrentShow();
       }
     };
 
-    socket.on('selfUpdate', (data) => {
-      setOwnSocketData((prev) => ({ ...prev, ...data }));
-    });
-
     socket.on('showUpdate', (data) => {
       setCurrentShow(data);
       // console.log('showUpdate', data);
     });
 
-    socket.on('clientsUpdate', (data) => {
-      setConnectedSockets(data?.connectedSockets);
-    });
+    // socket.on('clientsUpdate', (data) => {
+    //   setConnectedSockets(data?.connectedSockets);
+    // });
 
     socket.on('showsUpdate', (data) => {
       console.log(data);
-      setShows(data?.shows);
+      setPlayingShows(data?.shows);
     });
 
     socket.on('chatUpdate', ({ chat, message }) => {
@@ -59,23 +55,30 @@ export const SessionProvider = ({ children }) => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, []);
+  }, [socket]);
 
   function leaveCurrentShow(callback) {
-    console.log('leaving');
+    if (!socket) return;
+    console.log('leaving show');
     socket.emit('leaveRequest', callback);
   }
 
   const createShow = (data, callback) => {
-    console.log('emitting');
+    // Via Api/DB
+    // console.log('emitting');
+    if (!socket) return;
     socket.emit('createRequest', data, callback);
   };
 
   const joinShow = (showId, callback) => {
+    if (!socket) return;
     socket.emit('joinRequest', showId, callback);
   };
 
   const sendChat = (chat, message) => {
+    console.log(socket);
+    if (!socket) return;
+    console.log('sending chat', currentShow?.showId, chat, message);
     socket.emit('sendChat', currentShow?.showId, chat, message);
   };
 
@@ -85,10 +88,7 @@ export const SessionProvider = ({ children }) => {
   };
 
   const exports = {
-    sessionId,
-    setSessionId,
-    connectedSockets,
-    shows,
+    playingShows,
     createShow,
     joinShow,
     currentShow,
@@ -97,8 +97,6 @@ export const SessionProvider = ({ children }) => {
   };
 
   return (
-    <SessionContext.Provider value={exports}>
-      {children}
-    </SessionContext.Provider>
+    <ShowContext.Provider value={exports}>{children}</ShowContext.Provider>
   );
 };

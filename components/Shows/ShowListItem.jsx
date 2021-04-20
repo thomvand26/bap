@@ -1,10 +1,10 @@
 import React from 'react';
 
 import styles from './showListItem.module.scss';
-import { useSession } from '../../context';
+import { useShow } from '@/context';
 
 export const ShowListItem = ({ show }) => {
-  const { goToShow } = useSession();
+  const { goToShow } = useShow();
 
   const handleJoinClick = () => {
     console.log(show);

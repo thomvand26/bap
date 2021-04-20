@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { Input } from '../../../components/Inputs/Input';
 import styles from './createShow.module.scss';
 import { useGoogleApi } from '../../../context/GoogleApiContext';
-import { useSession } from '../../../context/SessionContext';
+import { useShow } from '@/context';
 
 const YouTubePlayerOptions = {
   // height: '390',
@@ -36,7 +36,7 @@ export default function CreateShowPage() {
   const [showTitle, setShowTitle] = useState();
   const [previewVideoId, setPreviewVideoIdId] = useState();
   const { handleSignIn } = useGoogleApi();
-  const { createShow, goToShow } = useSession();
+  const { createShow, goToShow } = useShow();
 
   useEffect(() => {
     // const searchParams = videoURLInput?.split?.(/\?v=|\&v=/)

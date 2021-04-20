@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSession } from '../../context';
+import { useShow } from '@/context';
 import styles from './ChatView.module.scss';
 
 export const chatViewTypes = {
@@ -14,7 +14,7 @@ export const chatViewModes = {
 };
 
 export const ChatView = ({ type = chatViewTypes.general }) => {
-  const { currentShow, sendChat } = useSession();
+  const { currentShow, sendChat } = useShow();
   const [mode, setMode] = useState(chatViewModes.default);
   const [show, setShow] = useState(true);
   const chatContentRef = useRef();
