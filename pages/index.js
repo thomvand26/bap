@@ -18,7 +18,6 @@ export default function HomePage() {
   return (
     <div className="page">
       <h2 className="pageHeader">Shows</h2>
-      <ShowList showCreateShowBtn />
     </div>
   );
 }
