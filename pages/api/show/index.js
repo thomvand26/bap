@@ -1,14 +1,24 @@
 import { withDB } from 'middleware';
 import { Show } from 'models';
+import { removeUndefinedFromObject } from 'server/utils';
 
 const show = async (req, res) => {
-  const { method } = req;
+  const {
+    method,
+    query: { owner },
+  } = req;
+
+  const filters = removeUndefinedFromObject({ owner });
+
   try {
     let responseData;
 
     switch (method) {
       case 'GET':
-        responseData = await Show.find().populate('owner', ['_id', 'username']);
+        responseData = await Show.find({ ...filters }).populate('owner', [
+          '_id',
+          'username',
+        ]);
         break;
       case 'POST':
         responseData = await Show.create(req.body);

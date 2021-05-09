@@ -9,3 +9,5 @@ export const SEARCH = '/search';
 export const SHOW = '/show';
 export const CREATE_SHOW = '/show/create';
 // export const ROOMS = '/rooms';
+
+export const API_SHOW = '/api/show';
