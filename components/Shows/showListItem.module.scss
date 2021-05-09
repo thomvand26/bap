@@ -4,6 +4,7 @@
   background-color: $color-secondary-lightest;
   border-radius: $border-radius-l;
   padding: $length-m $length-xl;
+  font-size: $font-size-m;
 }
 
 .showName {
@@ -12,6 +13,21 @@
   font-weight: bold;
 }
 
-.watching {
-  margin: 0 $length-m;
+.middle {
+  font-weight: bold;
+  color: $color-secondary-darker;
+}
+
+.actions {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+
+  & > * {
+    margin-right: $length-xl;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }

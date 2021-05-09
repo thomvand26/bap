@@ -2,12 +2,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: $container-width;
+}
+
+.listHeaderContainer {
+  display: flex;
+  width: 100%;
+  margin-bottom: $length-xxl;
+}
+
+.listHeader {
+  flex: 1;
+  font-size: $font-size-xl;
+  color: $color-secondary-darker;
+  font-weight: bold;
+  text-align: center;
 }
 
 .showList {
   display: flex;
   flex-direction: column;
   margin-bottom: $length-xxl;
+  width: 100%;
 
   & > * {
     margin-bottom: $length-m;
