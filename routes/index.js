@@ -6,6 +6,8 @@ export const REGISTER = '/auth/register';
 
 export const SEARCH = '/search';
 
+export const ARTIST_DASHBOARD = '/artist-dashboard';
+
 export const SHOW = '/show';
 export const CREATE_SHOW = '/show/edit';
 export const EDIT_SHOW = '/show/edit';

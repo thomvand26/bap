@@ -1,4 +1,4 @@
-import { LANDING } from '@/routes';
+import { ARTIST_DASHBOARD, LANDING } from '@/routes';
 import { useSession } from 'next-auth/client';
 import Link from 'next/link';
 import React from 'react';
@@ -7,8 +7,6 @@ import { UserDropdown } from './UserDropdown';
 
 export const Header = () => {
   const [session] = useSession();
-
-  console.log(session);
 
   return (
     <div className={styles.header}>
@@ -38,6 +36,9 @@ export const Header = () => {
             <ul className={styles.left}>
               <li>
                 <Link href={LANDING}>Home</Link>
+              </li>
+              <li>
+                <Link href={ARTIST_DASHBOARD}>Artist dashboard</Link>
               </li>
             </ul>
             <div className={styles.search}>SEARCH</div>
