@@ -1,0 +1,37 @@
+@import 'rc-slider/assets/index.css';
+
+
+.rc-slider {
+  &-rail {
+    background-color: $color-secondary-lightest;
+    height: $length-xs;
+    border-radius: $border-radius-s;
+  }
+
+  &-track {
+    background-color: $color-primary-light;
+    height: $length-xs;
+    border-radius: $border-radius-s;
+  }
+
+  &-handle {
+    border-radius: $border-radius;
+    width: $length-m;
+    height: $length-m;
+    border: none;
+    background-color: $color-primary;
+    margin-top: -$length-xxs;
+
+    &:active {
+      box-shadow: none;
+    }
+  }
+  
+  &--light {
+    & .rc-slider {
+      &-rail {
+        background-color: $color-white;
+      }
+    }
+  }
+}
