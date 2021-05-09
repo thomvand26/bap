@@ -1,0 +1,18 @@
+.tooltip {
+  background-color: $color-white;
+  border-radius: $border-radius;
+  padding: $length-s;
+  font-size: $font-size-s;
+  border: 2px solid $color-primary;
+  font-weight: bold;
+  color: $color-secondary-darkest;
+  
+  &__arrow {
+    padding-right: 4px;
+    height: 8px;
+
+    & path {
+      fill: $color-primary;
+    }
+  }
+}

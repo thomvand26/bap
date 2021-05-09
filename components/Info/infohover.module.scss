@@ -1,0 +1,23 @@
+.tooltip {
+  margin-left: $length-s;
+
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $length-m;
+  height: $length-m;
+  border: 2px solid $color-secondary-darker;
+  padding-top: $length-xxs;
+  border-radius: 50%;
+  opacity: .5;
+  user-select: none;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+    opacity: 1;
+  }
+}
