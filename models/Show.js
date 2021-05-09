@@ -31,7 +31,7 @@ const ShowSchema = new Schema(
       type: String,
       trim: true,
     },
-    hidden: {
+    visible: {
       type: Boolean,
       default: true,
     },
