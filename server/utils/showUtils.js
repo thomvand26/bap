@@ -1,8 +1,6 @@
 export const getAllShows = (io) => {
-  console.log('getAllShows io: ', io);
   let availableShows = [];
   const shows = io.sockets.adapter.rooms;
-  console.log(shows);
   if (shows && shows.size) {
     shows.forEach((value, key) => {
       if (!value.has(key)) {
