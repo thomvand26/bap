@@ -1,6 +1,8 @@
+import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { SHOW } from '../routes';
+import { useDatabase } from './DatabaseContext';
 import { useSocket } from './SocketContext';
 
 export const ShowContext = createContext();
@@ -10,6 +12,8 @@ export const ShowProvider = ({ children }) => {
   const [playingShows, setPlayingShows] = useState([]);
   const [currentShow, setCurrentShow] = useState();
   const { socket } = useSocket();
+  const { dbSaveShow, dbDeleteShow } = useDatabase();
+  const [session] = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -63,11 +67,24 @@ export const ShowProvider = ({ children }) => {
     socket.emit('leaveRequest', callback);
   }
 
-  const createShow = (data, callback) => {
-    // Via Api/DB
-    // console.log('emitting');
-    if (!socket) return;
-    socket.emit('createRequest', data, callback);
+  const saveShow = async (data, callback) => {
+    const userId = session?.user?._id;
+    if (!userId) {
+      console.log('no user id');
+      return;
+    }
+    const newShow = await dbSaveShow({ ...data, owner: userId });
+    return newShow;
+  };
+
+  const deleteShow = async (data, callback) => {
+    const userId = session?.user?._id;
+    if (!userId) {
+      console.log('no user id');
+      return;
+    }
+    const deletedShow = await dbDeleteShow({ ...data, owner: userId });
+    return deletedShow;
   };
 
   const joinShow = (showId, callback) => {
@@ -76,20 +93,19 @@ export const ShowProvider = ({ children }) => {
   };
 
   const sendChat = (chat, message) => {
-    console.log(socket);
     if (!socket) return;
-    console.log('sending chat', currentShow?.showId, chat, message);
     socket.emit('sendChat', currentShow?.showId, chat, message);
   };
 
   const goToShow = (showId) => {
-    // console.log(showId);
     router.push(`${SHOW}/${showId}`);
   };
 
   const exports = {
     playingShows,
-    createShow,
+    setCurrentShow,
+    saveShow,
+    deleteShow,
     joinShow,
     currentShow,
     sendChat,
