@@ -10,7 +10,6 @@
     position: absolute;
     display: flex;
     align-items: center;
-    // left: $length-m;
     font-size: $font-size-s;
     font-weight: bold;
     color: $color-secondary-darker;
@@ -18,11 +17,10 @@
     top: 0;
     left: 0;
 
-    // &--touched {
-    //   left: 0;
-    //   // top: -$font-size-s - $length-xs;
-    //   top: 0;
-    // }
+    &__left {
+      display: flex;
+      align-items: flex-end;
+    }
   }
 
   .input {
@@ -51,22 +49,97 @@
   }
 
   .error {
-    // position: absolute;
     font-size: $font-size-s;
     color: $color-primary-dark;
     font-weight: bold;
-    // bottom: 0;
     margin-top: $length-xs;
   }
 
-  &--dark {
-    // .label {
-    //   color: $color-secondary-lightest-t;
-    // }
+  &--light {
+    .input {
+      background-color: $color-white;
+    }
+  }
 
+  &--dark {
     .input {
       background-color: $color-secondary-dark;
       color: $color-secondary-lightest;
+    }
+  }
+
+  &--toggle {
+    padding-top: 0;
+  }
+}
+
+.dateInput {
+  display: flex;
+  &__date {
+    display: flex;
+    border: none;
+    margin-right: auto;
+  }
+
+  &__time {
+    display: flex;
+    border: none;
+  }
+}
+
+.sliderContainer {
+  & .label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &__right {
+      color: $color-primary;
+    }
+  }
+}
+
+.toggleContainer {
+  & .label {
+    position: unset;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & .hiddenCheckbox {
+    display: none;
+  }
+
+  & .checkbox {
+    border-radius: $border-radius;
+    background-color: $color-secondary-lightest;
+    padding: $length-xxs;
+
+    &__handle {
+      width: $length-xl;
+      height: $length-xl;
+      margin-right: $length-xxl;
+      border-radius: $border-radius;
+      background-color: $color-secondary-lighter;
+
+      transition: none $transition-duration $transition-easing;
+      transition-property: margin, background-color;
+    }
+
+    &--checked {
+      & .checkbox {
+        &__handle {
+          margin-right: 0;
+          margin-left: $length-xxl;
+          background-color: $color-primary-light;
+        }
+      }
+    }
+  }
+
+  &--light {
+    & .checkbox {
+      background-color: $color-white;
     }
   }
 }
