@@ -5,7 +5,7 @@ import { appConfig } from '@/config';
 
 import styles from './defaultLayout.module.scss';
 
-export const DefaultLayout = ({ children }) => {
+export const NoSearchLayout = ({ children }) => {
   return (
     <div className={styles.page}>
       <Head>
@@ -14,7 +14,7 @@ export const DefaultLayout = ({ children }) => {
       </Head>
 
       <main>
-        <Header />
+        <Header noSearch />
         {children}
       </main>
     </div>
