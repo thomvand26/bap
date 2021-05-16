@@ -16,6 +16,8 @@ export const Input = ({
   info,
   value,
   variant = 'default',
+  noPadding,
+  noErrors,
   ...props
 }) => {
   const id = props?.id || name;
@@ -25,7 +27,7 @@ export const Input = ({
     <div
       className={`${styles.container} ${styles[`container--${props.type}`]} ${
         variant === 'dark' || 'light' ? styles[`container--${variant}`] : ''
-      }`}
+      } ${noPadding ? styles['container--noPadding'] :''}`}
     >
       <Field name={name} {...props}>
         {({ form, field }) => {
@@ -91,7 +93,7 @@ export const Input = ({
                   onFocus={() => setHasFocused(true)}
                 />
               )}
-              {form?.touched?.[name] && form?.errors?.[name] ? (
+              {form?.touched?.[name] && form?.errors?.[name] && !noErrors ? (
                 <div className={styles.error}>{form?.errors?.[name]}</div>
               ) : null}
             </>
