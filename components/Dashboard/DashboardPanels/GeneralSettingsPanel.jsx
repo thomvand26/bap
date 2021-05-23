@@ -57,8 +57,8 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow }) => {
         enableReinitialize={true}
         initialValues={{
           title: defaultShow?.title || '',
-          startDate: defaultShow?.startDate || '',
-          endDate: defaultShow?.endDate || '',
+          startDate: defaultShow?.startDate || moment(),
+          endDate: defaultShow?.endDate || moment().add(2, 'h'),
           maxWatchers: defaultShow?.maxWatchers || 200,
           allowSongRequests: defaultShow?.allowSongRequests,
           visible: defaultShow?.visible,
@@ -92,7 +92,6 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow }) => {
                 type="datetime"
                 autoComplete="off"
                 variant="light"
-                defaultDate={defaultShow?.startDate || moment()}
               />
               <Input
                 name="endDate"
@@ -100,7 +99,6 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow }) => {
                 type="datetime"
                 autoComplete="off"
                 variant="light"
-                defaultDate={defaultShow?.endDate || moment().add(2, 'h')}
               />
             </div>
             <div>

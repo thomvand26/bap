@@ -19,6 +19,7 @@ const ShowSchema = new Schema(
     },
     endDate: {
       type: Date,
+      default: new Date() + (2 * 60 * 60 * 1000), // Now + 2 hours
     },
     maxWatchers: {
       type: Number,

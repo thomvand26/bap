@@ -3,14 +3,19 @@ import moment from 'moment';
 
 import styles from './input.module.scss';
 
-export const DateInput = ({ withTime, defaultDate, ...props }) => {
+export const DateInput = ({ withTime, ...props }) => {
   const [value, setValue] = useState();
   const [dateValue, setDateValue] = useState(
-    moment(defaultDate).format('YYYY-MM-DD')
+    moment(props.value).format('YYYY-MM-DD')
   );
   const [timeValue, setTimeValue] = useState(
-    moment(defaultDate).format('HH:mm')
+    moment(props.value).format('HH:mm')
   );
+
+  useEffect(() => {
+    setDateValue(moment(props.value).format('YYYY-MM-DD'));
+    setTimeValue(moment(props.value).format('HH:mm'));
+  }, [props.value]);
 
   useEffect(() => {
     const totalValue = `${dateValue} ${timeValue}`;
