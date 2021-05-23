@@ -3,7 +3,7 @@ import { ShowListItem } from './ShowListItem';
 
 import styles from './showList.module.scss';
 
-export const ShowList = ({ shows, variant = 'playing', headers }) => {
+export const ShowList = ({ shows, variant = 'playing', headers, onDuplicate, onDelete }) => {
   return (
     <div className={styles.container}>
       {headers?.length ? (
@@ -21,6 +21,8 @@ export const ShowList = ({ shows, variant = 'playing', headers }) => {
             key={show.showId || show._id}
             show={show}
             variant={variant}
+            onDuplicate={onDuplicate}
+            onDelete={onDelete}
           />
         ))}
       </div>
