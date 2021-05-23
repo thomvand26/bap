@@ -16,18 +16,18 @@ export default function ArtistDashboardPage() {
 
   useEffect(() => {
     if (loading) return;
-    
+
     const userId = session?.user?._id;
-    
+
     if (!userId) {
       console.log('no user id, user not logged in?');
       return;
     }
 
     (async () => {
-      const response = await getShows({owner: userId});
+      const response = await getShows({ owner: userId });
       setOwnShows(response);
-    })()
+    })();
   }, [session, loading]);
 
   return (
@@ -36,9 +36,21 @@ export default function ArtistDashboardPage() {
       <Link href={CREATE_SHOW}>
         <a className={`button ${styles.createShowButton}`}>New show</a>
       </Link>
-      <ShowList shows={ownShows} variant="artistDashboard" headers={['Show name', 'Date', 'Actions']} />
+      <ShowList
+        shows={ownShows}
+        variant="artistDashboard"
+        headers={['Show name', 'Date', 'Actions']}
+        onDuplicate={(show) =>
+          setOwnShows((prev) => (prev?.length ? [...prev, show] : [show]))
+        }
+        onDelete={(showId) => {
+          setOwnShows((prev) =>
+            prev?.length ? prev.filter((show) => show?._id !== showId) : []
+          );
+        }}
+      />
     </div>
   );
 }
 
-ArtistDashboardPage.layout = Layouts.default;
+ArtistDashboardPage.layout = Layouts.noSearch;
