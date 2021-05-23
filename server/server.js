@@ -14,6 +14,7 @@ const {
   emitShowsUpdate,
   getShowById,
 } = require('./utils');
+const { Show } = require('../models');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -68,30 +69,34 @@ async function start() {
       emitShowsUpdate(io, showId);
     });
 
-    socket.on('joinRequest', (showId, callback) => {
-      if (socket.lastShow !== showId) resetLastSocketShow(socket);
-      // console.log(showId);
-      if (!getShowById(io, showId)) {
-        console.log('no such show');
+    socket.on('joinRequest', async (showId, callback) => {
+      try {
+        if (socket.lastShow !== showId) resetLastSocketShow(socket);
 
-        if (callback instanceof Function) {
-          callback({ type: 'error', reason: 'show_not_found' });
+        const foundShow = await Show.findById(showId);
+
+        if (!foundShow) {
+          throw new { type: 'error', reason: 'show_not_found' };
         }
 
-        socket.emit('showUpdate', null);
-        return;
+        socket.join(showId);
+        socket.lastShow = showId;
+
+        if (callback instanceof Function) callback({ type: 'success' });
+
+        // // Update client data
+        // io.to(showId).emit('showUpdate', getShowById(showId));
+        // console.log('showUpdate');
+
+        emitShowsUpdate(io, showId);
+      } catch (error) {
+        if (!(callback instanceof Function)) return;
+        if (!error.type || !error.reason) {
+          callback({ type: 'error', reason: 'show_not_found' });
+          return;
+        }
+        callback(error);
       }
-
-      socket.join(showId);
-      socket.lastShow = showId;
-
-      if (callback instanceof Function) callback({ type: 'success' });
-
-      // // Update client data
-      // io.to(showId).emit('showUpdate', getShowById(showId));
-      // console.log('showUpdate');
-
-      emitShowsUpdate(io, showId);
     });
 
     socket.on('leaveRequest', (callback) => {
