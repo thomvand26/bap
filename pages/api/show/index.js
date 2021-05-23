@@ -1,14 +1,12 @@
 import { withDB } from 'middleware';
 import { Show } from 'models';
-import { removeUndefinedFromObject } from 'server/utils';
+import { removeUndefinedFromObject, parseObjectStrings } from 'server/utils';
 
 const show = async (req, res) => {
-  const {
-    method,
-    query: { owner },
-  } = req;
+  const { method, query } = req;
 
-  const filters = removeUndefinedFromObject({ owner });
+  let filters = removeUndefinedFromObject(query);
+  filters = parseObjectStrings(filters);
 
   try {
     let responseData;
