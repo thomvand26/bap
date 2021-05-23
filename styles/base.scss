@@ -94,6 +94,25 @@ button,
     width: fit-content;
   }
 
+  &--icon {
+    min-width: 0;
+    width: fit-content;
+    background-color: rgba($color: $color-secondary-darkest, $alpha: 0);
+    padding: .5rem;
+
+    & > svg {
+      fill: inherit;
+    }
+
+    &:hover {
+      background-color: rgba($color: $color-secondary-darkest, $alpha: 0.1);
+    }
+
+    &.danger {
+      fill: $color-danger;
+    }
+  }
+
   &--ghost {
     border: $button-border-width solid $color-primary-light;
   }
