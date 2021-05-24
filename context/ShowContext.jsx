@@ -11,13 +11,14 @@ export const useShow = () => useContext(ShowContext);
 export const ShowProvider = ({ children }) => {
   const [playingShows, setPlayingShows] = useState([]);
   const [currentShow, setCurrentShow] = useState();
+  const [currentChatroom, setCurrentChatroom] = useState();
   const { socket } = useSocket();
   const { dbSaveShow, dbDeleteShow } = useDatabase();
   const [session] = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    console.log(socket);
+    // console.log(socket);
     if (!socket) return;
 
     const handleRouteChange = (url) => {
@@ -27,7 +28,8 @@ export const ShowProvider = ({ children }) => {
     };
 
     socket.on('showUpdate', (data) => {
-      setCurrentShow(data);
+      // console.log('showUpdate', data);
+      // setCurrentShow(data);
       // console.log('showUpdate', data);
     });
 
@@ -36,22 +38,16 @@ export const ShowProvider = ({ children }) => {
     // });
 
     socket.on('showsUpdate', (data) => {
-      console.log(data);
+      // console.log(data);
       setPlayingShows(data?.shows);
     });
 
-    socket.on('chatUpdate', ({ chat, message }) => {
-      console.log(chat, message);
-      setCurrentShow((prev) => {
-        if (!prev || !chat || !message) return;
-        const updatedShow = { ...prev };
-        const prevChat = updatedShow?.chats?.[chat];
-        updatedShow.chats = prev.chats ? prev.chats : {};
-        updatedShow.chats[chat] = prevChat?.length
-          ? [...prevChat, message]
-          : [message];
-        return updatedShow;
-      });
+    socket.on('chatUpdate', ({ type, message }) => {
+      // console.log(type, message);
+      setCurrentChatroom((prev) => ({
+        ...prev,
+        messages: [...prev.messages, message],
+      }));
     });
 
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -89,12 +85,29 @@ export const ShowProvider = ({ children }) => {
 
   const joinShow = (showId, callback) => {
     if (!socket) return;
-    socket.emit('joinRequest', showId, callback);
+    socket.emit('joinRequest', showId, null, (response) => {
+      if (response?.type === 'success') {
+        setCurrentShow(response.data.show);
+        setCurrentChatroom({ messages: response.data.chat });
+      }
+      callback?.(response);
+    });
   };
 
-  const sendChat = (chat, message) => {
+  const sendChat = (message, chat) => {
     if (!socket) return;
-    socket.emit('sendChat', currentShow?.showId, chat, message);
+    // console.log('emit', socket, currentShow, message);
+    socket.emit(
+      'sendChat',
+      currentShow?._id,
+      chat ||
+        currentChatroom?._id ||
+        currentShow?.generalChatroom?._id ||
+        'general',
+      // 'general',
+      session?.user?._id,
+      message
+    );
   };
 
   const goToShow = (showId) => {
@@ -108,6 +121,7 @@ export const ShowProvider = ({ children }) => {
     deleteShow,
     joinShow,
     currentShow,
+    currentChatroom,
     sendChat,
     goToShow,
   };

@@ -1,9 +1,15 @@
 import React from 'react';
 
-export const ChatMessage = ({ userName, message }) => {
+import styles from './ChatMessage.module.scss';
+
+export const ChatMessage = ({
+  messageObject: { owner, message },
+  ...props
+}) => {
   return (
-    <div>
-      <strong>{userName}:</strong> {message}
+    <div className={styles.chatMessage} {...props}>
+      <strong className={styles.chatMessage__user}>{owner?.username}:</strong>{' '}
+      <span className={styles.chatMessage__message}> {message}</span>
     </div>
   );
 };

@@ -1,11 +1,17 @@
 import { Schema, model, models } from 'mongoose';
 
+import { Chatroom } from './Chatroom';
+
 const ShowSchema = new Schema(
   {
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Every show must have an owner'],
+    },
+    generalChatroom: {
+      type: Schema.Types.ObjectId,
+      ref: 'Chatroom',
     },
     title: {
       type: String,
@@ -19,7 +25,7 @@ const ShowSchema = new Schema(
     },
     endDate: {
       type: Date,
-      default: new Date() + (2 * 60 * 60 * 1000), // Now + 2 hours
+      default: new Date() + 2 * 60 * 60 * 1000, // Now + 2 hours
     },
     maxWatchers: {
       type: Number,
@@ -41,5 +47,18 @@ const ShowSchema = new Schema(
     timestamps: true,
   }
 );
+
+ShowSchema.pre('save', async function (next) {
+  const generalChatroom = await Chatroom.create({
+    name: 'General',
+    owner: this.owner,
+    show: this._id,
+    isGeneral: true,
+  });
+
+  this.generalChatroom = generalChatroom;
+
+  next();
+});
 
 export const Show = models.Show || model('Show', ShowSchema);

@@ -1,5 +1,5 @@
 import { withDB } from 'middleware';
-import { Show } from 'models';
+import { Show, Chatroom, ChatMessage } from 'models';
 import { getSession } from 'next-auth/client';
 
 const show = async (req, res) => {
@@ -31,10 +31,19 @@ const show = async (req, res) => {
         break;
       case 'DELETE':
         if (!session) throw new Error('Not logged in!');
-        responseData = await Show.deleteOne({
-          _id: id,
-          owner: session?.user?._id,
-        });
+        responseData = await Show.deleteOne(
+          {
+            _id: id,
+            owner: session?.user?._id,
+          },
+          {}
+        );
+        if (responseData.ok === 1) {
+          const deletedLinkedModel = await Promise.all([
+            Chatroom.deleteMany({ show: id }),
+            ChatMessage.deleteMany({ show: id }),
+          ]);
+        }
         break;
 
       default:

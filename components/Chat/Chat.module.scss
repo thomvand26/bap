@@ -1,16 +1,29 @@
 .chatContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: fit-content;
   height: 100%;
   margin-left: auto;
   background-color: $color-secondary-darkest;
+  max-width: 400px;
+  width: 23vw;
+  min-width: 300px;
+  color: $color-secondary-lightest;
+  resize: horizontal;
+}
+
+.requests {
+  height: 167px;
+  background-color: $color-secondary-dark;
+  margin-bottom: $length-xs;
 }
 
 .chats {
-  display: flex;
-  height: 100%;
-  width: fit-content;
-  // background-color: #fff;
+  flex: 1;
+  padding: $length-l/2;
+  overflow: hidden;
+}
+
+.bottom {
+  padding: $length-l;
+  padding-top: 0;
 }

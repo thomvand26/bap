@@ -14,7 +14,7 @@ const {
   emitShowsUpdate,
   getShowById,
 } = require('./utils');
-const { Show } = require('../models');
+const { Show, ChatMessage } = require('../models');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -29,12 +29,10 @@ connectDB();
 //   });
 // };
 
-const emitChatUpdate = (io, showId, chat, message) => {
-  const show = getShowById(io, showId);
-
-  if (show) {
-    io.to(show.showId).emit('chatUpdate', {
-      chat,
+const emitChatUpdate = (io, showId, chatroomId, message) => {
+  if (chatroomId) {
+    io.to(`${chatroomId}`).emit('chatUpdate', {
+      type: 'chat',
       message,
     });
   }
@@ -56,37 +54,29 @@ async function start() {
       // emitClientsUpdate();
     });
 
-    socket.on('createRequest', (data, callback) => {
-      resetLastSocketShow(socket);
-
-      const showId = uuidv4();
-      socket.join(showId);
-      // console.log(showId);
-      socket.lastShow = showId;
-
-      // Send showId back to client via a callback
-      if (callback instanceof Function) callback(showId);
-      emitShowsUpdate(io, showId);
-    });
-
-    socket.on('joinRequest', async (showId, callback) => {
+    socket.on('joinRequest', async (showId, chatroomId, callback) => {
       try {
         if (socket.lastShow !== showId) resetLastSocketShow(socket);
 
-        const foundShow = await Show.findById(showId);
+        const foundShow = await Show.findById(showId).populate({
+          path: 'generalChatroom',
+        });
+
+        const chat = await ChatMessage.find({
+          chatroom: chatroomId || foundShow?.generalChatroom?._id,
+        }).populate({
+          path: 'owner',
+        });
 
         if (!foundShow) {
-          throw new { type: 'error', reason: 'show_not_found' };
+          throw new { type: 'error', reason: 'show_not_found' }();
         }
 
-        socket.join(showId);
+        socket.join(`${chatroomId || foundShow?.generalChatroom?._id}`);
         socket.lastShow = showId;
 
-        if (callback instanceof Function) callback({ type: 'success' });
-
-        // // Update client data
-        // io.to(showId).emit('showUpdate', getShowById(showId));
-        // console.log('showUpdate');
+        if (callback instanceof Function)
+          callback({ type: 'success', data: { show: foundShow, chat } });
 
         emitShowsUpdate(io, showId);
       } catch (error) {
@@ -103,8 +93,23 @@ async function start() {
       leaveShow(io, socket);
     });
 
-    socket.on('sendChat', (showId, chat, message) => {
-      emitChatUpdate(io, showId, chat, message);
+    socket.on('sendChat', async (showId, chatroomId, ownerId, message) => {
+      // console.log(showId, chatroomId, message);
+
+      let newMessage = await ChatMessage.create({
+        show: showId,
+        owner: ownerId,
+        chatroom: chatroomId,
+        message,
+      });
+
+      newMessage = await newMessage
+        .populate({
+          path: 'owner',
+        })
+        .execPopulate();
+
+      emitChatUpdate(io, showId, chatroomId, newMessage);
     });
   });
 

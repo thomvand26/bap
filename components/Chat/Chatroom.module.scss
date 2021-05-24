@@ -1,33 +1,20 @@
 .container {
   display: flex;
   flex-direction: column;
-  padding: $length-l;
-
-  &--hide {
-    width: 20px;
-    padding: 0;
-    overflow-x: hidden;
-  }
+  max-height: 100%;
+  height: 100%;
 }
 
 .chatHeader {
   color: $color-secondary-lightest;
+  padding: $length-l / 2;
+  padding-bottom: $length-l;
 }
 
 .content {
   flex: 1;
-  max-width: 400px;
-  width: 20vw;
-  min-width: 300px;
-  margin: $length-l 0;
+  width: 100%;
   overflow: auto;
-}
-
-.chatMessage {
-  font-size: $font-size-s;
-  line-height: $line-height-s;
-  color: $color-secondary-lightest;
-  padding: $length-xs 0;
 }
 
 .chatForm {
@@ -36,12 +23,10 @@
   width: 100%;
 
   &__input {
-    // flex: 1;
     margin-bottom: $length-xs;
   }
 
   &__sendButton {
-    // flex: 1;
     font-size: $font-size-m;
     padding: $length-xs $length-m;
     min-height: $input-min-height;
