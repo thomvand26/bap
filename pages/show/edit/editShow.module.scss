@@ -4,4 +4,9 @@ $column-width: 20vw;
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding-top: $length-xxl;
+}
+
+.viewButton {
+  margin: 0 auto;
 }

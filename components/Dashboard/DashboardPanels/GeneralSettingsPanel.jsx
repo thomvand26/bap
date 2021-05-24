@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
   endDate: Yup.string().required('Required'),
 });
 
-export const GeneralSettingsPannel = ({ defaultShow, loadingShow }) => {
+export const GeneralSettingsPannel = ({ defaultShow, loadingShow, ...props }) => {
   const { setCurrentShow, saveShow, deleteShow } = useShow();
   const router = useRouter();
 
@@ -51,7 +51,7 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow }) => {
   };
 
   return (
-    <DashboardPanel name="General settings" colspan={2}>
+    <DashboardPanel name="General settings" {...props}>
       <Formik
         validationSchema={validationSchema}
         enableReinitialize={true}
@@ -146,7 +146,7 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow }) => {
             {loadingShow === false && defaultShow?._id ? (
               <>
                 <button type="submit">Save</button>
-                <button type="button">Start the show!</button>
+                {/* <button type="button">Start the show!</button> */}
                 <button
                   className="button button--ghost button--danger"
                   type="button"

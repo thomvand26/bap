@@ -11,6 +11,7 @@ export const ARTIST_DASHBOARD = '/artist-dashboard';
 export const SHOW = '/show';
 export const CREATE_SHOW = '/show/edit';
 export const EDIT_SHOW = '/show/edit';
+export const PERFORM_SHOW = '/show/perform';
 // export const ROOMS = '/rooms';
 
 export const API_SHOW = '/api/show';

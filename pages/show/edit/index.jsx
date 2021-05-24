@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useSession } from 'next-auth/client';
 
-import styles from './createShow.module.scss';
 import { useShow, useDatabase } from '@/context';
 import { ShowSettingsDashboard } from '@/components';
 import { CREATE_SHOW } from '@/routes';
-import { useSession } from 'next-auth/client';
+import { PERFORM_SHOW } from '@/routes';
+
+import styles from './editShow.module.scss';
 
 export default function CreateShowPage() {
-  const { setCurrentShow } = useShow();
+  const { currentShow, setCurrentShow } = useShow();
   const { getShow } = useDatabase();
   const router = useRouter();
-  const [defaultShowData, setDefaultShowData] = useState();
+  const [defaultShowData, setDefaultShowData] = useState(); // unnecessary?
   const [loadingShow, setLoadingShow] = useState(true);
   const [session] = useSession();
 
@@ -28,6 +31,12 @@ export default function CreateShowPage() {
     (async () => {
       if (!session) return;
 
+      if (currentShow?._id === showId) {
+        setDefaultShowData(currentShow);
+        setLoadingShow(false);
+        return;
+      }
+
       const show = await getShow(showId);
 
       if (session.user._id !== show?.owner?._id) {
@@ -43,6 +52,9 @@ export default function CreateShowPage() {
 
   return (
     <div className={styles.page}>
+      <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>
+        <a className={`button button--fit ${styles.viewButton}`}>Go to performance view</a>
+      </Link>
       <ShowSettingsDashboard show={defaultShowData} loadingShow={loadingShow} />
     </div>
   );
