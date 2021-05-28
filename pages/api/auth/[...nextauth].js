@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import { login, register } from 'server/utils';
 import bcrypt from 'bcrypt';
-import { User } from '@/dist/models/User';
+import { User } from 'models/User';
 
 export default NextAuth({
   providers: [
