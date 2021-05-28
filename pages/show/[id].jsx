@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import ReactPlayer from 'react-player';
 import { LANDING } from '../../routes';
 import { Chat } from '../../components';
 
-import styles from './show.module.scss';
 import { Layouts } from '../../layouts';
 import { useShow } from '@/context';
+
+import styles from './show.module.scss';
 
 export default function ShowPage(params) {
   const router = useRouter();
@@ -14,10 +16,10 @@ export default function ShowPage(params) {
   const { joinShow, currentShow } = useShow();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
+  const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
 
   useEffect(() => {
     if (!id) return;
-    // console.log(id);
     joinShow(id, (response) => {
       if (response?.type === 'error') {
         // console.log('error');
@@ -30,6 +32,10 @@ export default function ShowPage(params) {
     });
   }, [id]);
 
+  useEffect(() => {
+    setUrlValid(currentShow?.streamURL);
+  }, [currentShow?.streamURL]);
+
   return loading ? (
     <></>
   ) : error ? (
@@ -41,9 +47,28 @@ export default function ShowPage(params) {
     </div>
   ) : (
     <div className={styles.page}>
-      <div className={styles.showInfo}>
-        <h2>Welcome to room {id}</h2>
-        <h3>Watchers: {currentShow?.clientIds?.length}</h3>
+      <div className={styles.showStream}>
+        {urlValid ? (
+          <ReactPlayer
+            url={currentShow?.streamURL}
+            width="100%"
+            height="100%"
+            onError={() => {
+              setUrlValid(false);
+            }}
+            controls={true}
+            playing={true}
+            config={{
+              youtube: {
+                playerVars: {
+                  autoplay: true,
+                },
+              },
+            }}
+          />
+        ) : (
+          'Invalid Stream URL.'
+        )}
       </div>
       <Chat />
     </div>
