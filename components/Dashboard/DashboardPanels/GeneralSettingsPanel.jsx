@@ -54,7 +54,7 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow, ...props }) =>
     <DashboardPanel name="General settings" {...props}>
       <Formik
         validationSchema={validationSchema}
-        enableReinitialize={true}
+        enableReinitialize={loadingShow}
         initialValues={{
           title: defaultShow?.title || '',
           startDate: defaultShow?.startDate || moment(),
