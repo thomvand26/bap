@@ -11,6 +11,27 @@
   resize: horizontal;
 }
 
+.topSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $length-s $length-l;
+  white-space: nowrap;
+  background-color: $color-secondary-darkest;
+  opacity: 1;
+}
+
+.showTitle {
+  font-size: $font-size-m;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actionButton {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 .requests {
   height: 167px;
   background-color: $color-secondary-dark;
