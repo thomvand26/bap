@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@400;700&display=swap');
 
+:root {
+  --button-color: #{$color-primary-light};
+}
+
 *,
 *::before,
 *::after {
@@ -70,7 +74,7 @@ button,
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $color-primary-light;
+  background-color: var(--button-color);
   border: none;
   border-radius: $border-radius-l;
   padding: $length-m;
@@ -79,6 +83,10 @@ button,
   min-height: $input-min-height;
   width: 180px;
   cursor: pointer;
+
+  &--danger {
+    --button-color: #{$color-danger} !important;
+  }
 
   &--fit {
     min-width: 0;
@@ -94,10 +102,13 @@ button,
   }
 
   &--icon {
+    --button-color: #{$color-secondary-dark};
+
     min-width: 0;
     width: fit-content;
     background-color: rgba($color: $color-secondary-darkest, $alpha: 0);
     padding: .5rem;
+    fill: var(--button-color);
 
     & > svg {
       fill: inherit;
@@ -106,26 +117,13 @@ button,
     &:hover {
       background-color: rgba($color: $color-secondary-darkest, $alpha: 0.1);
     }
-
-    &.danger {
-      fill: $color-danger;
-    }
   }
 
   &--ghost {
+    background-color: transparent;
     border: $button-border-width solid $color-primary-light;
-  }
-
-  &--danger {
-    background-color: $color-danger;
-
-    &.button {
-      &--ghost {
-        background-color: transparent;
-        border-color: $color-danger;
-        color: $color-danger;
-      }
-    }
+    border-color: var(--button-color);;
+    color: var(--button-color);;
   }
 }
 

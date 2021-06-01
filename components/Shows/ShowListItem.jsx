@@ -140,7 +140,7 @@ export const ShowListItem = ({
               <MdContentCopy size="1.6rem" />
             </button>
             <button
-              className="button button--icon danger"
+              className="button button--icon button--danger"
               onClick={handleDeleteClick}
             >
               <FaTrash size="1.4rem" />
