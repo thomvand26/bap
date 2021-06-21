@@ -21,6 +21,7 @@ export const getShowById = (io, showId) => {
 
 export const emitShowsUpdate = async ({io, show, showId}) => {
   const updatedShow = show || await Show.findById(showId);
+  console.log('show givven: ', show);
 
   // TODO: use Shows not socket connections
   io.sockets.emit('showsUpdate', {
@@ -55,7 +56,15 @@ export const leaveShow = async (io, socket) => {
       }
     },
     { new: true }
-  );
+  ).populate([
+    {
+      path: 'generalChatroom',
+    },
+    {
+      path: 'connectedUsers.$*.user',
+      select: ['_id', 'username'],
+    },
+  ]);
 
   socket.leave(showId);
 
