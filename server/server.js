@@ -54,40 +54,83 @@ async function start() {
       // emitClientsUpdate();
     });
 
-    socket.on('joinRequest', async (showId, chatroomId, callback) => {
-      try {
-        if (socket.lastShow !== showId) resetLastSocketShow(socket);
+    socket.on(
+      'joinShowRequest',
+      async ({ showId, chatroomId, userId }, callback) => {
+        try {
+          if (!userId) throw new { type: 'error', reason: 'user_not_found' }();
 
-        const foundShow = await Show.findById(showId).populate({
-          path: 'generalChatroom',
-        });
+          // Reset the showId in the socket
+          if (socket.lastShow !== showId) resetLastSocketShow(socket);
 
-        const chat = await ChatMessage.find({
-          chatroom: chatroomId || foundShow?.generalChatroom?._id,
-        }).populate({
-          path: 'owner',
-        });
+          const socketId = socket?.id || socket?._id;
 
-        if (!foundShow) {
-          throw new { type: 'error', reason: 'show_not_found' }();
+          if (!socketId) return;
+
+          // Update connectedUsers in Show and return it
+          const foundShow = await Show.findByIdAndUpdate(
+            showId,
+            {
+              $set: {
+                [`connectedUsers.${socketId}`]: {
+                  // TODO: user userId as key if not testing
+                  // [userId]: {
+                  //   user: userId,
+                  //   socketId: socket?.id || socket?._id
+                  // }
+                  user: userId,
+                  socketId,
+                },
+              }
+            },
+            {
+              multi: true,
+              new: true,
+            }
+          ).populate([
+            {
+              path: 'generalChatroom',
+            },
+            {
+              path: 'connectedUsers.$*.user',
+              select: ['_id', 'username'],
+            },
+          ]);
+
+          if (!foundShow) {
+            throw new { type: 'error', reason: 'show_not_found' }();
+          }
+
+          // Get all messages in the chatroom
+          const chat = await ChatMessage.find({
+            chatroom: chatroomId || foundShow?.generalChatroom?._id,
+          }).populate({
+            path: 'owner',
+          });
+
+          // Join the general chatroom and the showUpdate room
+          socket.join([
+            `${chatroomId || foundShow?.generalChatroom?._id}`,
+            `${foundShow._id}`,
+          ]);
+
+          // Save the showId in the socket
+          socket.lastShow = showId;
+
+          if (callback instanceof Function)
+            callback({ type: 'success', data: { show: foundShow, chat } });
+
+          emitShowsUpdate({ io, show: foundShow });
+        } catch (error) {
+          if (!(callback instanceof Function)) return;
+          if (!error.type || !error.reason) {
+            callback({ type: 'error', reason: 'show_not_found' });
+            return;
+          }
+          callback(error);
         }
-
-        socket.join(`${chatroomId || foundShow?.generalChatroom?._id}`);
-        socket.lastShow = showId;
-
-        if (callback instanceof Function)
-          callback({ type: 'success', data: { show: foundShow, chat } });
-
-        emitShowsUpdate(io, showId);
-      } catch (error) {
-        if (!(callback instanceof Function)) return;
-        if (!error.type || !error.reason) {
-          callback({ type: 'error', reason: 'show_not_found' });
-          return;
-        }
-        callback(error);
       }
-    });
+    );
 
     socket.on('leaveRequest', (callback) => {
       leaveShow(io, socket);

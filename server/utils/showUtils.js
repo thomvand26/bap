@@ -1,3 +1,5 @@
+import { Show } from '../../models';
+
 export const getAllShows = (io) => {
   let availableShows = [];
   const shows = io.sockets.adapter.rooms;
@@ -17,16 +19,16 @@ export const getShowById = (io, showId) => {
   });
 };
 
-export const emitShowsUpdate = (io, showId) => {
-  // const show = showId ? getShowById(showId) : getShowBySocketId(socketId);
-  const show = getShowById(io, showId);
+export const emitShowsUpdate = async ({io, show, showId}) => {
+  const updatedShow = show || await Show.findById(showId);
 
+  // TODO: use Shows not socket connections
   io.sockets.emit('showsUpdate', {
     shows: getAllShows(io),
   });
 
-  if (show) {
-    io.to(show.showId).emit('showUpdate', show);
+  if (updatedShow) {
+    io.to(`${updatedShow._id}`).emit('showUpdate', updatedShow);
   }
 };
 
@@ -37,13 +39,26 @@ export const resetLastSocketShow = (socket) => {
   }
 };
 
-export const leaveShow = (io, socket) => {
+export const leaveShow = async (io, socket) => {
   const showId = socket.lastShow;
 
   if (!showId) return;
 
+  const socketId = socket?.id || socket?._id;
+
+  // Remove from connectedUsers from the Show
+  const updatedShow = await Show.findByIdAndUpdate(
+    showId,
+    {
+      $unset: {
+        [`connectedUsers.${socketId}`]: ''
+      }
+    },
+    { new: true }
+  );
+
   socket.leave(showId);
 
-  emitShowsUpdate(io, socket.lastShow);
+  emitShowsUpdate({io, show: updatedShow});
   // resetLastSocketShow(socket);
 };

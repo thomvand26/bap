@@ -42,6 +42,16 @@ const ShowSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    connectedUsers: {
+      type: Map,
+      of: {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        socketId: String,
+      }
+    }
   },
   {
     timestamps: true,

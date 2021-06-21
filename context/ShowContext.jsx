@@ -29,7 +29,7 @@ export const ShowProvider = ({ children }) => {
 
     socket.on('showUpdate', (data) => {
       // console.log('showUpdate', data);
-      // setCurrentShow(data);
+      setCurrentShow(data);
       // console.log('showUpdate', data);
     });
 
@@ -84,14 +84,24 @@ export const ShowProvider = ({ children }) => {
   };
 
   const joinShow = (showId, callback) => {
-    if (!socket) return;
-    socket.emit('joinRequest', showId, null, (response) => {
-      if (response?.type === 'success') {
-        setCurrentShow(response.data.show);
-        setCurrentChatroom({ messages: response.data.chat });
+    const userId = session?.user?._id;
+
+    if (!socket || !userId) return;
+
+    socket.emit(
+      'joinShowRequest',
+      {
+        showId,
+        userId,
+      },
+      (response) => {
+        if (response?.type === 'success') {
+          setCurrentShow(response.data.show);
+          setCurrentChatroom({ messages: response.data.chat });
+        }
+        callback?.(response);
       }
-      callback?.(response);
-    });
+    );
   };
 
   const sendChat = (message, chat) => {
