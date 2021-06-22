@@ -68,16 +68,26 @@ async function start() {
           if (!socketId) return;
 
           // Update connectedUsers in Show and return it
+          await Show.findByIdAndUpdate(
+            showId,
+            {
+              $pull: {
+                connectedUsers: {
+                  user: userId,
+                },
+              }
+            },
+            {
+              multi: true,
+              new: true,
+            }
+          );
+
           const foundShow = await Show.findByIdAndUpdate(
             showId,
             {
-              $set: {
-                [`connectedUsers.${socketId}`]: {
-                  // TODO: user userId as key if not testing
-                  // [userId]: {
-                  //   user: userId,
-                  //   socketId: socket?.id || socket?._id
-                  // }
+              $push: {
+                connectedUsers: {
                   user: userId,
                   socketId,
                 },
@@ -92,7 +102,7 @@ async function start() {
               path: 'generalChatroom',
             },
             {
-              path: 'connectedUsers.$*.user',
+              path: 'connectedUsers.user',
               select: ['_id', 'username'],
             },
           ]);
@@ -100,6 +110,8 @@ async function start() {
           if (!foundShow) {
             throw new { type: 'error', reason: 'show_not_found' }();
           }
+
+          // TODO: add user to General Chatroom
 
           // Get all messages in the chatroom
           const chat = await ChatMessage.find({
@@ -157,18 +169,22 @@ async function start() {
   });
 
   server.get('*', (req, res) => {
+    req.io = io;
     return handle(req, res);
   });
 
   server.post('*', (req, res) => {
+    req.io = io;
     return handle(req, res);
   });
 
   server.put('*', (req, res) => {
+    req.io = io;
     return handle(req, res);
   });
 
   server.delete('*', (req, res) => {
+    req.io = io;
     return handle(req, res);
   });
 

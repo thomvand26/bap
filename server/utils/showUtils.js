@@ -1,4 +1,4 @@
-import { Show } from '../../models';
+import { Chatroom, Show } from '../../models';
 
 export const getAllShows = (io) => {
   let availableShows = [];
@@ -19,9 +19,23 @@ export const getShowById = (io, showId) => {
   });
 };
 
-export const emitShowsUpdate = async ({io, show, showId}) => {
-  const updatedShow = show || await Show.findById(showId);
-  console.log('show givven: ', show);
+export const emitShowsUpdate = async ({ io, show, showId }) => {
+  const updatedShow =
+    show ||
+    (await Show.findById(showId).populate([
+      {
+        path: 'owner',
+        select: ['_id', 'username'],
+      },
+      {
+        path: 'generalChatroom',
+      },
+      {
+        path: 'connectedUsers.user',
+        select: ['_id', 'username'],
+      },
+    ]));
+  // console.log('show givven: ', show);
 
   // TODO: use Shows not socket connections
   io.sockets.emit('showsUpdate', {
@@ -40,10 +54,26 @@ export const resetLastSocketShow = (socket) => {
   }
 };
 
+export const leaveAllRooms = async (socket) => {
+  const showId = socket.lastShow;
+
+  // TODO: Remove user from all Chatrooms within this Show (test with bulkWrite)
+  // Chatroom.bulkWrite([
+  //   updateMany({ participants: })
+  // ])
+
+  // TODO: Remove user from socket rooms
+  // console.log(io.sockets.adapter.rooms);
+  socket.leave(showId);
+  // console.log(io.sockets.adapter.rooms);
+}
+
 export const leaveShow = async (io, socket) => {
   const showId = socket.lastShow;
 
   if (!showId) return;
+
+  // const resp = await fetch(`${process.env.NEXTAUTH_URL}/api/show/${showId}/leave`);
 
   const socketId = socket?.id || socket?._id;
 
@@ -51,23 +81,32 @@ export const leaveShow = async (io, socket) => {
   const updatedShow = await Show.findByIdAndUpdate(
     showId,
     {
-      $unset: {
-        [`connectedUsers.${socketId}`]: ''
-      }
+      $pull: {
+        connectedUsers: {
+          socketId,
+        },
+      },
     },
-    { new: true }
+    {
+      multi: true,
+      new: true,
+    }
   ).populate([
+    {
+      path: 'owner',
+      select: ['_id', 'username'],
+    },
     {
       path: 'generalChatroom',
     },
     {
-      path: 'connectedUsers.$*.user',
+      path: 'connectedUsers.user',
       select: ['_id', 'username'],
     },
   ]);
 
-  socket.leave(showId);
+  leaveAllRooms(socket);
 
-  emitShowsUpdate({io, show: updatedShow});
+  emitShowsUpdate({ io, show: updatedShow });
   // resetLastSocketShow(socket);
 };

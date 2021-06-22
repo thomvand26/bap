@@ -1,7 +1,9 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { SHOW } from '../routes';
+import axios from 'axios';
+
+import { API_SHOW, SHOW } from '../routes';
 import { useDatabase } from './DatabaseContext';
 import { useSocket } from './SocketContext';
 
@@ -43,7 +45,7 @@ export const ShowProvider = ({ children }) => {
     });
 
     socket.on('chatUpdate', ({ type, message }) => {
-      // console.log(type, message);
+      console.log(type, message);
       setCurrentChatroom((prev) => ({
         ...prev,
         messages: [...prev.messages, message],
@@ -124,6 +126,27 @@ export const ShowProvider = ({ children }) => {
     router.push(`${SHOW}/${showId}`);
   };
 
+  const kickPlayer = async ({ userId, showId }) => {
+    if (!(showId || currentShow?._id) || !userId) return;
+    console.log('kicking player: ', userId);
+
+    try {
+      const response = await axios.post(
+        `${API_SHOW}/${showId || currentShow?._id}/kick`,
+        {
+          userId,
+        }
+      );
+      if (response?.status === 200) {
+        console.log(response?.data);
+        // return response?.data?.data;
+      }
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const exports = {
     playingShows,
     setCurrentShow,
@@ -134,6 +157,7 @@ export const ShowProvider = ({ children }) => {
     currentChatroom,
     sendChat,
     goToShow,
+    kickPlayer,
   };
 
   return (

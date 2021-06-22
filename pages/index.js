@@ -5,13 +5,14 @@ import { useRouter } from 'next/router';
 import { ShowList } from '@/components';
 import { Layouts } from '@/layouts';
 import { LOGIN } from '@/routes';
-import { useDatabase } from '@/context';
+import { useDatabase, useShow } from '@/context';
 
 // import styles from './index.module.scss';
 
 export default function HomePage() {
   const [session, loading] = useSession();
   const { getShows } = useDatabase();
+  const {setCurrentShow} = useShow();
   const [playingShows, setPlayingShows] = useState();
   const router = useRouter();
 
@@ -22,6 +23,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (loading) return;
+    setCurrentShow(null);
 
     const userId = session?.user?._id;
 

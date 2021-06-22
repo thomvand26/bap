@@ -43,14 +43,11 @@ const ShowSchema = new Schema(
       default: true,
     },
     connectedUsers: {
-      type: Map,
-      of: {
-        user: {
-          type: Schema.Types.ObjectId,
-          ref: 'User',
-        },
-        socketId: String,
-      }
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      socketId: String,
     }
   },
   {

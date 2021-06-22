@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ReactPlayer from 'react-player';
-import { LANDING } from '../../routes';
-import { Chat } from '../../components';
 
-import { Layouts } from '../../layouts';
+import { LANDING } from '@/routes';
+import { Chat } from '@/components';
+import { Layouts } from '@/layouts';
 import { useShow } from '@/context';
 
 import styles from './show.module.scss';
+import { useSession } from 'next-auth/client';
 
 export default function ShowPage(params) {
   const router = useRouter();
@@ -17,9 +18,11 @@ export default function ShowPage(params) {
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
+  const [session, loadingSession] = useSession();
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || loadingSession) return;
+
     joinShow(id, (response) => {
       if (response?.type === 'error') {
         // console.log('error');
@@ -30,11 +33,18 @@ export default function ShowPage(params) {
 
       setLoading(false);
     });
-  }, [id]);
+  }, [id, loadingSession]);
 
   useEffect(() => {
     setUrlValid(currentShow?.streamURL);
   }, [currentShow?.streamURL]);
+
+  useEffect(() => {
+    if (loadingSession || !currentShow?.connectedUsers) return;
+    if (!currentShow?.connectedUsers.filter(userObject => userObject.user._id === session?.user?._id).length) {
+      router.push(LANDING);
+    }
+  }, [currentShow?.connectedUsers, loadingSession]);
 
   return loading ? (
     <></>
