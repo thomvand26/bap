@@ -1,0 +1,81 @@
+.container {
+  --participants-button-primary-color: #{$color-secondary-lightest};
+  --participants-button-secondary-color: #{$color-secondary-lightest};
+  --participants-button-tertiary-color: transperent;
+
+  color: var(--participants-button-primary-color);
+  background-color: var(--participants-button-tertiary-color);
+  margin-left: $length-xs;
+  border-radius: $border-radius;
+
+  padding: $length-xs $length-s $length-s $length-s;
+
+  &--inDashboard {
+    --participants-button-primary-color: #{$color-secondary-dark};
+    --participants-button-secondary-color: #{$color-white};
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 100%;
+
+    &.container {
+      &--open {
+        --participants-button-tertiary-color: #{$color-secondary-lighter};
+      }
+    }
+  }
+}
+
+.button {
+  display: flex;
+  align-items: flex-start;
+  margin-left: auto;
+  background-color: var(--participants-button-secondary-color);
+}
+
+.icon {
+  margin-right: $length-xxs;
+}
+
+.userList {
+  margin-top: $length-m;
+  font-size: $font-size-s;
+  font-weight: bold;
+
+  & > * {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: $length-xxs $length-s;
+    height: $input-min-height;
+    background-color: var(--participants-button-secondary-color);
+    border-radius: $border-radius;
+
+    &:not(:last-child) {
+      margin-bottom: $length-xs;
+    }
+  }
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.actionButton {
+  padding: $length-xxs;
+  min-height: 0;
+  height: 100%;
+
+  &:not(:last-child) {
+    margin-right: $length-xxs;
+  }
+
+  &--ban {
+    padding: $length-xxs $length-xs;
+  }
+}
