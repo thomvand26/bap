@@ -30,15 +30,18 @@ main {
   }
 }
 
-h2 {
+h2,
+.h2 {
   font-size: $font-size-xl;
 }
 
-h3 {
+h3,
+.h3 {
   font-size: $font-size-m;
 }
 
-h4 {
+h4,
+.h4 {
   font-size: $font-size-s;
 }
 
@@ -83,9 +86,27 @@ button,
   min-height: $input-min-height;
   width: 180px;
   cursor: pointer;
+  color: inherit;
 
   &--danger {
     --button-color: #{$color-danger} !important;
+  }
+
+  &--darkest {
+    --button-color: #{$color-secondary-darkest} !important;
+  }
+
+  &--primary {
+    color: $color-secondary-darkest;
+  }
+
+  &--mini {
+    padding: $length-xs $length-xs $length-xxs * 1.5;
+    min-height: 0;
+    min-width: 0;
+    width: fit-content;
+    font-size: $font-size-s;
+    border-radius: $border-radius;
   }
 
   &--fit {
@@ -105,9 +126,9 @@ button,
     --button-color: #{$color-secondary-dark};
 
     min-width: 0;
-    width: fit-content;
+    width: initial;
     background-color: rgba($color: $color-secondary-darkest, $alpha: 0);
-    padding: .5rem;
+    padding: 0.5rem;
     fill: var(--button-color);
 
     & > svg {
@@ -122,8 +143,13 @@ button,
   &--ghost {
     background-color: transparent;
     border: $button-border-width solid $color-primary-light;
-    border-color: var(--button-color);;
-    color: var(--button-color);;
+    border-color: var(--button-color);
+    color: var(--button-color);
+  }
+
+  &:disabled {
+    opacity: $opacity-disabled;
+    pointer-events: none;
   }
 }
 
