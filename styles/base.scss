@@ -92,6 +92,14 @@ button,
     --button-color: #{$color-danger} !important;
   }
 
+  &--lighter {
+    --button-color: #{$color-secondary-lighter} !important;
+  }
+
+  &--dark {
+    --button-color: #{$color-secondary-dark} !important;
+  }
+
   &--darkest {
     --button-color: #{$color-secondary-darkest} !important;
   }

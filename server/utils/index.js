@@ -1,4 +1,5 @@
 export * from './authUtils';
+export * from './chatUtils';
 export * from './dbUtils';
 export * from './showUtils';
 

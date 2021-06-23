@@ -4,15 +4,16 @@ const server = require('express')();
 const http = require('http').Server(server);
 const io = require('socket.io')(http);
 
-const { connectDB } = require('./utils');
 const next = require('next');
 const { v4: uuidv4 } = require('uuid');
 const {
+  connectDB,
   getAllShows,
   resetLastSocketShow,
   leaveShow,
   emitShowsUpdate,
   getShowById,
+  joinChatroom,
 } = require('./utils');
 const { Show, ChatMessage } = require('../models');
 
@@ -75,7 +76,7 @@ async function start() {
                 connectedUsers: {
                   user: userId,
                 },
-              }
+              },
             },
             {
               multi: true,
@@ -91,7 +92,7 @@ async function start() {
                   user: userId,
                   socketId,
                 },
-              }
+              },
             },
             {
               multi: true,
@@ -111,20 +112,15 @@ async function start() {
             throw new { type: 'error', reason: 'show_not_found' }();
           }
 
-          // TODO: add user to General Chatroom
-
-          // Get all messages in the chatroom
-          const chat = await ChatMessage.find({
-            chatroom: chatroomId || foundShow?.generalChatroom?._id,
-          }).populate({
-            path: 'owner',
+          // Join general show updates & (general) chatroom
+          const chat = await joinChatroom({
+            chatroomIds: [
+              foundShow._id,
+              chatroomId || foundShow?.generalChatroom?._id,
+            ],
+            userId,
+            socket,
           });
-
-          // Join the general chatroom and the showUpdate room
-          socket.join([
-            `${chatroomId || foundShow?.generalChatroom?._id}`,
-            `${foundShow._id}`,
-          ]);
 
           // Save the showId in the socket
           socket.lastShow = showId;

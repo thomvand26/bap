@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useShow } from '@/context';
+import { ParticipantsButton } from '@/components';
 import { ChatMessage } from './ChatMessage';
 
 import styles from './Chatroom.module.scss';
@@ -38,7 +39,16 @@ export const Chatroom = () => {
   return (
     <div className={`${styles.container}`}>
       <div className={styles.chatHeader}>
-        <h2>General chat</h2>
+        <h2 className={`h3 ${styles.chatHeader__title}`}>General chat</h2>
+        <div className={styles.chatHeader__actions}>
+          <button
+            type="button"
+            className={`button--primary button--mini ${styles.chatHeader__makeRoom}`}
+          >
+            Make room
+          </button>
+          <ParticipantsButton />
+        </div>
       </div>
       <div
         className={styles.content}

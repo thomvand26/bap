@@ -1,4 +1,5 @@
 import { Chatroom, Show } from '../../models';
+import { leaveAllChatrooms } from './index';
 
 export const getAllShows = (io) => {
   let availableShows = [];
@@ -54,28 +55,16 @@ export const resetLastSocketShow = (socket) => {
   }
 };
 
-export const leaveAllRooms = async (socket) => {
-  const showId = socket.lastShow;
-
-  // TODO: Remove user from all Chatrooms within this Show (test with bulkWrite)
-  // Chatroom.bulkWrite([
-  //   updateMany({ participants: })
-  // ])
-
-  // TODO: Remove user from socket rooms
-  // console.log(io.sockets.adapter.rooms);
-  socket.leave(showId);
-  // console.log(io.sockets.adapter.rooms);
-}
-
 export const leaveShow = async (io, socket) => {
   const showId = socket.lastShow;
 
   if (!showId) return;
 
-  // const resp = await fetch(`${process.env.NEXTAUTH_URL}/api/show/${showId}/leave`);
-
   const socketId = socket?.id || socket?._id;
+
+  // Get the userId if the user is participating in the show
+  const foundShow = await Show.findOne({ 'connectedUsers.socketId': socketId }).exec();
+  const userId = foundShow?.connectedUsers?.find?.(user => user.socketId === socketId)?.user;
 
   // Remove from connectedUsers from the Show
   const updatedShow = await Show.findByIdAndUpdate(
@@ -105,7 +94,13 @@ export const leaveShow = async (io, socket) => {
     },
   ]);
 
-  leaveAllRooms(socket);
+  // Leave all chatrooms
+  await leaveAllChatrooms({ userId, socket });
+
+  // Leave showUpdates
+  socket.leave(showId);
+
+  console.info(`left show ${showId}`);
 
   emitShowsUpdate({ io, show: updatedShow });
   // resetLastSocketShow(socket);

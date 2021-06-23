@@ -6,15 +6,49 @@
 }
 
 .chatHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   color: $color-secondary-lightest;
-  padding: $length-l / 2;
-  padding-bottom: $length-l;
+  background-color: $color-secondary-dark;
+  padding: $length-l;
+
+  &__title {
+    margin-right: $length-xs;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__actions {
+    display: flex;
+
+    & > * {
+      white-space: nowrap;
+    }
+  }
+
+  &__makeRoom {
+    z-index: 11;
+  }
+
+  &__usersButton {
+    display: flex;
+    align-items: flex-start;
+    margin-left: $length-xs;
+  }
+
+  &__userIcon {
+    margin-right: $length-xxs;
+  }
 }
 
 .content {
   flex: 1;
   width: 100%;
   overflow: auto;
+  padding: $length-l/2;
 }
 
 .chatForm {

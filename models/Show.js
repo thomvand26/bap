@@ -42,13 +42,15 @@ const ShowSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    connectedUsers: {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+    connectedUsers: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        socketId: String,
       },
-      socketId: String,
-    }
+    ],
   },
   {
     timestamps: true,

@@ -12,7 +12,7 @@ const ChatroomSchema = new Schema(
       ref: 'Show',
       required: [true, 'Every chatroom must be linked to a show'],
     },
-    members: [
+    participants: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -28,6 +28,7 @@ const ChatroomSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    // TODO: whitelist
   },
   {
     timestamps: true,

@@ -1,28 +1,37 @@
 .container {
-  --participants-button-primary-color: #{$color-secondary-lightest};
-  --participants-button-secondary-color: #{$color-secondary-lightest};
-  --participants-button-tertiary-color: transperent;
+  --participants-button-primary-color: #{$color-secondary-lighter};
+  --participants-button-secondary-color: #{$color-secondary-darkest};
+  --participants-button-tertiary-color: trasparent;
 
+  top: 0;
+  right: 0;
   color: var(--participants-button-primary-color);
   background-color: var(--participants-button-tertiary-color);
   margin-left: $length-xs;
-  border-radius: $border-radius;
+  z-index: 10;
 
-  padding: $length-xs $length-s $length-s $length-s;
+  &--open {
+    --participants-button-tertiary-color: #{$color-secondary-dark};
+    z-index: 8;
+  }
 
   &--inDashboard {
     --participants-button-primary-color: #{$color-secondary-dark};
     --participants-button-secondary-color: #{$color-white};
 
     position: absolute;
-    top: 0;
-    right: 0;
-
-    width: 100%;
+    padding: $length-xs $length-s $length-m;
+    border-radius: $border-radius;
 
     &.container {
       &--open {
         --participants-button-tertiary-color: #{$color-secondary-lighter};
+        width: 100%;
+      }
+
+      & .userList {
+        padding: 0 $length-s $length-m;
+        max-height: 700%;
       }
     }
   }
@@ -40,23 +49,31 @@
 }
 
 .userList {
-  margin-top: $length-m;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 600%;
+  overflow: auto;
+  padding: $length-l;
   font-size: $font-size-s;
   font-weight: bold;
+  background-color: var(--participants-button-tertiary-color);
+}
 
-  & > * {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.userObject {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    padding: $length-xxs $length-s;
-    height: $input-min-height;
-    background-color: var(--participants-button-secondary-color);
-    border-radius: $border-radius;
+  height: $input-min-height;
+  padding: $length-xxs $length-s;
+  background-color: var(--participants-button-secondary-color);
+  border-radius: $border-radius;
 
-    &:not(:last-child) {
-      margin-bottom: $length-xs;
-    }
+  &:not(:last-child) {
+    margin-bottom: $length-xs;
   }
 }
 
@@ -64,16 +81,45 @@
   display: flex;
   align-items: center;
   height: 100%;
+
+  & * {
+    &:not(:first-child) {
+      margin-left: $length-xxs;
+    }
+  }
+}
+
+.inviteMenu {
+  position: absolute;
+  right: 0;
+  display: none;
+  align-items: center;
+  height: 100%;
+  background-color: var(--participants-button-tertiary-color);
+  padding-left: $length-xs;
+  margin-right: -$length-xs;
+
+  &--show {
+    display: flex;
+  }
+}
+
+.inviteButton {
+  display: inline;
+  max-width: 100%;
+  height: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $color-secondary-darkest;
+  background-color: $color-primary-light;
+  margin-right: $length-s;
 }
 
 .actionButton {
   padding: $length-xxs;
   min-height: 0;
   height: 100%;
-
-  &:not(:last-child) {
-    margin-right: $length-xxs;
-  }
 
   &--ban {
     padding: $length-xxs $length-xs;
