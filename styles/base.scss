@@ -63,7 +63,7 @@ button,
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 $focus-border-width $color-primary-dark;
+    box-shadow: 0 0 0 $focus-border-width $color-primary;
   }
 }
 
@@ -153,6 +153,13 @@ button,
     border: $button-border-width solid $color-primary-light;
     border-color: var(--button-color);
     color: var(--button-color);
+  }
+
+  &--hover-light {
+    &:hover,
+    &:focus {
+      background-color: rgba($color: $color-secondary-darker, $alpha: 0.2);
+    }
   }
 
   &:disabled {
