@@ -21,7 +21,7 @@
 
     position: absolute;
     padding: $length-xs $length-s $length-m;
-    border-radius: $border-radius;
+    border-radius: $border-radius $border-radius 0 0;
 
     &.container {
       &--open {

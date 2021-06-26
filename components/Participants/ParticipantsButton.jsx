@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import { FaBan, FaTimes, FaUser, FaUserPlus } from 'react-icons/fa';
 import { MdExitToApp } from 'react-icons/md';
 
-import { useShow } from '@/context/ShowContext';
+import { useShow } from '@/context';
 
 import styles from './ParticipantsButton.module.scss';
 
@@ -12,6 +12,20 @@ export const ParticipantsButton = ({ inDashboard }) => {
   const [showParticipants, setShowParticipants] = useState(false);
   const [session] = useSession();
   const [showInviteMenu, setShowInviteMenu] = useState([]);
+  const [uniqueParticipants, setUniqueParticipants] = useState([]);
+
+  useEffect(() => {
+    if (!currentShow?.connectedUsers) return;
+    let userObjects = new Map();
+    Object.values(currentShow.connectedUsers).forEach((userObject, i) => {
+      userObjects.set(userObject.user?._id, userObject.user);
+    });
+    setUniqueParticipants(
+      Array.from(userObjects.values()).sort((userObjectA, userObjectB) =>
+        userObjectA?.username?.localeCompare?.(userObjectB?.username)
+      )
+    );
+  }, [currentShow]);
 
   return (
     <div
@@ -25,94 +39,87 @@ export const ParticipantsButton = ({ inDashboard }) => {
         onClick={() => setShowParticipants((prev) => !prev)}
       >
         <FaUser className={styles.icon} />
-        {currentShow?.connectedUsers
-          ? Object.keys(currentShow?.connectedUsers)?.length
-          : 0}
+        {uniqueParticipants.length || 0}
       </button>
       {showParticipants && currentShow?.connectedUsers && (
-          <ul className={styles.userList}>
-            {Object.values(currentShow.connectedUsers).map((userObject, i) => (
-              <li
-                key={`userObject ${i}`}
-                className={styles.userObject}
+        <ul className={styles.userList}>
+          {uniqueParticipants.map((userObject, i) => (
+            <li key={`userObject ${i}`} className={styles.userObject}>
+              <div>
+                {userObject.username}{' '}
+                {userObject._id === session?.user?._id ? (
+                  <span>(you)</span>
+                ) : (
+                  ''
+                )}
+              </div>
+              <div
+                className={`${styles.actionButtons} ${styles.actionButtons}`}
               >
-                <div>
-                  {userObject?.user?.username}{' '}
-                  {userObject?.user?._id === session?.user?._id ? (
-                    <span>(you)</span>
-                  ) : (
-                    ''
-                  )}
-                </div>
-                <div
-                  className={`${styles.actionButtons} ${styles.actionButtons}`}
+                <button
+                  type="button"
+                  className={`button button--icon button--danger button--hover-light ${styles.actionButton} ${styles['actionButton--ban']}`}
+                  disabled={userObject._id === session?.user?._id}
                 >
+                  <FaBan size="1.2rem" />
+                </button>
+                {inDashboard ? (
                   <button
                     type="button"
-                    className={`button button--icon button--danger button--hover-light ${styles.actionButton} ${styles['actionButton--ban']}`}
-                    disabled={userObject?.user?._id === session?.user?._id}
+                    className={`button button--icon button--danger button--hover-light ${styles.actionButton}`}
+                    disabled={userObject._id === session?.user?._id}
+                    onClick={() => kickPlayer({ userId: userObject._id })}
                   >
-                    <FaBan size="1.2rem" />
+                    <MdExitToApp size="1.6rem" />
                   </button>
-                  {inDashboard ? (
+                ) : (
+                  // TODO: only show if the users owns a room
+                  <button
+                    className="button button--icon button--dark"
+                    disabled={userObject._id === session?.user?._id}
+                    onClick={() =>
+                      setShowInviteMenu((prev) => {
+                        return showInviteMenu.includes(userObject._id)
+                          ? prev
+                          : [...prev, userObject._id];
+                      })
+                    }
+                  >
+                    <FaUserPlus size="1.4rem" />
+                  </button>
+                )}
+                {!inDashboard && (
+                  <div
+                    className={`${styles.inviteMenu} ${
+                      showInviteMenu.includes(userObject._id)
+                        ? styles['inviteMenu--show']
+                        : ''
+                    }`}
+                  >
+                    {/* TODO: also used in ChatMessage.jsx */}
                     <button
                       type="button"
-                      className={`button button--icon button--danger button--hover-light ${styles.actionButton}`}
-                      disabled={userObject?.user?._id === session?.user?._id}
-                      onClick={() =>
-                        kickPlayer({ userId: userObject?.user?._id })
-                      }
-                    >
-                      <MdExitToApp size="1.6rem" />
-                    </button>
-                  ) : (
-                    // TODO: only show if the users owns a room
+                      className={`button--mini ${styles.inviteButton}`}
+                      // TODO: find own room
+                    >{`Invite to ${'My custom room'}`}</button>
+
                     <button
-                      className="button button--icon button--dark"
-                      disabled={userObject?.user?._id === session?.user?._id}
-                      onClick={() =>
-                        setShowInviteMenu((prev) => {
-                          return showInviteMenu.includes(userObject?.user?._id)
-                            ? prev
-                            : [...prev, userObject?.user?._id];
-                        })
-                      }
+                      type="button"
+                      className={`button--icon button--lighter`}
+                      onClick={() => {
+                        setShowInviteMenu((prev) =>
+                          prev.filter((userId) => userId !== userObject._id)
+                        );
+                      }}
                     >
-                      <FaUserPlus size="1.4rem" />
+                      <FaTimes />
                     </button>
-                  )}
-                  {!inDashboard && (
-                    <div
-                      className={`${styles.inviteMenu} ${
-                        showInviteMenu.includes(userObject?.user?._id)
-                          ? styles['inviteMenu--show']
-                          : ''
-                      }`}
-                    >
-                      <button
-                        type="button"
-                        className={`button--mini ${styles.inviteButton}`}
-                        // TODO: find own room
-                      >{`Invite to ${'My custom room'}`}</button>
-                      <button
-                        type="button"
-                        className={`button--icon button--lighter`}
-                        onClick={() => {
-                          setShowInviteMenu((prev) =>
-                            prev.filter(
-                              (userId) => userId !== userObject?.user?._id
-                            )
-                          );
-                        }}
-                      >
-                        <FaTimes />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+                  </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
