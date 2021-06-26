@@ -12,8 +12,9 @@ const {
   resetLastSocketShow,
   leaveShow,
   emitShowsUpdate,
-  getShowById,
   joinChatroom,
+  emitChatUpdate,
+  defaultShowPopulation,
 } = require('./utils');
 const { Show, ChatMessage } = require('../models');
 
@@ -30,15 +31,6 @@ connectDB();
 //   });
 // };
 
-const emitChatUpdate = (io, showId, chatroomId, message) => {
-  if (chatroomId) {
-    io.to(`${chatroomId}`).emit('chatUpdate', {
-      type: 'chat',
-      message,
-    });
-  }
-};
-
 async function start() {
   await app.prepare();
 
@@ -51,7 +43,7 @@ async function start() {
 
     socket.on('disconnect', () => {
       // console.log('disconnecting', socket.lastShow);
-      leaveShow(io, socket);
+      leaveShow({ io, socket });
       // emitClientsUpdate();
     });
 
@@ -64,33 +56,17 @@ async function start() {
           // Reset the showId in the socket
           if (socket.lastShow !== showId) resetLastSocketShow(socket);
 
-          const socketId = socket?.id || socket?._id;
 
-          if (!socketId) return;
+          if (!socket?.id) return;
 
           // Update connectedUsers in Show and return it
-          await Show.findByIdAndUpdate(
-            showId,
-            {
-              $pull: {
-                connectedUsers: {
-                  user: userId,
-                },
-              },
-            },
-            {
-              multi: true,
-              new: true,
-            }
-          );
-
           const foundShow = await Show.findByIdAndUpdate(
             showId,
             {
-              $push: {
+              $addToSet: {
                 connectedUsers: {
                   user: userId,
-                  socketId,
+                  socketId: socket.id,
                 },
               },
             },
@@ -98,20 +74,12 @@ async function start() {
               multi: true,
               new: true,
             }
-          ).populate([
-            {
-              path: 'generalChatroom',
-            },
-            {
-              path: 'connectedUsers.user',
-              select: ['_id', 'username'],
-            },
-          ]);
+          ).populate(defaultShowPopulation);
 
           if (!foundShow) {
             throw new { type: 'error', reason: 'show_not_found' }();
           }
-
+          
           // Join general show updates & (general) chatroom
           const chat = await joinChatroom({
             chatroomIds: [
@@ -130,6 +98,7 @@ async function start() {
 
           emitShowsUpdate({ io, show: foundShow });
         } catch (error) {
+          console.log(error);
           if (!(callback instanceof Function)) return;
           if (!error.type || !error.reason) {
             callback({ type: 'error', reason: 'show_not_found' });
@@ -141,11 +110,12 @@ async function start() {
     );
 
     socket.on('leaveRequest', (callback) => {
-      leaveShow(io, socket);
+      leaveShow({ io, socket });
     });
 
     socket.on('sendChat', async (showId, chatroomId, ownerId, message) => {
       // console.log(showId, chatroomId, message);
+      // console.log(io?.sockets?.adapter?.rooms);
 
       let newMessage = await ChatMessage.create({
         show: showId,
@@ -160,7 +130,7 @@ async function start() {
         })
         .execPopulate();
 
-      emitChatUpdate(io, showId, chatroomId, newMessage);
+      emitChatUpdate({ io, chatroomId, message: newMessage });
     });
   });
 

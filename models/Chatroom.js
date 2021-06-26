@@ -14,8 +14,11 @@ const ChatroomSchema = new Schema(
     },
     participants: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        socketId: String,
       },
     ],
     name: {

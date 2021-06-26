@@ -1,12 +1,20 @@
 import React from 'react';
 
+import { Chatroom, Chatbox, ParticipantsButton } from '@/components';
 import { DashboardPanel } from './DashboardPanel';
-import { ParticipantsButton } from '@/components/Participants/ParticipantsButton';
+
+import styles from './chatPanel.module.scss';
 
 export const ChatPanel = (props) => {
   return (
-    <DashboardPanel {...props}>
+    <DashboardPanel contentClassName={styles.panelContainer} {...props}>
       <ParticipantsButton inDashboard />
+      <div className={styles.contentContainer}>
+        <Chatroom inDashboard />
+        <div className={styles.chatboxContainer}>
+          <Chatbox inDashboard />
+        </div>
+      </div>
     </DashboardPanel>
   );
 };

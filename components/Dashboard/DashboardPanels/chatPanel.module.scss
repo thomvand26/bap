@@ -1,0 +1,16 @@
+.panelContainer {
+  padding: $length-l/2;
+  padding-top: 0;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: $color-secondary-darkest;
+}
+
+.chatboxContainer {
+  padding: $length-l / 2;
+  padding-top: 0;
+}

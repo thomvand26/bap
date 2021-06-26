@@ -1,41 +1,132 @@
 import { ChatMessage, Chatroom } from '../../models';
+import { resetLastSocketShow } from './showUtils';
 
-// Leave all Chatrooms and socket rooms linked to the user
-export const leaveAllChatrooms = async ({userId, socket}) => {
-  // Find all Chatrooms linked to the user
-  const chatrooms = await Chatroom.find({participants: userId}).exec();
+export const leaveChatroomsByUserInShow = async ({ showId, userId, io }) => {
+  if (!showId || !userId) return;
 
-  // Remove user from all linked chatrooms
+  // Get Chatrooms linked to Show
+  const chatrooms = await Chatroom.find({ show: showId }).exec();
+
+  // Remove all connections of the User in all those Chatrooms
   await Chatroom.bulkWrite([
     {
       updateMany: {
         filter: {
-          participants: userId,
+          show: showId,
         },
         update: {
-          $pull: {
-            participants: userId,
-          },
+          $pull: { participants: { user: userId } },
         },
       },
     },
   ]);
 
-  // Leave all socket rooms
-  chatrooms.forEach(chatroom => socket.leave(`${chatroom._id}`));
+  // Kick the user from all socket rooms connected to those chatrooms
+  // and return the chatrooms with updated participants list
+  const updatedChatrooms = chatrooms?.map((chatroom) => {
+    let newParticipantsList = [];
+    let userConnectionsList = [];
 
-  console.info('left all previous chatrooms');
+    chatroom?.participants.forEach((userObject) => {
+      if (`${userObject.user}` === `${userId}`) {
+        userConnectionsList.push(userObject);
+      } else {
+        newParticipantsList.push(userObject);
+      }
+    });
 
-  return chatrooms;
-}
+    if (io) {
+      const userSocketIds = userConnectionsList.map(
+        (userObject) => userObject.socketId
+      );
+
+      userSocketIds.map((socketId) => {
+        if (!socketId) return;
+        const socket = io.sockets.sockets.get(socketId);
+        if (socket) {
+          socket.leave(`${chatroom?._id}`);
+          resetLastSocketShow(socket);
+        }
+      });
+    }
+
+    return {
+      ...chatroom,
+      participants: newParticipantsList,
+    };
+  });
+
+  return updatedChatrooms;
+};
+
+export const leaveChatroomsBySocketId = async ({ socketId, io }) => {
+  if (!socketId) return;
+  console.log('leaveChatroomsBySocketId: ', socketId);
+
+  // Get Chatrooms linked to socketId
+  const chatrooms = await Chatroom.find({
+    'participants.socketId': socketId,
+  }).exec();
+
+  // Remove all connections of the User in all those Chatrooms
+  await Chatroom.bulkWrite([
+    {
+      updateMany: {
+        filter: {
+          'participants.socketId': socketId,
+        },
+        update: {
+          $pull: { participants: { socketId } },
+        },
+      },
+    },
+  ]);
+
+  // Kick the user from all socket rooms connected to those chatrooms
+  // and return the chatrooms with updated participants list
+  const updatedChatrooms = chatrooms?.map((chatroom) => {
+    let newParticipantsList = [];
+    let userConnectionsList = [];
+
+    chatroom?.participants.forEach((userObject) => {
+      if (`${userObject.socketId}` === `${socketId}`) {
+        userConnectionsList.push(userObject);
+      } else {
+        newParticipantsList.push(userObject);
+      }
+    });
+
+    if (io) {
+      const userSocketIds = userConnectionsList.map(
+        (userObject) => userObject.socketId
+      );
+
+      userSocketIds.map((userSocketId) => {
+        if (!userSocketId) return;
+        const socket = io.sockets.sockets.get(userSocketId);
+        if (socket) {
+          socket.leave(`${chatroom?._id}`);
+          resetLastSocketShow(socket);
+        }
+      });
+    }
+
+    return {
+      ...chatroom,
+      participants: newParticipantsList,
+    };
+  });
+
+  return updatedChatrooms;
+};
 
 // Leave all previous Chatrooms and socket rooms linked to the user
 // and join new ones
 export const joinChatroom = async ({ chatroomIds, userId, socket }) => {
-  if (!chatroomIds?.length || !userId) return;
+  if (!chatroomIds?.length || !userId || !socket) return;
 
-  // Leave previous chatrooms
-  await leaveAllChatrooms({userId, socket});
+  // Leave previous chatrooms linked to this socket
+  await leaveChatroomsBySocketId({ socket: socket.id });
 
   // Add user to Chatroom
   await Chatroom.bulkWrite([
@@ -45,20 +136,11 @@ export const joinChatroom = async ({ chatroomIds, userId, socket }) => {
           _id: { $in: chatroomIds },
         },
         update: {
-          $pull: {
-            participants: userId,
-          },
-        },
-      },
-    },
-    {
-      updateMany: {
-        filter: {
-          _id: { $in: chatroomIds },
-        },
-        update: {
-          $push: {
-            participants: userId,
+          $addToSet: {
+            participants: {
+              user: userId,
+              socketId: socket.id,
+            },
           },
         },
       },
@@ -78,4 +160,18 @@ export const joinChatroom = async ({ chatroomIds, userId, socket }) => {
   console.info(`joined following chatrooms: ${chatroomIds}`);
 
   return chat;
+};
+
+export const emitChatUpdate = ({
+  io,
+  chatroomId,
+  message,
+  deleteChatMessage,
+}) => {
+  if (chatroomId) {
+    io.to(`${chatroomId}`).emit('chatUpdate', {
+      type: deleteChatMessage ? 'chatDelete' : 'chat',
+      message,
+    });
+  }
 };

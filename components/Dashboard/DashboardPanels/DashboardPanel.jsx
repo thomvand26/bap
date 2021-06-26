@@ -9,6 +9,7 @@ export const DashboardPanel = ({
   colspan = 1,
   rowspan = 1,
   children,
+  contentClassName,
 }) => {
   return (
     <div
@@ -24,7 +25,7 @@ export const DashboardPanel = ({
           {name}
         </div>
       )}
-      <div className={styles.panel__content}>{children}</div>
+      <div className={`${styles.panel__content} ${contentClassName || ''}`}>{children}</div>
     </div>
   );
 };

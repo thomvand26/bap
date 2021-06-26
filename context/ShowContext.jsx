@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-import { API_SHOW, SHOW } from '../routes';
+import { API_CHAT, API_SHOW, SHOW } from '../routes';
 import { useDatabase } from './DatabaseContext';
 import { useSocket } from './SocketContext';
 
@@ -14,6 +14,7 @@ export const ShowProvider = ({ children }) => {
   const [playingShows, setPlayingShows] = useState([]);
   const [currentShow, setCurrentShow] = useState();
   const [currentChatroom, setCurrentChatroom] = useState();
+  const [openChatMessage, setOpenChatMessage] = useState();
   const { socket } = useSocket();
   const { dbSaveShow, dbDeleteShow } = useDatabase();
   const [session] = useSession();
@@ -48,7 +49,12 @@ export const ShowProvider = ({ children }) => {
       console.log(type, message);
       setCurrentChatroom((prev) => ({
         ...prev,
-        messages: [...prev.messages, message],
+        messages:
+          type === 'chatDelete'
+            ? prev.messages.filter(
+                (prevMessage) => prevMessage?._id !== message?._id
+              )
+            : [...prev.messages, message],
       }));
     });
 
@@ -122,6 +128,16 @@ export const ShowProvider = ({ children }) => {
     );
   };
 
+  const deleteChat = async (chatMessageId) => {
+    if (!socket) return;
+
+    const response = await axios.delete(`${API_CHAT}/${chatMessageId}`);
+
+    // console.log(response);
+
+    return response;
+  };
+
   const goToShow = (showId) => {
     router.push(`${SHOW}/${showId}`);
   };
@@ -135,6 +151,7 @@ export const ShowProvider = ({ children }) => {
         `${API_SHOW}/${showId || currentShow?._id}/kick`,
         {
           userId,
+          socketId: socket?.id,
         }
       );
       if (response?.status === 200) {
@@ -156,6 +173,9 @@ export const ShowProvider = ({ children }) => {
     currentShow,
     currentChatroom,
     sendChat,
+    deleteChat,
+    openChatMessage,
+    setOpenChatMessage,
     goToShow,
     kickPlayer,
   };

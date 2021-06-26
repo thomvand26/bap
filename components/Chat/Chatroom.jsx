@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/client';
 
 import { useShow } from '@/context';
 import { ParticipantsButton } from '@/components';
@@ -17,10 +18,11 @@ export const chatroomModes = {
   full: '3',
 };
 
-export const Chatroom = () => {
-  const { currentShow, currentChatroom, sendChat } = useShow();
+export const Chatroom = ({ inDashboard }) => {
+  const { currentChatroom } = useShow();
   const chatContentRef = useRef();
   const wasScrolledToBottom = useRef(true);
+  const [session] = useSession();
 
   useEffect(() => {
     if (!chatContentRef?.current) return;
@@ -38,27 +40,39 @@ export const Chatroom = () => {
 
   return (
     <div className={`${styles.container}`}>
-      <div className={styles.chatHeader}>
-        <h2 className={`h3 ${styles.chatHeader__title}`}>General chat</h2>
-        <div className={styles.chatHeader__actions}>
-          <button
-            type="button"
-            className={`button--primary button--mini ${styles.chatHeader__makeRoom}`}
-          >
-            Make room
-          </button>
-          <ParticipantsButton />
+      {!inDashboard && (
+        <div className={styles.chatHeader}>
+          <h2 className={`h3 ${styles.chatHeader__title}`}>General chat</h2>
+          <div className={styles.chatHeader__actions}>
+            <button
+              type="button"
+              className={`button--primary button--mini ${styles.chatHeader__makeRoom}`}
+            >
+              Make room
+            </button>
+            <ParticipantsButton />
+          </div>
         </div>
-      </div>
+      )}
       <div
-        className={styles.content}
+        className={`${styles.content} ${
+          inDashboard ? styles['content--inDashboard'] : ''
+        }`}
         ref={chatContentRef}
         onScroll={() => {
           checkIsScrolledToBottom(chatContentRef.current);
         }}
       >
         {currentChatroom?.messages?.map?.((messageObject, i) => {
-          return <ChatMessage key={i} messageObject={messageObject} />;
+          return (
+            <ChatMessage
+              key={`message-${i}-${messageObject?._id}`}
+              messageObject={messageObject}
+              showTimestamp={inDashboard}
+              inDashboard={inDashboard}
+              userId={session?.user?._id}
+            />
+          );
         })}
       </div>
     </div>

@@ -1,6 +1,7 @@
 .container {
   display: grid;
   height: 100%;
+  min-height: 0;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(4, minmax(0, 1fr));
   gap: $length-xl;
