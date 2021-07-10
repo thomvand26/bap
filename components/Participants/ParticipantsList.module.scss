@@ -1,0 +1,78 @@
+.userListContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 600%;
+  overflow: auto;
+  padding: $length-l;
+  padding-top: 0;
+  background-color: var(--participants-button-tertiary-color);
+
+  &--inChatroom {
+    --participants-button-secondary-color: #{$color-secondary-darkest};
+    position: initial;
+    padding: 0;
+    max-height: 20vh;
+  }
+}
+
+.closeButton {
+  margin-left: auto;
+  min-height: 0;
+  margin-bottom: $length-xs;
+  margin-right: -$length-xs;
+}
+
+.userList {
+  font-size: $font-size-s;
+  font-weight: bold;
+}
+
+.userObject {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: $input-min-height;
+  padding: $length-xxs $length-s;
+  background-color: var(--participants-button-secondary-color);
+  border-radius: $border-radius;
+
+  &:not(:last-child) {
+    margin-bottom: $length-xs;
+  }
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.actionButton {
+  padding: $length-xxs;
+  min-height: 0;
+  height: 100%;
+
+  &--ban {
+    padding: $length-xxs $length-xs;
+  }
+}
+
+.inviteMenu {
+  position: absolute;
+  right: 0;
+  display: none;
+  align-items: center;
+  height: 100%;
+  background-color: var(--participants-button-tertiary-color);
+  padding-left: $length-xs;
+  margin-right: -$length-xs;
+  color: $color-secondary-darkest;
+
+  &--show {
+    display: flex;
+  }
+}

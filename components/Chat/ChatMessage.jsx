@@ -1,26 +1,31 @@
 import React from 'react';
+import { useSession } from 'next-auth/client';
+import moment from 'moment';
 import { FaBan, FaTimes, FaTrash } from 'react-icons/fa';
 import { MdExitToApp } from 'react-icons/md';
-import moment from 'moment';
 
 import { useShow } from '@/context';
+import { ChatroomInviteButton } from '@/components';
 
 import styles from './ChatMessage.module.scss';
 
 export const ChatMessage = ({
   messageObject,
   showTimestamp,
-  userId,
   inDashboard,
   ...props
 }) => {
   const { _id: chatMessageId, createdAt, owner, message } = messageObject;
-  const { kickPlayer, deleteChat, openChatMessage, setOpenChatMessage } = useShow();
+  const { kickUser, deleteChat, openChatMessage, setOpenChatMessage } =
+    useShow();
+  const [session] = useSession();
 
   return (
     <div
       className={`${styles.chatMessage} ${
-        openChatMessage?._id === chatMessageId ? styles['chatMessage--open'] : ''
+        openChatMessage?._id === chatMessageId
+          ? styles['chatMessage--open']
+          : ''
       }`}
       {...props}
     >
@@ -47,7 +52,7 @@ export const ChatMessage = ({
             className={styles.chatMessage__user}
             onClick={() => setOpenChatMessage(null)}
           >
-            {owner?.username}
+            {owner?.username}{` ${owner?._id === session?.user?._id ? '(you)' : ''}`}
           </strong>
           <button
             type="button"
@@ -62,15 +67,15 @@ export const ChatMessage = ({
                 <button
                   type="button"
                   className={`button button--icon button--danger button--hover-light`}
-                  disabled={owner?._id === userId}
+                  disabled={owner?._id === session?.user?._id}
                 >
                   <FaBan size="1.2rem" />
                 </button>
                 <button
                   type="button"
                   className={`button button--icon button--danger button--hover-light`}
-                  disabled={owner?._id === userId}
-                  onClick={() => kickPlayer({ userId: owner?._id })}
+                  disabled={owner?._id === session?.user?._id}
+                  onClick={() => kickUser({ userId: owner?._id })}
                 >
                   <MdExitToApp size="1.6rem" />
                 </button>
@@ -84,16 +89,12 @@ export const ChatMessage = ({
               </>
             ) : (
               <>
-                <button
-                  type="button"
-                  className={`button--mini ${styles.chatMessage__inviteButton}`}
-                  disabled={owner?._id === userId}
-                  // TODO: find own room
-                >{`Invite to ${'My custom room'}`}</button>
+                <ChatroomInviteButton user={owner} />
+
                 <button
                   type="button"
                   className={`button button--icon button--danger button--hover-light`}
-                  disabled={owner?._id === userId}
+                  disabled={owner?._id === session?.user?._id}
                 >
                   <FaBan size="1.2rem" />
                 </button>

@@ -17,3 +17,6 @@ export const PERFORM_SHOW = '/show/perform';
 export const API_SHOW = '/api/show';
 
 export const API_CHAT = '/api/chat';
+
+export const API_CHATROOM = '/api/chatroom';
+

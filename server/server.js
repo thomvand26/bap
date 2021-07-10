@@ -3,9 +3,9 @@
 const server = require('express')();
 const http = require('http').Server(server);
 const io = require('socket.io')(http);
-
+const { Types } = require('mongoose');
 const next = require('next');
-const { v4: uuidv4 } = require('uuid');
+
 const {
   connectDB,
   getAllShows,
@@ -15,8 +15,9 @@ const {
   joinChatroom,
   emitChatUpdate,
   defaultShowPopulation,
+  defaultChatroomPopulation,
 } = require('./utils');
-const { Show, ChatMessage } = require('../models');
+const { Show, ChatMessage, Chatroom } = require('../models');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -34,17 +35,16 @@ connectDB();
 async function start() {
   await app.prepare();
 
+  // Remove all socket references in chatrooms & shows
+  // Show.
   io.on('connection', (socket) => {
     socket.emit('selfUpdate', { socketId: socket.id });
-    // emitClientsUpdate();
     socket.emit('showsUpdate', {
       shows: getAllShows(io),
     });
 
     socket.on('disconnect', () => {
-      // console.log('disconnecting', socket.lastShow);
       leaveShow({ io, socket });
-      // emitClientsUpdate();
     });
 
     socket.on(
@@ -54,8 +54,10 @@ async function start() {
           if (!userId) throw new { type: 'error', reason: 'user_not_found' }();
 
           // Reset the showId in the socket
-          if (socket.lastShow !== showId) resetLastSocketShow(socket);
-
+          if (socket.lastShow !== showId) {
+            resetLastSocketShow(socket);
+            socket.leave(socket.lastShow);
+          }
 
           if (!socket?.id) return;
 
@@ -79,24 +81,55 @@ async function start() {
           if (!foundShow) {
             throw new { type: 'error', reason: 'show_not_found' }();
           }
-          
-          // Join general show updates & (general) chatroom
-          const chat = await joinChatroom({
-            chatroomIds: [
-              foundShow._id,
-              chatroomId || foundShow?.generalChatroom?._id,
-            ],
+
+          // Join (general) chatroom
+          const joinResponse = await joinChatroom({
+            chatroomId: chatroomId || foundShow?.generalChatroom?._id,
             userId,
             socket,
+            io,
           });
+
+          // Join general show updates
+          socket.join(`${foundShow._id}`);
+
+          // Get all available chatrooms for this user
+          // (= general & joined chatrooms)
+          const availableChatrooms = await Chatroom.find({
+            $or: [
+              { members: Types.ObjectId(userId) },
+              { show: showId, isGeneral: true },
+            ],
+          }).populate(defaultChatroomPopulation);
 
           // Save the showId in the socket
           socket.lastShow = showId;
 
           if (callback instanceof Function)
-            callback({ type: 'success', data: { show: foundShow, chat } });
+            callback({
+              type: 'success',
+              data: {
+                show: foundShow,
+                messages: joinResponse?.messages,
+                availableChatrooms,
+              },
+            });
 
           emitShowsUpdate({ io, show: foundShow });
+
+          // Emit invites
+          const invitedToChatrooms = await Chatroom.find({
+            invitedUsers: userId,
+          }).populate({ path: 'owner' });
+
+          invitedToChatrooms?.forEach?.((chatroom) => {
+            socket.emit('chatroomInvite', {
+              chatroomId: chatroom?._id,
+              chatroomName: chatroom?.name,
+              owner: chatroom?.owner?.username,
+              type: 'invite',
+            });
+          });
         } catch (error) {
           console.log(error);
           if (!(callback instanceof Function)) return;
@@ -109,14 +142,11 @@ async function start() {
       }
     );
 
-    socket.on('leaveRequest', (callback) => {
+    socket.on('leaveRequest', () => {
       leaveShow({ io, socket });
     });
 
     socket.on('sendChat', async (showId, chatroomId, ownerId, message) => {
-      // console.log(showId, chatroomId, message);
-      // console.log(io?.sockets?.adapter?.rooms);
-
       let newMessage = await ChatMessage.create({
         show: showId,
         owner: ownerId,

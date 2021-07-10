@@ -25,10 +25,10 @@ export default function ShowPage(params) {
 
     joinShow(id, (response) => {
       if (response?.type === 'error') {
-        // console.log('error');
+        console.log('error');
         setError(response);
       } else {
-        // console.log('success');
+        console.log('success');
       }
 
       setLoading(false);
@@ -39,12 +39,18 @@ export default function ShowPage(params) {
     setUrlValid(currentShow?.streamURL);
   }, [currentShow?.streamURL]);
 
-  useEffect(() => {
-    if (loadingSession || !currentShow?.connectedUsers) return;
-    if (!currentShow?.connectedUsers.filter(userObject => userObject.user._id === session?.user?._id).length) {
-      router.push(LANDING);
-    }
-  }, [currentShow?.connectedUsers, loadingSession]);
+  // useEffect(() => {
+  //   console.log(currentShow?.connectedUsers);
+  //   if (loadingSession || !currentShow?.connectedUsers) return;
+  //   if (
+  //     !currentShow?.connectedUsers.find(
+  //       (userObject) => userObject.user._id === session?.user?._id
+  //     )
+  //   ) {
+  //     console.log('not in connectedUsers');
+  //     router.push(LANDING);
+  //   }
+  // }, [currentShow?.connectedUsers, loadingSession]);
 
   return loading ? (
     <></>

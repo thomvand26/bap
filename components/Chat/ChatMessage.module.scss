@@ -42,6 +42,7 @@
     padding: 0.5em $length-l / 2;
     background-color: $color-secondary-dark;
     z-index: 6;
+    border-radius: $border-radius;
 
     &--inDashboard {
       background-color: $color-secondary-lighter;

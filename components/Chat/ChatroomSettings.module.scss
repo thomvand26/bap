@@ -1,0 +1,62 @@
+.container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: $color-secondary-dark;
+  z-index: 8;
+  padding: $length-l;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $length-l;
+}
+
+.closeButton {
+  min-height: 0;
+  margin-right: -$length-xs;
+}
+
+.form {
+  display: flex;
+}
+
+.inputContainer {
+  width: 100%;
+  min-width: 0;
+
+  & > * {
+    &:first-child {
+      padding-top: $length-l;
+    }
+  }
+}
+
+.saveButton {
+  height: $input-min-height;
+  min-height: 0;
+  border-radius: $border-radius;
+  padding: 0 $length-xl;
+  width: fit-content;
+  color: $color-secondary-darkest;
+  margin-top: $length-l;
+}
+
+.participantsList {
+  &--paddingTop {
+    margin-top: $length-xxl;
+  }
+}
+
+.participantsLabel {
+  margin-bottom: $length-m;
+  color: $color-secondary-darker;
+}
+
+.deleteButton {
+  margin-top: $length-xxl;
+  color: $color-danger;
+}

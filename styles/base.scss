@@ -88,8 +88,25 @@ button,
   cursor: pointer;
   color: inherit;
 
+  &--unstyled {
+    background-color: inherit;
+    border: inherit;
+    border-radius: inherit;
+    padding: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    min-height: 0;
+    min-width: 0;
+    width: fit-content;
+    cursor: inherit;
+  }
+
   &--danger {
     --button-color: #{$color-danger} !important;
+  }
+
+  &--lightest {
+    --button-color: #{$color-secondary-lightest} !important;
   }
 
   &--lighter {
@@ -111,6 +128,7 @@ button,
   &--mini {
     padding: $length-xs $length-xs $length-xxs * 1.5;
     min-height: 0;
+    height: fit-content;
     min-width: 0;
     width: fit-content;
     font-size: $font-size-s;
@@ -188,6 +206,13 @@ button,
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.focus-inset {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 $focus-border-width $color-primary inset;
+  }
 }
 
 #__next {

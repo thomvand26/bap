@@ -81,12 +81,6 @@
   display: flex;
   align-items: center;
   height: 100%;
-
-  & * {
-    &:not(:first-child) {
-      margin-left: $length-xxs;
-    }
-  }
 }
 
 .inviteMenu {
@@ -113,7 +107,7 @@
   text-overflow: ellipsis;
   color: $color-secondary-darkest;
   background-color: $color-primary-light;
-  margin-right: $length-s;
+  margin-right: $length-xs;
 }
 
 .actionButton {

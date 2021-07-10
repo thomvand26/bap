@@ -1,0 +1,39 @@
+.container {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 0;
+  left: $length-l/2;
+  right: $length-l/2;
+  padding: $length-l;
+  border-radius: $border-radius;
+  z-index: 2;
+  background-color: $color-secondary-dark;
+}
+
+.closeButton {
+  position: absolute;
+  top: $length-xxs;
+  right: $length-xxs;
+  min-height: 0;
+}
+
+.message {
+  font-size: $font-size-s;
+  font-weight: bold;
+  text-align: center;
+  padding: 0 $length-m;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  padding-top: $length-l;
+
+  & > * {
+    &:not(:last-child) {
+      margin-right: $length-xs;
+    }
+  }
+}

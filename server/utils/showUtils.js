@@ -1,5 +1,5 @@
 import { Show } from '../../models';
-import { leaveChatroomsBySocketId, leaveChatroomsByUserInShow } from './chatUtils';
+import { leaveChatroomsBySocketId, leaveChatroomsByUserInShow } from './';
 
 export const defaultShowPopulation = [
   {
@@ -8,6 +8,10 @@ export const defaultShowPopulation = [
   },
   {
     path: 'generalChatroom',
+    populate: {
+      path: 'participants.user',
+      select: ['_id', 'username'],
+    },
   },
   {
     path: 'connectedUsers.user',
@@ -36,9 +40,7 @@ export const getShowById = (io, showId) => {
 
 export const emitShowsUpdate = async ({ io, show, showId }) => {
   const updatedShow =
-    show ||
-    (await Show.findById(showId).populate(defaultShowPopulation));
-  // console.log('show givven: ', show);
+    show || (await Show.findById(showId).populate(defaultShowPopulation));
 
   // TODO: use Shows not socket connections
   io.sockets.emit('showsUpdate', {
@@ -46,14 +48,12 @@ export const emitShowsUpdate = async ({ io, show, showId }) => {
   });
 
   if (updatedShow) {
-    console.log(`emitting updatedShow to showUpdate: ${updatedShow}`);
     io.to(`${updatedShow._id}`).emit('showUpdate', updatedShow);
   }
 };
 
 export const resetLastSocketShow = (socket) => {
   if (socket.lastShow) {
-    socket.leave(socket.lastShow);
     socket.lastShow = null;
   }
 };
@@ -82,7 +82,7 @@ export const leaveShow = async ({
   userIdToDelete,
   ownerId,
 }) => {
-  const showId = fromShowId || socket.lastShow;
+  const showId = fromShowId || socket?.lastShow;
   console.log(`leave show based on: ${userIdToDelete ? 'userId' : 'socket'}`);
 
   if (!showId) return;
@@ -96,7 +96,9 @@ export const leaveShow = async ({
     // Get the userId if the user is participating in the show
     const foundShow = await Show.findOne({
       'connectedUsers.socketId': socketId,
-    }).exec();
+    })
+      .lean()
+      .exec();
     userId = foundShow?.connectedUsers?.find?.(
       (user) => user.socketId === socketId
     )?.user;
@@ -104,16 +106,16 @@ export const leaveShow = async ({
 
   if (!userId) return;
 
-  // Get all sockets to leave room
-  let userSocketIds = [socket?.id];
+  // // Get all sockets to leave room
+  // let userSocketIds = [socket?.id];
 
-  if (userIdToDelete) {
-    const foundUserSocketIds = await getAllSocketsByUserInShow({
-      userId,
-      showId,
-    });
-    userSocketIds = [...userSocketIds, ...foundUserSocketIds];
-  }
+  // if (userIdToDelete) {
+  //   const foundUserSocketIds = await getAllSocketsByUserInShow({
+  //     userId,
+  //     showId,
+  //   });
+  //   userSocketIds = [...userSocketIds, ...foundUserSocketIds];
+  // }
 
   const showFilter = ownerId
     ? {
@@ -142,6 +144,19 @@ export const leaveShow = async ({
     }
   ).populate(defaultShowPopulation);
 
+  // console.log(userSocketIds);
+  // userSocketIds.forEach((userSocketId) => {
+  //   if (!userSocketId) return;
+
+  //   const userSocket = io.sockets.sockets.get(userSocketId);
+
+  //   if (userSocket) {
+  //     resetLastSocketShow(userSocket);
+  //     console.log(`leaving: ${showId}`);
+  //     userSocket.leave(`${showId}`);
+  //   }
+  // });<
+
   if (!updatedShow) {
     return { message: 'no show found', filters: showFilters };
   }
@@ -149,11 +164,18 @@ export const leaveShow = async ({
   emitShowsUpdate({ io, show: updatedShow });
 
   if (userIdToDelete) {
-    // console.log(`leaveChatroomsByUserInShow`);
-    await leaveChatroomsByUserInShow({ showId, userId, io });
+    await leaveChatroomsByUserInShow({
+      showId,
+      userId,
+      io,
+      removeFromShowUpdates: true,
+    });
   } else if (socketId) {
-    // console.log(`leaveChatroomsBySocketId`);
-    await leaveChatroomsBySocketId({ socketId, io });
+    await leaveChatroomsBySocketId({
+      socketId,
+      io,
+      removeFromShowUpdates: true,
+    });
   }
 
   console.info(`left show ${showId}`);

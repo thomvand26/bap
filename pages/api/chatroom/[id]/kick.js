@@ -1,9 +1,9 @@
 import { getSession } from 'next-auth/client';
 
-import { withDB } from '@/middleware';
-import { leaveShow } from '@/server';
+import { kickFromChatroom } from '@/server';
+import { withDB } from 'middleware';
 
-const kickUser = async (req, res) => {
+const kick = async (req, res) => {
   const {
     method,
     query: { id },
@@ -15,19 +15,21 @@ const kickUser = async (req, res) => {
 
     switch (method) {
       case 'POST':
+        const { userId } = req.body;
         const io = req.io;
+        const execUserId = session?.user?._id;
 
-        if (!session?.user?._id) throw new Error('Not logged in!');
-        if (!res?.socket) throw new Error('Not connected!');
-        if (!id) throw new Error('Invalid show id!');
+        if (!session) throw new Error('Not logged in!');
+        if (!userId) throw new Error('No userId to kick!');
         if (!io) throw new Error('No io!');
 
-        responseData = await leaveShow({
+        responseData = await kickFromChatroom({
+          chatroomId: id,
+          userId,
+          execUserId,
           io,
-          fromShowId: id,
-          userIdToDelete: req.body.userId,
-          ownerId: session.user._id,
         });
+
         break;
 
       default:
@@ -42,4 +44,4 @@ const kickUser = async (req, res) => {
   }
 };
 
-export default withDB(kickUser);
+export default withDB(kick);

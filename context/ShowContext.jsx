@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-import { API_CHAT, API_SHOW, SHOW } from '../routes';
+import { API_CHAT, API_CHATROOM, API_SHOW, LANDING, SHOW } from '../routes';
 import { useDatabase } from './DatabaseContext';
 import { useSocket } from './SocketContext';
 
@@ -11,17 +11,24 @@ export const ShowContext = createContext();
 export const useShow = () => useContext(ShowContext);
 
 export const ShowProvider = ({ children }) => {
-  const [playingShows, setPlayingShows] = useState([]);
-  const [currentShow, setCurrentShow] = useState();
-  const [currentChatroom, setCurrentChatroom] = useState();
-  const [openChatMessage, setOpenChatMessage] = useState();
   const { socket } = useSocket();
   const { dbSaveShow, dbDeleteShow } = useDatabase();
   const [session] = useSession();
   const router = useRouter();
 
+  const [playingShows, setPlayingShows] = useState([]);
+  const [currentShow, setCurrentShow] = useState();
+  const [uniqueParticipants, setUniqueParticipants] = useState([]);
+  const [currentChatroom, setCurrentChatroom] = useState();
+  const [uniqueParticipantsInChatroom, setUniqueParticipantsInChatroom] =
+    useState([]);
+  const [availableChatrooms, setAvailableChatrooms] = useState([]);
+  const [ownChatroom, setOwnChatroom] = useState();
+  const [showChatroomSettings, setShowChatroomSettings] = useState();
+  const [openChatMessage, setOpenChatMessage] = useState();
+  const [chatModalQueue, setChatModalQueue] = useState([]);
+
   useEffect(() => {
-    // console.log(socket);
     if (!socket) return;
 
     const handleRouteChange = (url) => {
@@ -31,22 +38,35 @@ export const ShowProvider = ({ children }) => {
     };
 
     socket.on('showUpdate', (data) => {
-      // console.log('showUpdate', data);
       setCurrentShow(data);
-      // console.log('showUpdate', data);
     });
 
-    // socket.on('clientsUpdate', (data) => {
-    //   setConnectedSockets(data?.connectedSockets);
-    // });
-
     socket.on('showsUpdate', (data) => {
-      // console.log(data);
       setPlayingShows(data?.shows);
     });
 
+    socket.on('chatroomInvite', (data) => {
+      setChatModalQueue((prev) => {
+        switch (data?.type) {
+          case 'invite':
+            return !prev.find(
+              (chatModalData) =>
+                JSON.stringify(chatModalData) === JSON.stringify(data)
+            )
+              ? [...prev, data]
+              : prev;
+          case 'cancel':
+            return prev.filter(
+              (chatModalData) =>
+                JSON.stringify(chatModalData) !==
+                JSON.stringify({ ...data, type: 'invite' })
+            );
+            break;
+        }
+      });
+    });
+
     socket.on('chatUpdate', ({ type, message }) => {
-      console.log(type, message);
       setCurrentChatroom((prev) => ({
         ...prev,
         messages:
@@ -64,6 +84,141 @@ export const ShowProvider = ({ children }) => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (!socket || !session) return;
+
+    const handleChatroomUpdate = ({ type, chatroom }) => {
+      if (type === 'join') {
+        setShowChatroomSettings(false);
+        setChatModalQueue((prev) =>
+          prev?.filter?.(
+            (modal) =>
+              !(modal?.type === 'invite' && modal?.chatroomId === chatroom?._id)
+          )
+        );
+      }
+
+      setAvailableChatrooms((prev) => {
+        const newAvailableChatrooms =
+          type === 'join'
+            ? !prev?.find((prevChatroom) => prevChatroom?._id === chatroom._id)
+              ? [...prev, chatroom]
+              : prev
+            : prev?.map?.((prevChatroom) =>
+                prevChatroom?._id === chatroom?._id
+                  ? { ...prevChatroom, chatroom }
+                  : prevChatroom
+              );
+        return newAvailableChatrooms;
+      });
+
+      setCurrentChatroom((prev) =>
+        prev?._id === chatroom?._id ? { ...prev, ...chatroom } : prev
+      );
+
+      if (
+        (chatroom?.owner?._id || chatroom?.owner) === session?.user?._id &&
+        !chatroom.isGeneral
+      ) {
+        setOwnChatroom((prev) => ({ ...prev, ...chatroom }));
+      }
+    };
+
+    socket.on('chatroomUpdate', handleChatroomUpdate);
+
+    return () => {
+      socket.off('chatroomUpdate', handleChatroomUpdate);
+    };
+  }, [socket, session, currentChatroom]);
+
+  useEffect(() => {
+    if (!socket || !session) return;
+
+    const handleKicked = ({ type, data }) => {
+      console.log('kicked!', type, data);
+
+      if (type === 'show') {
+        router.push(LANDING);
+      } else if (type === 'chatroom') {
+        const { originalChatroom, generalChatroom } = data;
+
+        // Remove Chatroom from available rooms
+        setAvailableChatrooms((prev) =>
+          prev?.filter?.(
+            (prevChatroom) => prevChatroom?._id !== originalChatroom?._id
+          )
+        );
+
+        setCurrentChatroom((prev) => {
+          if (prev?._id === originalChatroom?._id) {
+            return {
+              ...generalChatroom.chatroom,
+              messages: generalChatroom.messages,
+            };
+          } else {
+            return prev;
+          }
+        });
+
+        setShowChatroomSettings(false);
+
+        if (
+          (originalChatroom?.owner?._id || originalChatroom?.owner) ===
+            session?.user?._id &&
+          !originalChatroom?.isGeneral
+        ) {
+          setOwnChatroom(null);
+        }
+      }
+    };
+
+    socket.on('kicked', handleKicked);
+
+    return () => {
+      socket.off('kicked', handleKicked);
+    };
+  }, [socket, session, currentChatroom]);
+
+  useEffect(() => {
+    if (!currentShow?.connectedUsers) return;
+
+    let userObjects = new Map();
+
+    Object.values(currentShow.connectedUsers).forEach((userObject, i) => {
+      userObjects.set(userObject.user?._id, userObject.user);
+    });
+
+    setUniqueParticipants(
+      Array.from(userObjects.values()).sort((userObjectA, userObjectB) =>
+        userObjectA?.username?.localeCompare?.(userObjectB?.username)
+      )
+    );
+  }, [currentShow]);
+
+  useEffect(() => {
+    if (!currentChatroom?.participants) return;
+
+    let userObjects = new Map();
+
+    Object.values(currentChatroom.participants).forEach((userObject, i) => {
+      userObjects.set(userObject.user?._id, userObject.user);
+    });
+
+    setUniqueParticipantsInChatroom(
+      Array.from(userObjects.values()).sort((userObjectA, userObjectB) =>
+        userObjectA?.username?.localeCompare?.(userObjectB?.username)
+      )
+    );
+
+    if (
+      (currentChatroom?.owner?._id || currentChatroom?.owner) ===
+        session?.user?._id &&
+      !currentChatroom?.isGeneral
+    ) {
+      setOwnChatroom(currentChatroom);
+    }
+  }, [currentChatroom]);
 
   function leaveCurrentShow(callback) {
     if (!socket) return;
@@ -105,16 +260,134 @@ export const ShowProvider = ({ children }) => {
       (response) => {
         if (response?.type === 'success') {
           setCurrentShow(response.data.show);
-          setCurrentChatroom({ messages: response.data.chat });
+          setCurrentChatroom({
+            ...response.data.show.generalChatroom,
+            messages: response.data.messages,
+          });
+          setAvailableChatrooms(response.data.availableChatrooms);
+          setOwnChatroom(
+            response.data.availableChatrooms.find(
+              (chatroom) =>
+                chatroom?.owner?._id === userId && !chatroom?.isGeneral
+            )
+          );
         }
         callback?.(response);
       }
     );
   };
 
+  const createChatroom = async ({ name }) => {
+    if (!socket || !currentShow) return;
+
+    const response = await axios.post(API_CHATROOM, {
+      showId: currentShow._id,
+      socketId: socket.id,
+      name,
+    });
+
+    if (response?.data?.success) {
+      const { chatroom, messages } = response.data.data;
+
+      setCurrentChatroom({ ...chatroom, messages });
+      setShowChatroomSettings(false);
+      setAvailableChatrooms((prev) =>
+        prev?.find(
+          (prevChatroom) => `${prevChatroom?._id}` === `${chatroom?._id}`
+        )
+          ? prev
+          : [...prev, chatroom]
+      );
+      setOwnChatroom(chatroom);
+    }
+
+    return response;
+  };
+
+  const deleteChatroom = async ({ chatroomId }) => {
+    if (!chatroomId) return;
+    console.log('deleting chatroom: ', chatroomId);
+
+    const response = await axios.delete(`${API_CHATROOM}/${chatroomId}`);
+  };
+
+  const updateChatroom = async ({ name }) => {
+    if (!socket || !currentShow) return;
+
+    const response = await axios.post(API_CHATROOM, {
+      showId: currentShow._id,
+      socketId: socket.id,
+      name,
+    });
+
+    if (response?.data?.success) {
+      const { chatroom, messages } = response.data.data;
+      setCurrentChatroom({
+        ...chatroom,
+        messages,
+      });
+
+      // For update:
+      setAvailableChatrooms((prev) =>
+        prev.map((prevChatroom) =>
+          prevChatroom?._id === chatroom._id ? chatroom : prevChatroom
+        )
+      );
+    }
+
+    return response;
+  };
+
+  const joinChatroom = async (chatroomId) => {
+    const response = await axios.post(`${API_CHATROOM}/${chatroomId}/join`, {
+      socketId: socket.id,
+    });
+
+    console.log('join chatroom', response);
+
+    if (response?.data?.success) {
+      setCurrentChatroom({
+        ...response.data.data.chatroom,
+        messages: response.data.data.messages,
+      });
+    }
+
+    return response;
+  };
+
+  const leaveChatroom = async (chatroomId) => {
+    const response = await axios.post(`${API_CHATROOM}/${chatroomId}/leave`, {
+      socketId: socket.id,
+    });
+
+    console.log('leave chatroom', response);
+  };
+
+  const inviteToChatroom = async ({ chatroomId, userId, cancel }) => {
+    const response = await axios.post(`${API_CHATROOM}/${chatroomId}/invite`, {
+      userId,
+      showId: currentShow?._id,
+      cancel,
+      socketId: socket?.id,
+    });
+
+    console.log(`${cancel ? 'cancel from' : 'invite to'} chatroom`, response);
+  };
+
+  const kickFromChatroom = async ({ userId, chatroomId }) => {
+    if (!userId || !chatroomId) return;
+    console.log('kicking user: ', userId);
+
+    const response = await axios.post(`${API_CHATROOM}/${chatroomId}/kick`, {
+      userId,
+    });
+
+    // console.log('kick from chatroom', response);
+  };
+
   const sendChat = (message, chat) => {
     if (!socket) return;
-    // console.log('emit', socket, currentShow, message);
+    console.log('emit', socket, currentChatroom, currentShow, message);
     socket.emit(
       'sendChat',
       currentShow?._id,
@@ -122,7 +395,6 @@ export const ShowProvider = ({ children }) => {
         currentChatroom?._id ||
         currentShow?.generalChatroom?._id ||
         'general',
-      // 'general',
       session?.user?._id,
       message
     );
@@ -133,8 +405,6 @@ export const ShowProvider = ({ children }) => {
 
     const response = await axios.delete(`${API_CHAT}/${chatMessageId}`);
 
-    // console.log(response);
-
     return response;
   };
 
@@ -142,9 +412,9 @@ export const ShowProvider = ({ children }) => {
     router.push(`${SHOW}/${showId}`);
   };
 
-  const kickPlayer = async ({ userId, showId }) => {
+  const kickUser = async ({ userId, showId }) => {
     if (!(showId || currentShow?._id) || !userId) return;
-    console.log('kicking player: ', userId);
+    console.log('kicking user: ', userId);
 
     try {
       const response = await axios.post(
@@ -165,19 +435,44 @@ export const ShowProvider = ({ children }) => {
   };
 
   const exports = {
+    // Shows
     playingShows,
+
+    // Show
     setCurrentShow,
     saveShow,
     deleteShow,
     joinShow,
     currentShow,
+    goToShow,
+    kickUser,
+    uniqueParticipants,
+
+    // Chatrooms
+    availableChatrooms,
+
+    // Chatroom
+    uniqueParticipantsInChatroom,
     currentChatroom,
+    setCurrentChatroom,
+    createChatroom,
+    deleteChatroom,
+    updateChatroom,
+    inviteToChatroom,
+    joinChatroom,
+    leaveChatroom,
+    kickFromChatroom,
+    showChatroomSettings,
+    setShowChatroomSettings,
+    ownChatroom,
+
+    // Chat
+    chatModalQueue,
+    setChatModalQueue,
     sendChat,
     deleteChat,
     openChatMessage,
     setOpenChatMessage,
-    goToShow,
-    kickPlayer,
   };
 
   return (

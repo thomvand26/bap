@@ -15,11 +15,72 @@
   background-color: $color-secondary-dark;
   padding: $length-l;
 
+  &__titleButton {
+    padding: 0;
+  }
+
   &__title {
+    position: relative;
     margin-right: $length-xs;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &--withList {
+      cursor: pointer;
+      padding-right: $length-xl;
+    }
+  }
+
+  &__titleIcon {
+    position: absolute;
+    right: 0;
+
+    transition: transform $transition-duration $transition-easing;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__chatroomList {
+    // position: absolute;
+    // top: 100%;
+    position: sticky;
+    top: -$length-l/2;
+    // left: $length-l/2;
+    margin-top: -$length-l/2;
+    background-color: $color-secondary-dark;
+    z-index: 8;
+    border-radius: 0 0 $border-radius $border-radius;
+  }
+
+  &__chatroomListItem {
+    border-radius: $border-radius;
+
+    & button {
+      justify-content: flex-start;
+      width: 100%;
+      padding: $length-l/2;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    &:hover {
+      background-color: $color-secondary-darker;
+      color: $color-white;
+
+      & button {
+        filter: opacity(1);
+      }
+    }
+
+    &--disabled {
+      &:hover {
+        background-color: transparent;
+        color: inherit;
+      }
+    }
   }
 
   &__actions {
@@ -46,6 +107,7 @@
 }
 
 .content {
+  position: relative;
   flex: 1;
   width: 100%;
   overflow: auto;
@@ -54,6 +116,23 @@
 
   &--inDashboard {
     padding: 0;
+  }
+}
+
+.settingsButton {
+  position: sticky;
+  top: 0;
+  left: 100%;
+  --button-color: transparent;
+  color: $color-secondary-darker;
+  background-color: $color-secondary-darkest;
+  z-index: 2;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+    filter: opacity(1);
+    background-color: $color-secondary-darkest;
   }
 }
 

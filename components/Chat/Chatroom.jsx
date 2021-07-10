@@ -1,9 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/client';
+import { FiSettings } from 'react-icons/fi';
+import { MdArrowDropDown } from 'react-icons/md';
 
 import { useShow } from '@/context';
 import { ParticipantsButton } from '@/components';
 import { ChatMessage } from './ChatMessage';
+import { ChatroomSettings } from './ChatroomSettings';
+import { ChatModal } from './ChatModal';
 
 import styles from './Chatroom.module.scss';
 
@@ -19,10 +23,16 @@ export const chatroomModes = {
 };
 
 export const Chatroom = ({ inDashboard }) => {
-  const { currentChatroom } = useShow();
+  const {
+    currentChatroom,
+    setShowChatroomSettings,
+    availableChatrooms,
+    joinChatroom,
+  } = useShow();
   const chatContentRef = useRef();
   const wasScrolledToBottom = useRef(true);
   const [session] = useSession();
+  const [showAvailableChatrooms, setShowAvailableChatrooms] = useState(false);
 
   useEffect(() => {
     if (!chatContentRef?.current) return;
@@ -38,20 +48,56 @@ export const Chatroom = ({ inDashboard }) => {
       element.scrollHeight - element.scrollTop === element.clientHeight;
   };
 
+  const handelChangeChatroom = async (chatroomId) => {
+    await joinChatroom(chatroomId);
+    setShowAvailableChatrooms(false);
+  };
+
   return (
     <div className={`${styles.container}`}>
       {!inDashboard && (
         <div className={styles.chatHeader}>
-          <h2 className={`h3 ${styles.chatHeader__title}`}>General chat</h2>
-          <div className={styles.chatHeader__actions}>
-            <button
-              type="button"
-              className={`button--primary button--mini ${styles.chatHeader__makeRoom}`}
+          <button
+            className={`button--unstyled ${styles.chatHeader__titleButton}`}
+            onClick={() =>
+              setShowAvailableChatrooms((prev) =>
+                availableChatrooms?.length > 1 ? !prev : false
+              )
+            }
+          >
+            <h2
+              className={`h3 ${styles.chatHeader__title} ${
+                availableChatrooms?.length > 1
+                  ? styles['chatHeader__title--withList']
+                  : ''
+              }`}
             >
-              Make room
-            </button>
+              {currentChatroom?.name}
+              {availableChatrooms?.length > 1 && (
+                <MdArrowDropDown
+                  className={`${styles.chatHeader__titleIcon} ${showAvailableChatrooms ? styles['chatHeader__titleIcon--open'] : ''}`}
+                  viewBox="6 6 12 12"
+                />
+              )}
+            </h2>
+          </button>
+          <div className={styles.chatHeader__actions}>
+            {!availableChatrooms?.find?.(
+              (chatroom) =>
+                (chatroom.owner?._id || chatroom.owner) ===
+                  session?.user?._id && !chatroom.isGeneral
+            ) && (
+              <button
+                type="button"
+                className={`button--primary button--mini ${styles.chatHeader__makeRoom}`}
+                onClick={() => setShowChatroomSettings('create')}
+              >
+                Make room
+              </button>
+            )}
             <ParticipantsButton />
           </div>
+          <ChatroomSettings />
         </div>
       )}
       <div
@@ -63,6 +109,41 @@ export const Chatroom = ({ inDashboard }) => {
           checkIsScrolledToBottom(chatContentRef.current);
         }}
       >
+        {showAvailableChatrooms && (
+          <ul className={styles.chatHeader__chatroomList}>
+            {availableChatrooms?.map?.((chatroom, i) => (
+              <li
+                key={chatroom?._id || i}
+                className={`${styles.chatHeader__chatroomListItem} ${
+                  chatroom?._id === currentChatroom?._id
+                    ? styles['chatHeader__chatroomListItem--disabled']
+                    : ''
+                }`}
+              >
+                <button
+                  className="button--unstyled focus-inset"
+                  onClick={() => handelChangeChatroom(chatroom._id)}
+                  disabled={chatroom?._id === currentChatroom?._id}
+                >
+                  {chatroom.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {!currentChatroom?.isGeneral && (
+          <button
+            type="button"
+            className={`button--icon ${styles.settingsButton}`}
+            onClick={() => setShowChatroomSettings('edit')}
+          >
+            <FiSettings size="1.4rem" />
+          </button>
+        )}
+
+        {!inDashboard && <ChatModal />}
+
         {currentChatroom?.messages?.map?.((messageObject, i) => {
           return (
             <ChatMessage
@@ -70,7 +151,6 @@ export const Chatroom = ({ inDashboard }) => {
               messageObject={messageObject}
               showTimestamp={inDashboard}
               inDashboard={inDashboard}
-              userId={session?.user?._id}
             />
           );
         })}
