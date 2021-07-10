@@ -10,7 +10,7 @@ import { Chatbox } from './Chatbox';
 import styles from './Chat.module.scss';
 
 export const Chat = () => {
-  const { currentShow } = useShow();
+  const { currentShow, loadingChat } = useShow();
 
   return (
     <div className={styles.chatContainer}>
@@ -30,6 +30,8 @@ export const Chat = () => {
         <Chatroom />
       </div>
       <div className={styles.chatbox}>
+        {loadingChat && <div className={styles.loadingChatboxOverlay}></div>}
+
         <Chatbox />
       </div>
     </div>

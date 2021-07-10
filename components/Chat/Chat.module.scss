@@ -44,6 +44,14 @@
 }
 
 .chatbox {
+  position: relative;
   padding: $length-l;
   padding-top: 0;
+}
+
+.loadingChatboxOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: $color-loading-overlay;
+  z-index: 11;
 }

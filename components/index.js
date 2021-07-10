@@ -3,6 +3,7 @@ export * from './Dashboard';
 export * from './Shows';
 export * from './Info';
 export * from './Inputs';
+export * from './LoadingSpinner';
 export * from './Participants';
 export * from './Header';
 export * from './Tooltip';

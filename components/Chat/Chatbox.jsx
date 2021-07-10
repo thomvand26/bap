@@ -13,9 +13,11 @@ const validationSchema = Yup.object().shape({
 });
 
 export const Chatbox = ({ inDashboard }) => {
-  const { sendChat } = useShow();
+  const { sendChat, loadingChat } = useShow();
 
   const handleSubmit = (values, actions) => {
+    if (loadingChat) return;
+
     if (values?.message?.length) {
       sendChat(values.message);
     }

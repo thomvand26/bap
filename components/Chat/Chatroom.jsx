@@ -4,7 +4,7 @@ import { FiSettings } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import { useShow } from '@/context';
-import { ParticipantsButton } from '@/components';
+import { ParticipantsButton, LoadingSpinner } from '@/components';
 import { ChatMessage } from './ChatMessage';
 import { ChatroomSettings } from './ChatroomSettings';
 import { ChatModal } from './ChatModal';
@@ -28,6 +28,7 @@ export const Chatroom = ({ inDashboard }) => {
     setShowChatroomSettings,
     availableChatrooms,
     joinChatroom,
+    loadingChat,
   } = useShow();
   const chatContentRef = useRef();
   const wasScrolledToBottom = useRef(true);
@@ -55,6 +56,11 @@ export const Chatroom = ({ inDashboard }) => {
 
   return (
     <div className={`${styles.container}`}>
+      {loadingChat && (
+        <div className={styles.loadingContainer}>
+          <LoadingSpinner />
+        </div>
+      )}
       {!inDashboard && (
         <div className={styles.chatHeader}>
           <button
@@ -75,7 +81,11 @@ export const Chatroom = ({ inDashboard }) => {
               {currentChatroom?.name}
               {availableChatrooms?.length > 1 && (
                 <MdArrowDropDown
-                  className={`${styles.chatHeader__titleIcon} ${showAvailableChatrooms ? styles['chatHeader__titleIcon--open'] : ''}`}
+                  className={`${styles.chatHeader__titleIcon} ${
+                    showAvailableChatrooms
+                      ? styles['chatHeader__titleIcon--open']
+                      : ''
+                  }`}
                   viewBox="6 6 12 12"
                 />
               )}

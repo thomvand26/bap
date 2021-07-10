@@ -11,6 +11,7 @@ export const ChatroomInviteButton = ({ user }) => {
 
   const [isInvited, setIsInvited] = useState();
   const [isMember, setIsMember] = useState();
+  const [handlingAction, setHandlingAction] = useState(false);
 
   useEffect(() => {
     setIsInvited(
@@ -27,12 +28,16 @@ export const ChatroomInviteButton = ({ user }) => {
     );
   }, [ownChatroom, user]);
 
-  const handleUserAction = ({ isMember, isInvited }) => {
+  const handleUserAction = async ({ isMember, isInvited }) => {
+    if (handlingAction) return;
+
+    setHandlingAction(true);
+
     switch (true) {
       case isMember:
         // Kick from room
         console.log('Kick from room');
-        kickFromChatroom({
+        await kickFromChatroom({
           userId: user?._id || user,
           chatroomId: ownChatroom._id,
         });
@@ -40,7 +45,7 @@ export const ChatroomInviteButton = ({ user }) => {
       case isInvited:
         // Cancel invite
         console.log('Cancel invite');
-        inviteToChatroom({
+        await inviteToChatroom({
           chatroomId: ownChatroom._id,
           userId: user?._id || user,
           cancel: true,
@@ -48,12 +53,14 @@ export const ChatroomInviteButton = ({ user }) => {
         break;
 
       default:
-        inviteToChatroom({
+        await inviteToChatroom({
           chatroomId: ownChatroom._id,
           userId: user?._id || user,
         });
         break;
     }
+
+    setHandlingAction(false);
   };
 
   return (
@@ -64,8 +71,8 @@ export const ChatroomInviteButton = ({ user }) => {
           isMember || isInvited ? 'button--ghost' : ''
         } ${styles.inviteButton} ${
           isMember || isInvited ? styles['inviteButton--ghost'] : ''
-        }`}
-        disabled={(user?._id || user) === session?.user?._id}
+        } `}
+        disabled={(user?._id || user) === session?.user?._id || handlingAction}
         onClick={() => handleUserAction({ isMember, isInvited })}
       >
         {isMember

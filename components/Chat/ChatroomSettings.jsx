@@ -23,6 +23,7 @@ export const ChatroomSettings = () => {
     updateChatroom,
     leaveChatroom,
     uniqueParticipantsInChatroom,
+    loadingChat,
   } = useShow();
   const [session] = useSession();
   const [chatroomName, setChatroomName] = useState('My chatroom');
@@ -32,19 +33,22 @@ export const ChatroomSettings = () => {
   }, [currentChatroom]);
 
   const handleSubmit = async (data) => {
+    if (loadingChat) return;
     if (showChatroomSettings === 'create') {
       await createChatroom(data);
-      return;
+    } else {
+      await updateChatroom(data);
     }
-    await updateChatroom(data);
   };
 
   const handleDelete = () => {
+    if (loadingChat) return;
     console.log('handleDelete');
     deleteChatroom({ chatroomId: currentChatroom?._id });
   };
 
   const handleLeave = () => {
+    if (loadingChat) return;
     console.log('handleLeave');
     leaveChatroom(currentChatroom?._id);
   };
