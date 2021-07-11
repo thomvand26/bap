@@ -8,7 +8,7 @@ import { DateInput } from './DateInput';
 import { InputSlider } from './InputSlider';
 import { InputToggle } from './InputToggle';
 
-// variant: 'default', 'dark' or 'light'
+// variant: 'default', 'darkest', 'dark' or 'light'
 export const Input = ({
   form,
   name,
@@ -18,6 +18,7 @@ export const Input = ({
   variant = 'default',
   noPadding,
   noErrors,
+  onChange,
   ...props
 }) => {
   const id = props?.id || name;
@@ -26,7 +27,7 @@ export const Input = ({
   return (
     <div
       className={`${styles.container} ${styles[`container--${props.type}`]} ${
-        variant === 'dark' || 'light' ? styles[`container--${variant}`] : ''
+        variant === 'darkest' || 'dark' || 'light' ? styles[`container--${variant}`] : ''
       } ${noPadding ? styles['container--noPadding'] :''}`}
     >
       <Field name={name} {...props}>
@@ -91,6 +92,10 @@ export const Input = ({
                   {...props}
                   id={id}
                   onFocus={() => setHasFocused(true)}
+                  onChange={(event) => {
+                    if (onChange instanceof Function) onChange(event);
+                    form.setFieldValue(field.name, event.target.value);
+                  }}
                 />
               )}
               {form?.touched?.[name] && form?.errors?.[name] && !noErrors ? (
