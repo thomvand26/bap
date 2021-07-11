@@ -27,6 +27,7 @@ export const ShowProvider = ({ children }) => {
   const [showChatroomSettings, setShowChatroomSettings] = useState();
   const [openChatMessage, setOpenChatMessage] = useState();
   const [chatModalQueue, setChatModalQueue] = useState([]);
+  const [loadingChat, setLoadingChat] = useState();
 
   useEffect(() => {
     if (!socket) return;
@@ -250,6 +251,7 @@ export const ShowProvider = ({ children }) => {
     const userId = session?.user?._id;
 
     if (!socket || !userId) return;
+    setLoadingChat(true);
 
     socket.emit(
       'joinShowRequest',
@@ -272,6 +274,7 @@ export const ShowProvider = ({ children }) => {
             )
           );
         }
+        setLoadingChat(false);
         callback?.(response);
       }
     );
@@ -279,6 +282,8 @@ export const ShowProvider = ({ children }) => {
 
   const createChatroom = async ({ name }) => {
     if (!socket || !currentShow) return;
+
+    setLoadingChat(true);
 
     const response = await axios.post(API_CHATROOM, {
       showId: currentShow._id,
@@ -301,18 +306,15 @@ export const ShowProvider = ({ children }) => {
       setOwnChatroom(chatroom);
     }
 
+    setLoadingChat(false);
+
     return response;
-  };
-
-  const deleteChatroom = async ({ chatroomId }) => {
-    if (!chatroomId) return;
-    console.log('deleting chatroom: ', chatroomId);
-
-    const response = await axios.delete(`${API_CHATROOM}/${chatroomId}`);
   };
 
   const updateChatroom = async ({ name }) => {
     if (!socket || !currentShow) return;
+
+    setLoadingChat(true);
 
     const response = await axios.post(API_CHATROOM, {
       showId: currentShow._id,
@@ -335,10 +337,28 @@ export const ShowProvider = ({ children }) => {
       );
     }
 
+    setLoadingChat(false);
+
+    return response;
+  };
+
+  const deleteChatroom = async ({ chatroomId }) => {
+    if (!chatroomId) return;
+
+    console.log('deleting chatroom: ', chatroomId);
+
+    setLoadingChat(true);
+
+    const response = await axios.delete(`${API_CHATROOM}/${chatroomId}`);
+
+    setLoadingChat(false);
+
     return response;
   };
 
   const joinChatroom = async (chatroomId) => {
+    setLoadingChat(true);
+
     const response = await axios.post(`${API_CHATROOM}/${chatroomId}/join`, {
       socketId: socket.id,
     });
@@ -352,15 +372,23 @@ export const ShowProvider = ({ children }) => {
       });
     }
 
+    setLoadingChat(false);
+
     return response;
   };
 
   const leaveChatroom = async (chatroomId) => {
+    setLoadingChat(true);
+
     const response = await axios.post(`${API_CHATROOM}/${chatroomId}/leave`, {
       socketId: socket.id,
     });
 
+    setLoadingChat(false);
+
     console.log('leave chatroom', response);
+
+    return response;
   };
 
   const inviteToChatroom = async ({ chatroomId, userId, cancel }) => {
@@ -372,6 +400,8 @@ export const ShowProvider = ({ children }) => {
     });
 
     console.log(`${cancel ? 'cancel from' : 'invite to'} chatroom`, response);
+
+    return response;
   };
 
   const kickFromChatroom = async ({ userId, chatroomId }) => {
@@ -382,7 +412,7 @@ export const ShowProvider = ({ children }) => {
       userId,
     });
 
-    // console.log('kick from chatroom', response);
+    return response;
   };
 
   const sendChat = (message, chat) => {
@@ -473,6 +503,8 @@ export const ShowProvider = ({ children }) => {
     deleteChat,
     openChatMessage,
     setOpenChatMessage,
+    loadingChat,
+    setLoadingChat,
   };
 
   return (
