@@ -1,6 +1,5 @@
 .tooltip {
   margin-left: $length-s;
-
 }
 
 .info {
@@ -9,10 +8,10 @@
   justify-content: center;
   width: $length-m;
   height: $length-m;
-  border: 2px solid $color-secondary-darker;
+  border: 2px solid $color-secondary-dark;
   padding-top: $length-xxs;
   border-radius: 50%;
-  opacity: .5;
+  opacity: 0.5;
   user-select: none;
 
   &:hover {

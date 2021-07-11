@@ -114,7 +114,7 @@ button,
   }
 
   &--dark {
-    --button-color: #{$color-secondary-dark} !important;
+    --button-color: #{$color-secondary-darker} !important;
   }
 
   &--darkest {
@@ -149,7 +149,7 @@ button,
   }
 
   &--icon {
-    --button-color: #{$color-secondary-dark};
+    --button-color: #{$color-secondary-darker};
 
     min-width: 0;
     width: initial;
@@ -176,7 +176,7 @@ button,
   &--hover-light {
     &:hover,
     &:focus {
-      background-color: rgba($color: $color-secondary-darker, $alpha: 0.2);
+      background-color: rgba($color: $color-secondary-dark, $alpha: 0.2);
     }
   }
 

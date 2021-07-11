@@ -6,7 +6,7 @@
   border-radius: $border-radius;
 
   &__name {
-    background-color: $color-secondary-dark;
+    background-color: $color-secondary-darker;
     padding: $length-s $length-s $length-xs $length-s;
     font-size: $font-size-s;
     font-weight: bold;
@@ -41,10 +41,10 @@
     margin-top: auto;
     margin-bottom: $length-xs;
     max-width: 100%;
-  
+
     & > * {
       margin-right: $length-xl;
-  
+
       &:last-child {
         margin-right: 0;
       }

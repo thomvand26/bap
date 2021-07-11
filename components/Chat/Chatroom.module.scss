@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: space-between;
   color: $color-secondary-lightest;
-  background-color: $color-secondary-dark;
+  background-color: $color-secondary-darker;
   padding: $length-l;
 
   &__titleButton {
@@ -61,7 +61,7 @@
     top: -$length-l/2;
     // left: $length-l/2;
     margin-top: -$length-l/2;
-    background-color: $color-secondary-dark;
+    background-color: $color-secondary-darker;
     z-index: 8;
     border-radius: 0 0 $border-radius $border-radius;
   }
@@ -78,7 +78,7 @@
     }
 
     &:hover {
-      background-color: $color-secondary-darker;
+      background-color: $color-secondary-dark;
       color: $color-white;
 
       & button {
@@ -135,7 +135,7 @@
   top: 0;
   left: 100%;
   --button-color: transparent;
-  color: $color-secondary-darker;
+  color: $color-secondary-dark;
   background-color: $color-secondary-darkest;
   z-index: 2;
   opacity: 0.6;
