@@ -84,20 +84,6 @@
   }
 }
 
-.dateInput {
-  display: flex;
-  &__date {
-    display: flex;
-    border: none;
-    margin-right: auto;
-  }
-
-  &__time {
-    display: flex;
-    border: none;
-  }
-}
-
 .sliderContainer {
   & .label {
     display: flex;

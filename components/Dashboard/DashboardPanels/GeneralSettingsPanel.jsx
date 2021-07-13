@@ -97,6 +97,7 @@ export const GeneralSettingsPannel = ({
                 type="datetime"
                 autoComplete="off"
                 variant="light"
+                withTime
               />
               <Input
                 name="endDate"
@@ -104,6 +105,7 @@ export const GeneralSettingsPannel = ({
                 type="datetime"
                 autoComplete="off"
                 variant="light"
+                withTime
               />
             </div>
             <div>

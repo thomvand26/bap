@@ -1,0 +1,94 @@
+div.flatpickr-calendar {
+  --flatpickr-primary-color: #{$color-primary-light};
+  --flatpickr-darkest-color: #{$color-secondary-darkest};
+  --flatpickr-light-color: #{$color-secondary-dark};
+
+  background-color: var(--flatpickr-primary-color);
+  border-radius: $border-radius;
+  border: 2px solid var(--flatpickr-primary-color);
+  width: 20rem;
+
+  &.arrowTop {
+    &::after {
+      border-bottom-color: var(--flatpickr-primary-color);
+    }
+  }
+
+  & .flatpickr-months .flatpickr-prev-month,
+  & .flatpickr-months .flatpickr-next-month {
+    color: var(--flatpickr-darkest-color);
+    fill: var(--flatpickr-darkest-color);
+
+    & svg {
+      fill: var(--flatpickr-darkest-color);
+    }
+  }
+
+  & .flatpickr-months {
+    & .flatpickr-month {
+      color: var(--flatpickr-darkest-color);
+      background-color: var(--flatpickr-primary-color);
+      border-radius: $border-radius $border-radius 0 0;
+    }
+  }
+
+  & .flatpickr-current-month {
+    width: unset;
+    position: static;
+
+    & .flatpickr-monthDropdown-months {
+      color: var(--flatpickr-darkest-color);
+      background-color: var(--flatpickr-primary-color);
+      font-weight: bold;
+      border-bottom: 2px solid var(--flatpickr-darkest-color);
+      margin-right: 10px;
+
+      & .flatpickr-monthDropdown-month {
+        color: var(--flatpickr-darkest-color);
+        background-color: $color-white;
+      }
+    }
+
+    & .numInputWrapper {
+      border-bottom: 2px solid var(--flatpickr-darkest-color);
+
+      & .numInput.cur-year {
+        font-weight: bold;
+      }
+    }
+  }
+
+  & .flatpickr-weekdays {
+    color: var(--flatpickr-darkest-color);
+    background-color: var(--flatpickr-primary-color);
+    user-select: none;
+
+    & .flatpickr-weekday {
+      color: var(--flatpickr-darkest-color);
+      background-color: var(--flatpickr-primary-color);
+    }
+  }
+
+  & .flatpickr-days {
+    width: 20rem - $length-xxs;
+    justify-content: center;
+
+    & .flatpickr-day {
+      user-select: none;
+
+      &.selected {
+        color: var(--flatpickr-darkest-color);
+        background-color: var(--flatpickr-primary-color);
+        border-color: var(--flatpickr-primary-color);
+        font-weight: bold;
+      }
+    }
+  }
+
+  &.hasTime {
+    & .flatpickr-time {
+      border: none;
+      border-top: 2px solid var(--flatpickr-primary-color);
+    }
+  }
+}

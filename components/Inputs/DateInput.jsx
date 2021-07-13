@@ -1,54 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import moment from 'moment';
+// https://github.com/haoxins/react-flatpickr
+
+import React from 'react';
+import Flatpickr from 'react-flatpickr';
+
+import 'flatpickr/dist/themes/material_green.css';
 
 import styles from './input.module.scss';
 
-export const DateInput = ({ withTime, ...props }) => {
-  const [value, setValue] = useState();
-  const [dateValue, setDateValue] = useState(
-    moment(props.value).format('YYYY-MM-DD')
-  );
-  const [timeValue, setTimeValue] = useState(
-    moment(props.value).format('HH:mm')
-  );
-
-  useEffect(() => {
-    setDateValue(moment(props.value).format('YYYY-MM-DD'));
-    setTimeValue(moment(props.value).format('HH:mm'));
-  }, [props.value]);
-
-  useEffect(() => {
-    const totalValue = `${dateValue} ${timeValue}`;
-    setValue(totalValue);
-    if (props.onChange instanceof Function) props.onChange(totalValue);
-  }, [dateValue, timeValue]);
-
+export const DateInput = ({
+  withTime,
+  mode = 'single',
+  coupledRangeElementSelector,
+  ...props
+}) => {
   return (
-    <div className={`${styles.input} ${styles.dateInput}`}>
-      {/* TODO: Make custom input with picker to make it compatible with all browsers */}
-      <input
-        className={styles.dateInput__date}
-        type="date"
-        name={`${props.name}-date`}
-        id={`${props.name}-date`}
-        value={dateValue}
-        onChange={(event) => {
-          setDateValue(event.target.value);
-        }}
-      />
-      {withTime && (
-        <input
-          className={styles.dateInput__time}
-          type="time"
-          name={`${props.name}-time`}
-          id={`${props.name}-time`}
-          value={timeValue}
-          onChange={(event) => {
-            setTimeValue(event.target.value);
-          }}
-          step="900"
-        />
-      )}
-    </div>
+    <Flatpickr
+      className={`${styles.input}`}
+      value={new Date(props.value)}
+      onChange={(date, dateString, instance) => {
+        props?.onChange?.(date[0].toISOString());
+      }}
+      options={{
+        enableTime: withTime,
+        time_24hr: true,
+        mode,
+        dateFormat: 'd-m-Y  H:i',
+      }}
+    />
   );
 };
