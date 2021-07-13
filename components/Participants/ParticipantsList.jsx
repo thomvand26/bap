@@ -79,7 +79,7 @@ export const ParticipantsList = ({
                     </button>
                   ) : ownChatroom && !inChatroom ? (
                     <button
-                      className="button button--icon button--dark"
+                      className="button button--icon button--dark focus-inset"
                       disabled={isCurrentUser}
                       onClick={() =>
                         setShowInviteMenu((prev) => {
