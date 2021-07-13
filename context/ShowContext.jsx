@@ -3,9 +3,17 @@ import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-import { API_CHAT, API_CHATROOM, API_SHOW, LANDING, SHOW } from '../routes';
+import {
+  API_CHAT,
+  API_CHATROOM,
+  API_SHOW,
+  API_SONG_REQUEST,
+  LANDING,
+  SHOW,
+} from '../routes';
 import { useDatabase } from './DatabaseContext';
 import { useSocket } from './SocketContext';
+import { defaultSongRequestArraySort } from '@/server/utils/songRequestUtils';
 
 export const ShowContext = createContext();
 export const useShow = () => useContext(ShowContext);
@@ -28,6 +36,7 @@ export const ShowProvider = ({ children }) => {
   const [openChatMessage, setOpenChatMessage] = useState();
   const [chatModalQueue, setChatModalQueue] = useState([]);
   const [loadingChat, setLoadingChat] = useState();
+  const [currentSongRequests, setCurrentSongRequests] = useState([]);
 
   useEffect(() => {
     if (!socket) return;
@@ -77,6 +86,30 @@ export const ShowProvider = ({ children }) => {
               )
             : [...prev.messages, message],
       }));
+    });
+
+    socket.on('songRequestUpdate', ({ type, updatedSongRequest }) => {
+      console.log('songRequestUpdate', type, updatedSongRequest);
+      setCurrentSongRequests((prev) =>
+        defaultSongRequestArraySort(
+          type === 'create'
+            ? [...prev, updatedSongRequest]
+            : type === 'delete'
+            ? prev.filter(
+                (songRequest) => songRequest._id !== updatedSongRequest._id
+              )
+            : // : type === 'hide'
+              // ? prev.filter(
+              //     (songRequest) => songRequest._id !== updatedSongRequest._id
+              //   )
+              // : type === 'update'
+              prev.map((songRequest) =>
+                songRequest._id === updatedSongRequest._id
+                  ? updatedSongRequest
+                  : songRequest
+              )
+        )
+      );
     });
 
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -273,6 +306,9 @@ export const ShowProvider = ({ children }) => {
                 chatroom?.owner?._id === userId && !chatroom?.isGeneral
             )
           );
+          setCurrentSongRequests(
+            defaultSongRequestArraySort(response.data.songRequests)
+          );
         }
         setLoadingChat(false);
         callback?.(response);
@@ -438,6 +474,54 @@ export const ShowProvider = ({ children }) => {
     return response;
   };
 
+  const createSongRequest = async ({ song, inDashboard }) => {
+    if (!socket || !currentShow?._id) return;
+
+    if (!inDashboard) setLoadingChat(true);
+
+    const response = await axios.post(`${API_SONG_REQUEST}/`, {
+      showId: currentShow?._id,
+      song,
+    });
+
+    if (!inDashboard) setLoadingChat(false);
+
+    return response;
+  };
+
+  const hideSongRequest = async ({ songRequestId, visible }) => {
+    if (!socket) return;
+
+    const response = await axios.post(
+      `${API_SONG_REQUEST}/${songRequestId}/visible`,
+      {
+        visible,
+      }
+    );
+
+    return response;
+  };
+
+  const deleteSongRequest = async ({ songRequestId }) => {
+    if (!socket) return;
+
+    const response = await axios.delete(`${API_SONG_REQUEST}/${songRequestId}`);
+
+    return response;
+  };
+
+  const voteSongRequest = async ({ songRequestId, addVote }) => {
+    if (!socket) return;
+
+    const axiosMethod = addVote ? axios.post : axios.delete;
+
+    const response = await axiosMethod(
+      `${API_SONG_REQUEST}/${songRequestId}/vote`
+    );
+
+    return response;
+  };
+
   const goToShow = (showId) => {
     router.push(`${SHOW}/${showId}`);
   };
@@ -505,6 +589,13 @@ export const ShowProvider = ({ children }) => {
     setOpenChatMessage,
     loadingChat,
     setLoadingChat,
+
+    // SongRequests
+    currentSongRequests,
+    createSongRequest,
+    hideSongRequest,
+    deleteSongRequest,
+    voteSongRequest,
   };
 
   return (

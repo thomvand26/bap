@@ -1,0 +1,9 @@
+.panelContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.chatboxContainer {
+  padding: $length-l / 2;
+  padding-top: 0;
+}

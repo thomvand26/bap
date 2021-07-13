@@ -14,6 +14,26 @@
       margin-bottom: 0;
     }
   }
+
+  &--songRequest {
+    margin-top: calc(#{$length-l} + 1em + #{$length-xs});
+
+    & label {
+      width: max-content;
+      margin-top: calc(-1em - #{$length-xs});
+    }
+  }
+}
+
+.songRequestHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $length-m;
+}
+
+.songRequestCloseButton {
+  margin-right: -$length-xs;
 }
 
 .input {
@@ -38,6 +58,7 @@
 .requestButton {
   color: $color-secondary-lighter;
   font-size: $font-size-s;
+  text-align: left;
 }
 
 .settingsButton {

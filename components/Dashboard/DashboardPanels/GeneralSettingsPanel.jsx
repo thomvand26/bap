@@ -20,13 +20,17 @@ const validationSchema = Yup.object().shape({
   endDate: Yup.string().required('Required'),
 });
 
-export const GeneralSettingsPannel = ({ defaultShow, loadingShow, ...props }) => {
+export const GeneralSettingsPannel = ({
+  defaultShow,
+  loadingShow,
+  ...props
+}) => {
   const { setCurrentShow, saveShow, deleteShow } = useShow();
   const router = useRouter();
 
   useEffect(() => {
     setCurrentShow(defaultShow);
-  }, [defaultShow])
+  }, [defaultShow]);
 
   const handleSubmit = async (values) => {
     const savedShow = await saveShow({ ...values, _id: defaultShow?._id });
@@ -60,9 +64,10 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow, ...props }) =>
           startDate: defaultShow?.startDate || moment(),
           endDate: defaultShow?.endDate || moment().add(2, 'h'),
           maxWatchers: defaultShow?.maxWatchers || 200,
-          allowSongRequests: defaultShow?.allowSongRequests,
+          // allowSongRequests: defaultShow?.allowSongRequests,
           visible: defaultShow?.visible,
           streamURL: defaultShow?.streamURL || '',
+          maxSongRequestsPerUser: defaultShow?.maxSongRequestsPerUser || 1,
         }}
         onSubmit={handleSubmit}
       >
@@ -111,18 +116,22 @@ export const GeneralSettingsPannel = ({ defaultShow, loadingShow, ...props }) =>
                 max={1000}
                 step={10}
               />
-              <Input
+              {/* <Input
                 name="allowSongRequests"
                 label="Allow song request"
                 type="toggle"
                 variant="light"
-              />
-              {/* <Input
-                name="allowSongRequests"
-                label="Allow chat"
-                type="toggle"
-                variant="light"
               /> */}
+              <Input
+                name="maxSongRequestsPerUser"
+                label="Maximum song requests per user"
+                type="slider"
+                variant="light"
+                min={0}
+                max={10}
+                step={1}
+                info="How many song requests can the user make? (Song requests will be disabled if this is set to 0.)"
+              />
               <Input
                 name="visible"
                 label="Visible"

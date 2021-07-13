@@ -33,9 +33,47 @@
 }
 
 .requests {
-  height: 167px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 10.5rem;
   background-color: $color-secondary-darker;
   margin-bottom: $length-xs;
+  padding-bottom: $length-l/2;
+
+  transition: height $transition-duration $transition-easing;
+
+  &--minimized {
+    height: 2.875rem;
+
+    & > ul {
+      display: none;
+    }
+  }
+
+  &__titleButton {
+    padding: 0 $length-m;
+  }
+
+  &__title {
+    padding: $length-m;
+    color: $color-secondary-lightest;
+  }
+
+  &__titleIcon {
+    color: $color-secondary-lightest;
+
+    transition: transform $transition-duration $transition-easing;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  & > ul {
+    width: 100%;
+  }
 }
 
 .chats {
@@ -47,6 +85,10 @@
   position: relative;
   padding: $length-l;
   padding-top: 0;
+
+  &--songRequest {
+    background-color: $color-secondary-darker;
+  }
 }
 
 .loadingChatboxOverlay {

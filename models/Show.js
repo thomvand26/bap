@@ -30,10 +30,14 @@ const ShowSchema = new Schema(
     maxWatchers: {
       type: Number,
     },
-    allowSongRequests: {
-      type: Boolean,
-      default: true,
+    maxSongRequestsPerUser: {
+      type: Number,
+      default: 1,
     },
+    // allowSongRequests: {
+    //   type: Boolean,
+    //   default: true,
+    // },
     streamURL: {
       type: String,
       trim: true,

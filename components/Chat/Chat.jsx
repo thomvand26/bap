@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MdExitToApp } from 'react-icons/md';
+import { MdArrowDropDown, MdExitToApp } from 'react-icons/md';
 
 import { useShow } from '@/context';
 import { LANDING } from '@/routes';
+import { SongRequestList } from '@/components';
 import { Chatroom } from './Chatroom';
 import { Chatbox } from './Chatbox';
 
@@ -11,6 +12,16 @@ import styles from './Chat.module.scss';
 
 export const Chat = () => {
   const { currentShow, loadingChat } = useShow();
+
+  const [showSongRequestChatbox, setShowSongRequestChatbox] = useState(false);
+  const [minimizeShowRequests, setMinimizeShowRequests] = useState(false);
+  const [reachedSongRequestLimit, setReachedSongRequestLimit] = useState(false);
+
+  useEffect(() => {
+    setShowSongRequestChatbox((prev) =>
+      reachedSongRequestLimit ? false : prev
+    );
+  }, [reachedSongRequestLimit]);
 
   return (
     <div className={styles.chatContainer}>
@@ -25,14 +36,41 @@ export const Chat = () => {
           />
         </Link>
       </div>
-      <div className={styles.requests}>Song requests</div>
+      <div
+        className={`${styles.requests} ${
+          minimizeShowRequests ? styles['requests--minimized'] : ''
+        }`}
+      >
+        <button
+          type="button"
+          className={`button--text focus-inset ${styles.requests__titleButton}`}
+          onClick={() => setMinimizeShowRequests((prev) => !prev)}
+        >
+          <h2 className={`h4 ${styles.requests__title}`}>Song requests</h2>
+          <MdArrowDropDown
+            className={`${styles.requests__titleIcon} ${
+              !minimizeShowRequests ? styles['requests__titleIcon--open'] : ''
+            }`}
+            viewBox="6 6 12 12"
+          />
+        </button>
+        {!minimizeShowRequests && <SongRequestList />}
+      </div>
       <div className={styles.chats}>
         <Chatroom />
       </div>
-      <div className={styles.chatbox}>
+      <div
+        className={`${styles.chatbox} ${
+          showSongRequestChatbox ? styles['chatbox--songRequest'] : ''
+        }`}
+      >
         {loadingChat && <div className={styles.loadingChatboxOverlay}></div>}
 
-        <Chatbox />
+        <Chatbox
+          showSongRequestChatbox={showSongRequestChatbox}
+          setShowSongRequestChatbox={setShowSongRequestChatbox}
+          setReachedSongRequestLimit={setReachedSongRequestLimit}
+        />
       </div>
     </div>
   );

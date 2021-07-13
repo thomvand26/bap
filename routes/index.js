@@ -20,3 +20,4 @@ export const API_CHAT = '/api/chat';
 
 export const API_CHATROOM = '/api/chatroom';
 
+export const API_SONG_REQUEST = '/api/song-request';

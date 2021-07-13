@@ -3,6 +3,7 @@ export * from './chatUtils';
 export * from './chatroomUtils';
 export * from './dbUtils';
 export * from './showUtils';
+export * from './songRequestUtils';
 
 export const removeUndefinedFromObject = (object) => {
   const cleanObject = { ...object };

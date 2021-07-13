@@ -4,13 +4,14 @@ import {
   DashboardPanel,
   ChatPanel,
   StreamPreviewPanel,
+  SongRequestsPanel,
 } from './DashboardPanels';
 
 export const ShowPerformanceDashboard = ({ show, loadingShow }) => {
   return (
     <Dashboard>
       <StreamPreviewPanel name="Preview" toggle colspan={2} rowspan={2} />
-      <DashboardPanel name="Song requests" toggle colspan={1} rowspan={3} />
+      <SongRequestsPanel name="Song requests" toggle colspan={1} rowspan={3} />
       <ChatPanel name="Chat" toggle colspan={1} rowspan={3} />
       <DashboardPanel name="Polls" toggle colspan={2} rowspan={2} />
       {/* <DashboardPanel area colspan={1} rowspan={1} /> */}

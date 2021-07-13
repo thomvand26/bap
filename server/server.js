@@ -16,8 +16,9 @@ const {
   emitChatUpdate,
   defaultShowPopulation,
   defaultChatroomPopulation,
+  defaultSongRequestPopulation,
 } = require('./utils');
-const { Show, ChatMessage, Chatroom } = require('../models');
+const { Show, ChatMessage, Chatroom, SongRequest } = require('../models');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -61,7 +62,7 @@ async function start() {
 
           if (!socket?.id) return;
 
-          // Update connectedUsers in Show and return it
+          // Update connectedUsers in Show and get it
           const foundShow = await Show.findByIdAndUpdate(
             showId,
             {
@@ -102,6 +103,18 @@ async function start() {
             ],
           }).populate(defaultChatroomPopulation);
 
+          // Get all visible SongRequests
+          const songRequests = await SongRequest.find(
+            {
+              show: showId,
+              // visible: true,
+            },
+            null,
+            { populate: defaultSongRequestPopulation }
+          )
+            .lean()
+            .exec();
+
           // Save the showId in the socket
           socket.lastShow = showId;
 
@@ -112,6 +125,7 @@ async function start() {
                 show: foundShow,
                 messages: joinResponse?.messages,
                 availableChatrooms,
+                songRequests,
               },
             });
 
