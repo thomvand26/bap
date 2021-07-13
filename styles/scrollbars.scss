@@ -1,6 +1,9 @@
 * {
   --scrollbar-track-color: #{$color-secondary-darkest};
-  --scrollbar-thumb-color-inactive: #{$color-secondary-darker};
+  --scrollbar-thumb-color-inactive: #{rgba(
+      $color: $color-secondary-dark,
+      $alpha: 0.7
+    )};
   --scrollbar-thumb-color: #{$color-secondary-dark};
 
   scrollbar-width: thin;

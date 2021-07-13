@@ -180,6 +180,10 @@ button,
     }
   }
 
+  &--noMinHeight {
+    min-height: 0;
+  }
+
   &:disabled {
     opacity: $opacity-disabled;
     pointer-events: none;
@@ -217,4 +221,9 @@ button,
 
 #__next {
   min-height: 100%;
+}
+
+// For tooltips (react-laag)
+#layers {
+  z-index: 1000;
 }
