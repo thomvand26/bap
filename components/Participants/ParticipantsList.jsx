@@ -24,8 +24,7 @@ export const ParticipantsList = ({
   } = useShow();
   const [showInviteMenu, setShowInviteMenu] = useState([]);
 
-  return (inChatroom ? uniqueParticipantsInChatroom : uniqueParticipants)
-    .length ? (
+  return true ? (
     <div
       className={`${styles.userListContainer} ${
         inChatroom ? styles['userListContainer--inChatroom'] : ''
@@ -45,6 +44,8 @@ export const ParticipantsList = ({
         </button>
       )}
       <ul className={`${styles.userList}`}>
+        {!(inChatroom ? uniqueParticipantsInChatroom : uniqueParticipants)
+          .length && 'No participants yet'}
         {(inChatroom ? uniqueParticipantsInChatroom : uniqueParticipants).map(
           (userObject, i) => {
             const isCurrentUser = userObject._id === session?.user?._id;

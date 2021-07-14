@@ -24,6 +24,8 @@ export const SongRequestList = ({ inDashboard }) => {
         inDashboard ? styles['list--inDashboard'] : ''
       }`}
     >
+      {inDashboard && !currentSongRequests?.length && 'No song requests yet'}
+
       {(inDashboard ? currentSongRequests : visibleCurrentSongRequests)?.map?.(
         (songRequest, i) => (
           <SongRequestListItem

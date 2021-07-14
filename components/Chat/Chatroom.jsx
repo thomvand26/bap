@@ -142,7 +142,7 @@ export const Chatroom = ({ inDashboard }) => {
           </ul>
         )}
 
-        {!currentChatroom?.isGeneral && (
+        {!currentChatroom?.isGeneral && !inDashboard && (
           <button
             type="button"
             className={`button--icon ${styles.settingsButton}`}
@@ -153,6 +153,8 @@ export const Chatroom = ({ inDashboard }) => {
         )}
 
         {!inDashboard && <ChatModal />}
+
+        {!currentChatroom?.messages?.length && 'No messages yet'}
 
         {currentChatroom?.messages?.map?.((messageObject, i) => {
           return (
