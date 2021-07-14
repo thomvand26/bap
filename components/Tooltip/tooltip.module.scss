@@ -3,16 +3,16 @@
   border-radius: $border-radius;
   padding: $length-s;
   font-size: $font-size-s;
-  border: 2px solid $color-primary;
+  border: 2px solid $color-primary-light;
   font-weight: bold;
   color: $color-secondary-darkest;
-  
+
   &__arrow {
-    padding-right: 4px;
-    height: 8px;
+    padding-right: $length-xxs;
+    height: $length-xs;
 
     & path {
-      fill: $color-primary;
+      fill: $color-primary-light;
     }
   }
 }
