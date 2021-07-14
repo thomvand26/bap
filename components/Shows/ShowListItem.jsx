@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/client';
 import moment from 'moment';
 import { FaTrash } from 'react-icons/fa';
 import {
@@ -10,7 +9,7 @@ import {
   MdVisibilityOff,
 } from 'react-icons/md';
 
-import { useShow, useDatabase } from '@/context';
+import { useShow } from '@/context';
 import { EDIT_SHOW } from '@/routes';
 
 import styles from './showListItem.module.scss';
@@ -24,54 +23,43 @@ export const showListItemVariants = Object.freeze({
 /**
  * variant: one of: "playing", "planned", "artistDashboard"
  */
-export const ShowListItem = ({
-  show,
-  variant = 'playing',
-  onDuplicate,
-  onDelete,
-}) => {
-  const { goToShow, saveShow } = useShow();
-  const { dbDeleteShow } = useDatabase();
+export const ShowListItem = ({ show, variant = 'playing' }) => {
+  const { goToShow, saveShow, deleteShow, setCurrentShow } = useShow();
   const router = useRouter();
-  const [session] = useSession();
-  const [thisShow, setThisShow] = useState(show);
-
-  useEffect(() => {
-    setThisShow(show);
-  }, [show]);
+  const [loading, setLoading] = useState(false);
 
   const handleJoinClick = () => {
-    if (!thisShow) return;
+    if (!show) return;
 
-    goToShow(thisShow._id);
+    goToShow(show._id);
   };
 
   const handleEditClick = () => {
-    if (!thisShow) return;
+    if (!show) return;
+
+    setCurrentShow(show);
 
     router.push({
       pathname: EDIT_SHOW,
-      query: { showId: thisShow._id },
+      query: { showId: show._id },
     });
   };
 
   const handleDuplicateClick = async () => {
-    if (!thisShow) return;
+    if (!show) return;
 
-    let duplicateShow = { ...thisShow };
+    let duplicateShow = { ...show };
 
     delete duplicateShow._id;
     delete duplicateShow.owner;
 
     try {
-      const savedShow = await saveShow(duplicateShow);
-
-      if (onDuplicate instanceof Function) {
-        onDuplicate(savedShow);
-      }
+      setLoading(true);
+      await saveShow(duplicateShow);
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const handleRemindClick = () => {
@@ -79,39 +67,36 @@ export const ShowListItem = ({
   };
 
   const handleDeleteClick = async () => {
-    if (!thisShow) return;
+    if (!show) return;
 
     try {
-      await dbDeleteShow(thisShow, session?.user?._id);
-
-      if (onDelete instanceof Function) {
-        onDelete(thisShow._id);
-      }
+      setLoading(true);
+      await deleteShow(show);
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const handleHideClick = async () => {
-    if (!thisShow) return;
-
-    const savedShow = await saveShow({
-      _id: thisShow._id,
-      visible: !thisShow.visible,
+    if (!show) return;
+    setLoading(true);
+    await saveShow({
+      _id: show._id,
+      visible: !show.visible,
     });
-
-    setThisShow(savedShow);
+    setLoading(false);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.showName}>{thisShow?.title}</div>
+      <div className={styles.showName}>{show?.title}</div>
       <div className={styles.middle}>
-        {`${moment(thisShow?.startDate).format(
+        {`${moment(show?.startDate).format(
           'DD-MM-YYYY'
-        )}\u00A0\u00A0|\u00A0\u00A0${moment(thisShow?.startDate).format(
+        )}\u00A0\u00A0|\u00A0\u00A0${moment(show?.startDate).format(
           'HH:mm'
-        )} - ${moment(thisShow?.endDate).format('HH:mm')}`}
+        )} - ${moment(show?.endDate).format('HH:mm')}`}
       </div>
       <div className={styles.actions}>
         {variant === 'playing' ? (
@@ -123,25 +108,35 @@ export const ShowListItem = ({
           <button onClick={handleRemindClick}>Remind me!</button>
         ) : (
           <>
-            <button className="button button--icon" onClick={handleHideClick}>
-              {thisShow?.visible ? (
+            <button
+              className="button button--icon"
+              onClick={handleHideClick}
+              disabled={loading}
+            >
+              {show?.visible ? (
                 <MdVisibility size="1.7rem" />
               ) : (
                 <MdVisibilityOff size="1.7rem" />
               )}
             </button>
-            <button className="button button--icon" onClick={handleEditClick}>
+            <button
+              className="button button--icon"
+              onClick={handleEditClick}
+              disabled={loading}
+            >
               <MdDashboard size="1.6rem" />
             </button>
             <button
               className="button button--icon"
               onClick={handleDuplicateClick}
+              disabled={loading}
             >
               <MdContentCopy size="1.6rem" />
             </button>
             <button
               className="button button--icon button--danger"
               onClick={handleDeleteClick}
+              disabled={loading}
             >
               <FaTrash size="1.4rem" />
             </button>

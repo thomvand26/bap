@@ -32,38 +32,7 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const dbSaveShow = async (data) => {
-    console.log('saving show: ', data);
-    try {
-      const response = await axios.post(`${API_SHOW}/${data?._id || ''}`, data);
-      if (response?.status === 200) {
-        return response?.data?.data;
-      }
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const dbDeleteShow = async (data, userId) => {
-    console.log('deleting show: ', data);
-    try {
-      if (data?.owner?._id !== userId) {
-        throw new Error('You can only delete your own shows.');
-      }
-
-      if (!data?._id) throw new Error('No show id.');
-      const response = await axios.delete(`${API_SHOW}/${data._id}`);
-      if (response?.status === 200) {
-        return response?.data?.data;
-      }
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const exports = { dbSaveShow, dbDeleteShow, getShow, getShows };
+  const exports = { getShow, getShows };
 
   return (
     <DatabaseContext.Provider value={exports}>

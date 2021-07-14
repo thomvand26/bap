@@ -11,7 +11,6 @@ import {
   LANDING,
   SHOW,
 } from '../routes';
-import { useDatabase } from './DatabaseContext';
 import { useSocket } from './SocketContext';
 import { defaultSongRequestArraySort } from '@/server/utils/songRequestUtils';
 import {
@@ -24,7 +23,6 @@ export const useShow = () => useContext(ShowContext);
 
 export const ShowProvider = ({ children }) => {
   const { socket } = useSocket();
-  const { dbSaveShow, dbDeleteShow } = useDatabase();
   const [session] = useSession();
   const router = useRouter();
 
@@ -165,21 +163,21 @@ export const ShowProvider = ({ children }) => {
               !(modal?.type === 'invite' && modal?.chatroomId === chatroom?._id)
           )
         );
+        upsertDocumentInArrayState({
+          setFunction: setAvailableChatrooms,
+          document: chatroom,
+        });
+      } else {
+        setAvailableChatrooms((prev) => {
+          const newAvailableChatrooms = prev?.map?.((prevChatroom) =>
+            prevChatroom?._id === chatroom?._id
+              ? { ...prevChatroom, chatroom }
+              : prevChatroom
+          );
+          return newAvailableChatrooms;
+        });
       }
 
-      setAvailableChatrooms((prev) => {
-        const newAvailableChatrooms =
-          type === 'join'
-            ? !prev?.find((prevChatroom) => prevChatroom?._id === chatroom._id)
-              ? [...prev, chatroom]
-              : prev
-            : prev?.map?.((prevChatroom) =>
-                prevChatroom?._id === chatroom?._id
-                  ? { ...prevChatroom, chatroom }
-                  : prevChatroom
-              );
-        return newAvailableChatrooms;
-      });
 
       setCurrentChatroom((prev) =>
         prev?._id === chatroom?._id ? { ...prev, ...chatroom } : prev
