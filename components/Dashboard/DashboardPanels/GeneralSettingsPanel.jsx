@@ -1,15 +1,15 @@
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
-import React, { useEffect } from 'react';
 import * as Yup from 'yup';
 import moment from 'moment';
 
 import { DashboardPanel } from './DashboardPanel';
-import { Input } from '@/components';
-import { useShow } from '@/context/ShowContext';
+import { Input, LoadingSpinner } from '@/components';
+import { useShow } from '@/context';
+import { ARTIST_DASHBOARD, EDIT_SHOW } from '@/routes';
 
 import styles from './dashboardPanel.module.scss';
-import { useRouter } from 'next/router';
-import { ARTIST_DASHBOARD, EDIT_SHOW } from '@/routes';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -21,21 +21,38 @@ const validationSchema = Yup.object().shape({
 });
 
 export const GeneralSettingsPannel = ({
-  defaultShow,
-  loadingShow,
+  isNewShow,
   ...props
 }) => {
-  const { setCurrentShow, saveShow, deleteShow } = useShow();
+  const {
+    currentShow,
+    setCurrentShow,
+    saveShow,
+    deleteShow,
+    loadingShow,
+  } = useShow();
   const router = useRouter();
 
+  const [saving, setSaving] = useState(false);
+  const [enableReinitialize, setEnableReinitialize] = useState(true);
+
   useEffect(() => {
-    setCurrentShow(defaultShow);
-  }, [defaultShow]);
+    if (isNewShow || (!isNewShow && currentShow?._id)) {
+      setEnableReinitialize(false);
+    } else if (!isNewShow && !currentShow?._id) {
+      setEnableReinitialize(true);
+    }
+  }, [currentShow, isNewShow]);
 
   const handleSubmit = async (values) => {
-    const savedShow = await saveShow({ ...values, _id: defaultShow?._id });
-    if (defaultShow?._id) return;
-    if (!defaultShow?._id && savedShow?._id) {
+    if (saving) return;
+    setSaving(true);
+    const savedShow = await saveShow({ ...values, _id: currentShow?._id });
+    setSaving(false);
+    if (currentShow?._id) return;
+    if (!currentShow?._id && savedShow?._id) {
+      setCurrentShow(savedShow);
+
       router.push({
         pathname: EDIT_SHOW,
         query: { showId: savedShow._id },
@@ -44,134 +61,125 @@ export const GeneralSettingsPannel = ({
   };
 
   const handleDelete = async () => {
-    if (!defaultShow?._id) {
+    if (!currentShow?._id) {
       console.log('no show, cannot delete null');
       return;
     }
 
-    await deleteShow(defaultShow);
+    await deleteShow(currentShow);
 
     router.push(ARTIST_DASHBOARD);
   };
 
   return (
     <DashboardPanel name="General settings" {...props}>
-      <Formik
-        validationSchema={validationSchema}
-        enableReinitialize={loadingShow}
-        initialValues={{
-          title: defaultShow?.title || '',
-          startDate: defaultShow?.startDate || moment(),
-          endDate: defaultShow?.endDate || moment().add(2, 'h'),
-          maxWatchers: defaultShow?.maxWatchers || 200,
-          // allowSongRequests: defaultShow?.allowSongRequests,
-          visible: defaultShow?.visible,
-          streamURL: defaultShow?.streamURL || '',
-          maxSongRequestsPerUser: defaultShow?.maxSongRequestsPerUser || 1,
-        }}
-        onSubmit={handleSubmit}
-      >
-        <Form
-          className={`${styles.form} ${styles[`form--2col`]}`}
-          onChange={(event) =>
-            event?.target?.id === 'streamURL' &&
-            setCurrentShow((prev) => ({
-              ...prev,
-              streamURL: event.target?.value?.trim?.(),
-            }))
-          }
+      {loadingShow ? (
+        <LoadingSpinner />
+      ) : (
+        <Formik
+          validationSchema={validationSchema}
+          enableReinitialize={enableReinitialize}
+          initialValues={{
+            title: currentShow?.title || '',
+            startDate: currentShow?.startDate || moment(),
+            endDate: currentShow?.endDate || moment().add(2, 'h'),
+            visible: currentShow?.visible,
+            streamURL: currentShow?.streamURL || '',
+            maxSongRequestsPerUser: currentShow?.maxSongRequestsPerUser || 1,
+          }}
+          onSubmit={handleSubmit}
         >
-          <h3 className={styles.panel__subtitle}>General</h3>
-          <div className={styles.inputContainer}>
-            <div>
+          <Form
+            className={`${styles.form} ${styles[`form--2col`]}`}
+            onChange={(event) => {
+              event?.target?.id === 'streamURL' &&
+                setCurrentShow((prev) => ({
+                  ...prev,
+                  streamURL: event.target?.value?.trim?.(),
+                }));
+            }}
+          >
+            <h3 className={styles.panel__subtitle}>General</h3>
+            <div className={styles.inputContainer}>
+              <div>
+                <Input
+                  name="title"
+                  label="Show title"
+                  type="text"
+                  autoComplete="off"
+                  variant="light"
+                />
+                <Input
+                  name="startDate"
+                  label="Start date"
+                  type="datetime"
+                  autoComplete="off"
+                  variant="light"
+                  withTime
+                />
+                <Input
+                  name="endDate"
+                  label="End date"
+                  type="datetime"
+                  autoComplete="off"
+                  variant="light"
+                  withTime
+                />
+              </div>
+              <div>
+                <Input
+                  name="maxSongRequestsPerUser"
+                  label="Maximum song requests per user"
+                  type="slider"
+                  variant="light"
+                  min={0}
+                  max={10}
+                  step={1}
+                  info="How many song requests can the user make? (Song requests will be disabled if this is set to 0.)"
+                />
+                <Input
+                  name="visible"
+                  label="Visible"
+                  type="toggle"
+                  variant="light"
+                  info="Should everyone be able to see & get reminders to this show?"
+                />
+              </div>
+            </div>
+            <h3 className={styles.panel__subtitle}>Stream</h3>
+            <div className={styles.inputContainer}>
               <Input
-                name="title"
-                label="Show title"
+                name="streamURL"
+                label="Stream URL"
                 type="text"
                 autoComplete="off"
                 variant="light"
               />
-              <Input
-                name="startDate"
-                label="Start date"
-                type="datetime"
-                autoComplete="off"
-                variant="light"
-                withTime
-              />
-              <Input
-                name="endDate"
-                label="End date"
-                type="datetime"
-                autoComplete="off"
-                variant="light"
-                withTime
-              />
             </div>
-            <div>
-              <Input
-                name="maxWatchers"
-                label="Maximum participants"
-                type="slider"
-                variant="light"
-                min={10}
-                max={1000}
-                step={10}
-              />
-              {/* <Input
-                name="allowSongRequests"
-                label="Allow song request"
-                type="toggle"
-                variant="light"
-              /> */}
-              <Input
-                name="maxSongRequestsPerUser"
-                label="Maximum song requests per user"
-                type="slider"
-                variant="light"
-                min={0}
-                max={10}
-                step={1}
-                info="How many song requests can the user make? (Song requests will be disabled if this is set to 0.)"
-              />
-              <Input
-                name="visible"
-                label="Visible"
-                type="toggle"
-                variant="light"
-                info="Should everyone be able to see & get reminders to this show?"
-              />
-            </div>
-          </div>
-          <h3 className={styles.panel__subtitle}>Stream</h3>
-          <div className={styles.inputContainer}>
-            <Input
-              name="streamURL"
-              label="Stream URL"
-              type="text"
-              autoComplete="off"
-              variant="light"
-            />
-          </div>
-          <div className={styles.panel__buttonGroup}>
-            {loadingShow === false && defaultShow?._id ? (
-              <>
-                <button type="submit">Save</button>
-                {/* <button type="button">Start the show!</button> */}
-                <button
-                  className="button button--ghost button--danger"
-                  type="button"
-                  onClick={handleDelete}
-                >
-                  Delete this show
+            <div className={styles.panel__buttonGroup}>
+              {loadingShow === false && currentShow?._id ? (
+                <>
+                  <button type="submit" disabled={saving}>
+                    Save
+                  </button>
+                  <button
+                    className="button button--ghost button--danger"
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={saving}
+                  >
+                    Delete this show
+                  </button>
+                </>
+              ) : (
+                <button type="submit" disabled={saving}>
+                  Create show
                 </button>
-              </>
-            ) : (
-              <button type="submit">Create show</button>
-            )}
-          </div>
-        </Form>
-      </Formik>
+              )}
+            </div>
+          </Form>
+        </Formik>
+      )}
     </DashboardPanel>
   );
 };

@@ -1,14 +1,22 @@
+import { getSession } from 'next-auth/client';
+
 import { withDB } from 'middleware';
 import { Show } from 'models';
-import { removeUndefinedFromObject, parseObjectStrings } from 'server/utils';
+import {
+  removeUndefinedFromObject,
+  parseObjectStrings,
+  emitShowsUpdate,
+} from 'server/utils';
 
 const show = async (req, res) => {
   const { method, query } = req;
+  const session = await getSession({ req });
 
   let filters = removeUndefinedFromObject(query);
   filters = parseObjectStrings(filters);
 
   try {
+    const io = req.io;
     let responseData;
 
     switch (method) {
@@ -19,7 +27,14 @@ const show = async (req, res) => {
         ]);
         break;
       case 'POST':
-        responseData = await Show.create(req.body);
+        if (!session?.user?._id) throw new Error('Not logged in!');
+
+        responseData = await Show.create({
+          ...req.body,
+          owner: session?.user?._id,
+        });
+
+        emitShowsUpdate({ io, type: 'create', show: responseData });
         break;
 
       default:

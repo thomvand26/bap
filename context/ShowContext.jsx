@@ -14,6 +14,10 @@ import {
 import { useDatabase } from './DatabaseContext';
 import { useSocket } from './SocketContext';
 import { defaultSongRequestArraySort } from '@/server/utils/songRequestUtils';
+import {
+  removeDocumentFromArrayState,
+  upsertDocumentInArrayState,
+} from '@/utils';
 
 export const ShowContext = createContext();
 export const useShow = () => useContext(ShowContext);
@@ -24,18 +28,25 @@ export const ShowProvider = ({ children }) => {
   const [session] = useSession();
   const router = useRouter();
 
-  const [playingShows, setPlayingShows] = useState([]);
+  // Shows
+  const [loadingShow, setLoadingShow] = useState(true);
+  const [fetchedShows, setFetchedShows] = useState([]);
   const [currentShow, setCurrentShow] = useState();
   const [uniqueParticipants, setUniqueParticipants] = useState([]);
+  const [ownShows, setOwnShows] = useState();
+
+  // Chat
+  const [loadingChat, setLoadingChat] = useState();
+  const [availableChatrooms, setAvailableChatrooms] = useState([]);
   const [currentChatroom, setCurrentChatroom] = useState();
   const [uniqueParticipantsInChatroom, setUniqueParticipantsInChatroom] =
     useState([]);
-  const [availableChatrooms, setAvailableChatrooms] = useState([]);
   const [ownChatroom, setOwnChatroom] = useState();
   const [showChatroomSettings, setShowChatroomSettings] = useState();
   const [openChatMessage, setOpenChatMessage] = useState();
   const [chatModalQueue, setChatModalQueue] = useState([]);
-  const [loadingChat, setLoadingChat] = useState();
+
+  // Song requests
   const [currentSongRequests, setCurrentSongRequests] = useState([]);
 
   useEffect(() => {
@@ -47,12 +58,35 @@ export const ShowProvider = ({ children }) => {
       }
     };
 
-    socket.on('showUpdate', (data) => {
-      setCurrentShow(data);
+    socket.on('showUpdate', ({ type, show }) => {
+      // console.log('showUpdate', type, show);
+      if (!show) return;
+      setCurrentShow(show);
     });
 
-    socket.on('showsUpdate', (data) => {
-      setPlayingShows(data?.shows);
+    socket.on('showsUpdate', ({ type, show }) => {
+      // console.log('showsUpdate', type, show);
+      if (!show) return;
+
+      switch (type) {
+        case 'delete':
+          removeDocumentFromArrayState({
+            setFunction: setFetchedShows,
+            document: show,
+          });
+
+          break;
+
+        case 'create':
+        case 'update':
+        default:
+          upsertDocumentInArrayState({
+            setFunction: setFetchedShows,
+            document: show,
+          });
+
+          break;
+      }
     });
 
     socket.on('chatroomInvite', (data) => {
@@ -260,24 +294,36 @@ export const ShowProvider = ({ children }) => {
     socket.emit('leaveRequest', callback);
   }
 
-  const saveShow = async (data, callback) => {
-    const userId = session?.user?._id;
-    if (!userId) {
-      console.log('no user id');
-      return;
+  const saveShow = async (data) => {
+    console.log('saving show: ', data);
+
+    const response = await axios.post(`${API_SHOW}/${data?._id || ''}`, data);
+
+    if (response?.data?.success) {
+      upsertDocumentInArrayState({
+        setFunction: setOwnShows,
+        document: response.data.data,
+      });
+      return response.data.data;
     }
-    const newShow = await dbSaveShow({ ...data, owner: userId });
-    return newShow;
+
+    return response;
   };
 
-  const deleteShow = async (data, callback) => {
-    const userId = session?.user?._id;
-    if (!userId) {
-      console.log('no user id');
-      return;
+  const deleteShow = async (data) => {
+    console.log('deleting show: ', data);
+
+    const response = await axios.delete(`${API_SHOW}/${data._id}`);
+
+    if (response?.data?.success) {
+      removeDocumentFromArrayState({
+        setFunction: setOwnShows,
+        document: data,
+      });
+      return response?.data?.data;
     }
-    const deletedShow = await dbDeleteShow({ ...data, owner: userId });
-    return deletedShow;
+
+    return response;
   };
 
   const joinShow = (showId, callback) => {
@@ -550,7 +596,8 @@ export const ShowProvider = ({ children }) => {
 
   const exports = {
     // Shows
-    playingShows,
+    fetchedShows,
+    setFetchedShows,
 
     // Show
     setCurrentShow,
@@ -561,6 +608,10 @@ export const ShowProvider = ({ children }) => {
     goToShow,
     kickUser,
     uniqueParticipants,
+    loadingShow,
+    setLoadingShow,
+    ownShows,
+    setOwnShows,
 
     // Chatrooms
     availableChatrooms,

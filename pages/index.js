@@ -1,19 +1,19 @@
 import { useSession } from 'next-auth/client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { ShowList } from '@/components';
 import { Layouts } from '@/layouts';
 import { LOGIN } from '@/routes';
 import { useDatabase, useShow } from '@/context';
+import { upsertDocumentInArrayState, filterShowsPlayingNow } from '@/utils';
 
 // import styles from './index.module.scss';
 
 export default function HomePage() {
   const [session, loading] = useSession();
   const { getShows } = useDatabase();
-  const {setCurrentShow} = useShow();
-  const [playingShows, setPlayingShows] = useState();
+  const { setCurrentShow, fetchedShows, setFetchedShows } = useShow();
   const router = useRouter();
 
   useEffect(() => {
@@ -45,14 +45,22 @@ export default function HomePage() {
         visible: true,
       });
 
-      setPlayingShows(response);
+      upsertDocumentInArrayState({
+        setFunction: setFetchedShows,
+        documentsArray: response,
+      });
     })();
   }, [session, loading]);
 
   return (
     <div className="page">
       <h2 className="pageHeader">Shows</h2>
-      <ShowList shows={playingShows} />
+      <ShowList
+        shows={filterShowsPlayingNow({
+          shows: fetchedShows,
+          onlyVisible: true,
+        })}
+      />
     </div>
   );
 }

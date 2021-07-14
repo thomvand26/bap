@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Dashboard } from './Dashboard';
 import {
   DashboardPanel,
@@ -7,7 +8,7 @@ import {
   SongRequestsPanel,
 } from './DashboardPanels';
 
-export const ShowPerformanceDashboard = ({ show, loadingShow }) => {
+export const ShowPerformanceDashboard = () => {
   return (
     <Dashboard>
       <StreamPreviewPanel name="Preview" toggle colspan={2} rowspan={2} />

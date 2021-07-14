@@ -38,17 +38,14 @@ export const getShowById = (io, showId) => {
   });
 };
 
-export const emitShowsUpdate = async ({ io, show, showId }) => {
+export const emitShowsUpdate = async ({ io, type, show, showId }) => {
   const updatedShow =
     show || (await Show.findById(showId).populate(defaultShowPopulation));
 
-  // TODO: use Shows not socket connections
-  io.sockets.emit('showsUpdate', {
-    shows: getAllShows(io),
-  });
+  io.sockets.emit('showsUpdate', { type, show: updatedShow });
 
   if (updatedShow) {
-    io.to(`${updatedShow._id}`).emit('showUpdate', updatedShow);
+    io.to(`${updatedShow._id}`).emit('showUpdate', { type, show: updatedShow });
   }
 };
 

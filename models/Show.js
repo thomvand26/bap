@@ -27,17 +27,10 @@ const ShowSchema = new Schema(
       type: Date,
       default: new Date() + 2 * 60 * 60 * 1000, // Now + 2 hours
     },
-    maxWatchers: {
-      type: Number,
-    },
     maxSongRequestsPerUser: {
       type: Number,
       default: 1,
     },
-    // allowSongRequests: {
-    //   type: Boolean,
-    //   default: true,
-    // },
     streamURL: {
       type: String,
       trim: true,

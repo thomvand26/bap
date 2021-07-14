@@ -11,51 +11,63 @@ import { PERFORM_SHOW } from '@/routes';
 import styles from './editShow.module.scss';
 
 export default function CreateShowPage() {
-  const { currentShow, setCurrentShow } = useShow();
+  const { currentShow, setCurrentShow, setLoadingShow } = useShow();
   const { getShow } = useDatabase();
   const router = useRouter();
-  const [defaultShowData, setDefaultShowData] = useState(); // unnecessary?
-  const [loadingShow, setLoadingShow] = useState(true);
-  const [session] = useSession();
+  const [session, loadingSession] = useSession();
+  const [isNewShow, setIsNewShow] = useState();
 
   useEffect(() => {
     if (!router.isReady) return;
+    setLoadingShow(true);
+    setIsNewShow(false);
 
     const { showId } = router.query;
 
     if (!showId) {
       setLoadingShow(false);
+      setIsNewShow(true);
       return;
     }
 
     (async () => {
+      console.log(session);
       if (!session) return;
 
+      // Use current show if it's the requested show
       if (currentShow?._id === showId) {
-        setDefaultShowData(currentShow);
         setLoadingShow(false);
         return;
       }
 
-      const show = await getShow(showId);
+      setCurrentShow(null);
 
+      // Get the show
+      const show = await getShow(showId);
+      console.log(show);
+
+      // If the show doesn't exist yet, go to the create page
       if (session.user._id !== show?.owner?._id) {
         router.push(CREATE_SHOW);
         return;
       }
 
-      setDefaultShowData(show);
       setLoadingShow(false);
+
+      // Set the currentShow
       setCurrentShow(show);
     })();
-  }, [router.isReady, router.query, session]);
+  }, [router.isReady, router.query, session, loadingSession]);
 
   return (
     <div className={styles.page}>
-      <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>
-        <a className={`button button--fit ${styles.viewButton}`}>Go to performance view</a>
-      </Link>
-      <ShowSettingsDashboard show={defaultShowData} loadingShow={loadingShow} />
+      <div className={styles.top}>
+        <h1>{currentShow?.title}</h1>
+        <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>
+          <a className={`button button--fit`}>Go to performance view</a>
+        </Link>
+      </div>
+      <ShowSettingsDashboard isNewShow={isNewShow} />
     </div>
   );
 }
