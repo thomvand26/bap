@@ -31,7 +31,7 @@ const chatroom = async (req, res) => {
 
         // Create/update the Chatroom
         responseData = await Chatroom.findOneAndUpdate(
-          { owner: session.user._id, isGeneral: { $ne: true } },
+          { show: showId, owner: session.user._id, isGeneral: { $ne: true } },
           {
             owner: session.user._id,
             show: showId,

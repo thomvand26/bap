@@ -98,7 +98,7 @@ async function start() {
           // (= general & joined chatrooms)
           const availableChatrooms = await Chatroom.find({
             $or: [
-              { members: Types.ObjectId(userId) },
+              { show: showId, members: Types.ObjectId(userId) },
               { show: showId, isGeneral: true },
             ],
           }).populate(defaultChatroomPopulation);
