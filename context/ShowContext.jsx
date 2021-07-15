@@ -31,7 +31,7 @@ export const ShowProvider = ({ children }) => {
   const [fetchedShows, setFetchedShows] = useState([]);
   const [currentShow, setCurrentShow] = useState();
   const [uniqueParticipants, setUniqueParticipants] = useState([]);
-  const [ownShows, setOwnShows] = useState();
+  const [ownShows, setOwnShows] = useState([]);
 
   // Chat
   const [loadingChat, setLoadingChat] = useState();
@@ -204,6 +204,13 @@ export const ShowProvider = ({ children }) => {
       console.log('kicked!', type, data);
 
       if (type === 'show') {
+        setCurrentShow(null)
+        setAvailableChatrooms([])
+        setCurrentChatroom(null)
+        setOwnChatroom(null)
+        setOpenChatMessage(null)
+        setChatModalQueue([])
+        setCurrentSongRequests([])
         if (router.asPath.startsWith(`${SHOW}/${data?._id || data}`)) {
           router.push(LANDING);
         }

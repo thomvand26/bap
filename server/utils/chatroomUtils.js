@@ -116,7 +116,7 @@ export const leaveChatroomsByUserInShow = async ({
           socket.leave(`${chatroom?._id}`);
 
           if (removeFromShowUpdates) {
-            socket.emit('kicked', { type: 'show', data: showId });
+            socket.emit('kicked', { type: 'show', data: { _id: showId } });
             socket.leave(`${showId}`);
             resetLastSocketShow(socket);
           }
@@ -202,7 +202,10 @@ export const leaveChatroomsBySocketId = async ({
           console.log(`leaving socket: ${socket?.lastShow}`);
 
           if (removeFromShowUpdates) {
-            socket.emit('kicked', { type: 'show', data: socket?.lastShow });
+            socket.emit('kicked', {
+              type: 'show',
+              data: { _id: socket?.lastShow },
+            });
             socket.leave(`${socket?.lastShow}`);
             resetLastSocketShow(socket);
           }
