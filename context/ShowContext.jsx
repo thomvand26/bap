@@ -178,7 +178,6 @@ export const ShowProvider = ({ children }) => {
         });
       }
 
-
       setCurrentChatroom((prev) =>
         prev?._id === chatroom?._id ? { ...prev, ...chatroom } : prev
       );
@@ -205,7 +204,9 @@ export const ShowProvider = ({ children }) => {
       console.log('kicked!', type, data);
 
       if (type === 'show') {
-        router.push(LANDING);
+        if (router.asPath.startsWith(`${SHOW}/${data?._id || data}`)) {
+          router.push(LANDING);
+        }
       } else if (type === 'chatroom') {
         const { originalChatroom, generalChatroom } = data;
 

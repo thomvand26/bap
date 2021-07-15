@@ -97,7 +97,7 @@ export const leaveChatroomsByUserInShow = async ({
     let userConnectionsList = [];
 
     chatroom?.participants.forEach((userObject) => {
-      if (`${userObject.user}` === `${userId}`) {
+      if (`${(userObject.user?._id || userObject.user)}` === `${userId}`) {
         userConnectionsList.push(userObject);
       } else {
         newParticipantsList.push(userObject);
