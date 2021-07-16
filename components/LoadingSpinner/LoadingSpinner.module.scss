@@ -1,0 +1,48 @@
+.container {
+  --loading-spinner-size: #{$spacing-m};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  &--horizontal {
+    flex-direction: row;
+  }
+
+  &--small {
+    --loading-spinner-size: #{$length-xxl};
+  }
+}
+
+.shapeshifter {
+  width: var(--loading-spinner-size);
+  height: var(--loading-spinner-size);
+  mask-image: url('/loading-spinner/loading-spinner.svg');
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  background-color: $color-primary;
+  margin-right: $length-s;
+  animation-duration: 300ms;
+  animation-timing-function: steps(6);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-name: shapeshifterSpinner;
+}
+
+.message {
+  color: $color-secondary-darker;
+  font-weight: bold;
+  text-align: center;
+}
+
+@keyframes shapeshifterSpinner {
+  0% {
+    mask-position: 0px 0px;
+  }
+  100% {
+    mask-position: calc(-6 * var(--loading-spinner-size)) 0px;
+  }
+}
