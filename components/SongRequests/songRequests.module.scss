@@ -5,6 +5,20 @@
   padding: 0 $length-l/2;
 }
 
+.loadingContainer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+  z-index: 10;
+  background-color: $color-loading-overlay;
+  
+  &--dark {
+    background-color: $color-loading-overlay-dark;
+  }
+}
+
 .listItem {
   --song-request-color-primary: #{$color-secondary-lighter};
   --song-request-color-secondary: #{$color-secondary-darkest};

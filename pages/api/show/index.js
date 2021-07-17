@@ -21,10 +21,10 @@ const show = async (req, res) => {
 
     switch (method) {
       case 'GET':
-        responseData = await Show.find({ ...filters }).populate('owner', [
-          '_id',
-          'username',
-        ]);
+        responseData = await Show.find({ ...filters })
+          .populate('owner', ['_id', 'username'])
+          .lean()
+          .exec();
         break;
       case 'POST':
         if (!session?.user?._id) throw new Error('Not logged in!');

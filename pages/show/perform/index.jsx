@@ -10,14 +10,13 @@ import { EDIT_SHOW } from '@/routes';
 import styles from './performShow.module.scss';
 
 export default function PerformShowPage() {
-  const { currentShow, joinShow } = useShow();
+  const { currentShow, joinShow, loadingShow, setLoadingShow } = useShow();
   const router = useRouter();
-  const [loadingShow, setLoadingShow] = useState(true);
   const [session] = useSession();
 
   useEffect(() => {
     if (!router.isReady) return;
-    if (!loadingShow) return;
+    setLoadingShow(true);
 
     const { showId } = router.query;
 

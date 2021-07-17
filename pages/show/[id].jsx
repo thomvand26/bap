@@ -10,18 +10,20 @@ import { useShow } from '@/context';
 
 import styles from './show.module.scss';
 import { useSession } from 'next-auth/client';
+import { LoadingSpinner } from '@/components/LoadingSpinner/LoadingSpinner';
 
 export default function ShowPage(params) {
   const router = useRouter();
   const { id } = router.query;
-  const { joinShow, currentShow } = useShow();
+  const { joinShow, currentShow, loadingShow, setLoadingShow } = useShow();
   const [error, setError] = useState();
-  const [loading, setLoading] = useState(true);
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
   const [session, loadingSession] = useSession();
 
   useEffect(() => {
     if (!id || loadingSession) return;
+
+    setLoadingShow(true);
 
     joinShow(id, (response) => {
       if (response?.type === 'error') {
@@ -31,7 +33,7 @@ export default function ShowPage(params) {
         console.log('success');
       }
 
-      setLoading(false);
+      setLoadingShow(false);
     });
   }, [id, loadingSession]);
 
@@ -39,21 +41,8 @@ export default function ShowPage(params) {
     setUrlValid(currentShow?.streamURL);
   }, [currentShow?.streamURL]);
 
-  // useEffect(() => {
-  //   console.log(currentShow?.connectedUsers);
-  //   if (loadingSession || !currentShow?.connectedUsers) return;
-  //   if (
-  //     !currentShow?.connectedUsers.find(
-  //       (userObject) => userObject.user._id === session?.user?._id
-  //     )
-  //   ) {
-  //     console.log('not in connectedUsers');
-  //     router.push(LANDING);
-  //   }
-  // }, [currentShow?.connectedUsers, loadingSession]);
-
-  return loading ? (
-    <></>
+  return loadingShow ? (
+    <LoadingSpinner />
   ) : error ? (
     <div className={`page ${styles.page} ${styles.pageError}`}>
       <h2>Error: show not found</h2>
@@ -62,7 +51,7 @@ export default function ShowPage(params) {
       </Link>
     </div>
   ) : (
-    <div className={styles.page}>
+    <div className={`scrollbars--dark ${styles.page}`}>
       <div className={styles.showStream}>
         {urlValid ? (
           <ReactPlayer

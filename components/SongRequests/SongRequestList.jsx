@@ -4,9 +4,10 @@ import { useShow } from '@/context';
 import { SongRequestListItem } from './SongRequestListItem';
 
 import styles from './songRequests.module.scss';
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 
 export const SongRequestList = ({ inDashboard }) => {
-  const { currentSongRequests } = useShow();
+  const { currentSongRequests, loadingShow } = useShow();
   const [visibleCurrentSongRequests, setVisibleCurrentSongRequests] =
     useState();
 
@@ -20,11 +21,24 @@ export const SongRequestList = ({ inDashboard }) => {
 
   return (
     <ul
-      className={`${styles.list} ${
+      className={`${styles.list} ${!inDashboard ? 'scrollbars--dark' : ''} ${
         inDashboard ? styles['list--inDashboard'] : ''
       }`}
     >
-      {inDashboard && !currentSongRequests?.length && 'No song requests yet'}
+      {loadingShow && (
+        <div
+          className={`${styles.loadingContainer} ${
+            !inDashboard ? styles['loadingContainer--dark'] : ''
+          }`}
+        >
+          <LoadingSpinner />
+        </div>
+      )}
+
+      {!loadingShow &&
+        inDashboard &&
+        !currentSongRequests?.length &&
+        'No song requests yet'}
 
       {(inDashboard ? currentSongRequests : visibleCurrentSongRequests)?.map?.(
         (songRequest, i) => (

@@ -47,15 +47,11 @@ export default function ArtistDashboardPage() {
           New show
         </a>
       </Link>
-      {loadingShows ? (
-        <LoadingSpinner />
-      ) : (
-        <ShowList
-          shows={ownShows}
-          variant="artistDashboard"
-          headers={['Show name', 'Date', 'Actions']}
-        />
-      )}
+      <ShowList
+        shows={ownShows}
+        variant="artistDashboard"
+        headers={['Show name', 'Date', 'Actions']}
+      />
     </div>
   );
 }

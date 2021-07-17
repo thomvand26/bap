@@ -29,6 +29,7 @@ export const Chatroom = ({ inDashboard }) => {
     availableChatrooms,
     joinChatroom,
     loadingChat,
+    loadingShow,
   } = useShow();
   const chatContentRef = useRef();
   const wasScrolledToBottom = useRef(true);
@@ -55,9 +56,17 @@ export const Chatroom = ({ inDashboard }) => {
   };
 
   return (
-    <div className={`${styles.container}`}>
-      {loadingChat && (
-        <div className={styles.loadingContainer}>
+    <div
+      className={`${styles.container} ${
+        inDashboard ? styles['container--inDashboard'] : ''
+      }`}
+    >
+      {(loadingChat || loadingShow) && (
+        <div
+          className={`${styles.loadingContainer} ${
+            !inDashboard ? styles['loadingContainer--dark'] : ''
+          }`}
+        >
           <LoadingSpinner />
         </div>
       )}
@@ -154,7 +163,10 @@ export const Chatroom = ({ inDashboard }) => {
 
         {!inDashboard && <ChatModal />}
 
-        {!currentChatroom?.messages?.length && 'No messages yet'}
+        {!loadingChat &&
+          !loadingShow &&
+          !currentChatroom?.messages?.length &&
+          'No messages yet'}
 
         {currentChatroom?.messages?.map?.((messageObject, i) => {
           return (
