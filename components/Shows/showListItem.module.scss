@@ -5,6 +5,34 @@
   border-radius: $border-radius-l;
   padding: $length-m $length-xl;
   font-size: $font-size-m;
+  min-height: 5.25rem;
+
+  &--cards {
+    flex-direction: column;
+    padding: $spacing-xxs;
+    min-height: 20rem;
+
+    & .showName {
+      margin-bottom: $length-s;
+      text-align: center;
+    }
+
+    & .middle {
+      margin: 0;
+      margin-bottom: $spacing-xxs;
+    }
+
+    & .actions {
+      flex-direction: column;
+
+      & > * {
+        &:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: $length-l;
+        }
+      }
+    }
+  }
 }
 
 .showName {
@@ -16,18 +44,29 @@
 .middle {
   font-weight: bold;
   color: $color-secondary-dark;
+  margin: 0 $length-xl;
 }
 
 .actions {
   flex: 1;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
 
   & > * {
-    margin-right: $length-xl;
-
-    &:last-child {
-      margin-right: 0;
+    &:not(:last-child) {
+      margin-right: $length-xl;
     }
+  }
+}
+
+.watching {
+  display: flex;
+  align-items: flex-end;
+  color: $color-secondary-dark;
+  font-weight: bold;
+
+  &__icon {
+    margin-right: $length-xs;
   }
 }
