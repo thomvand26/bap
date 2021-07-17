@@ -10,7 +10,7 @@ import {
 } from 'react-icons/md';
 
 import { useShow } from '@/context';
-import { LoadingSpinner } from '@components';
+import { LoadingSpinner } from '@/components';
 import { EDIT_SHOW } from '@/routes';
 import { convertToUniqueParticipantsArray } from '@/utils';
 
