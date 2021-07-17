@@ -205,13 +205,13 @@ export const ShowProvider = ({ children }) => {
       console.log('kicked!', type, data);
 
       if (type === 'show') {
-        setCurrentShow(null)
-        setAvailableChatrooms([])
-        setCurrentChatroom(null)
-        setOwnChatroom(null)
-        setOpenChatMessage(null)
-        setChatModalQueue([])
-        setCurrentSongRequests([])
+        setCurrentShow(null);
+        setAvailableChatrooms([]);
+        setCurrentChatroom(null);
+        setOwnChatroom(null);
+        setOpenChatMessage(null);
+        setChatModalQueue([]);
+        setCurrentSongRequests([]);
         if (router.asPath.startsWith(`${SHOW}/${data?._id || data}`)) {
           router.push(LANDING);
         }
