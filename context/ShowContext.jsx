@@ -14,6 +14,7 @@ import {
 import { useSocket } from './SocketContext';
 import { defaultSongRequestArraySort } from '@/server/utils/songRequestUtils';
 import {
+  convertToUniqueParticipantsArray,
   removeDocumentFromArrayState,
   upsertDocumentInArrayState,
 } from '@/utils';
@@ -257,32 +258,16 @@ export const ShowProvider = ({ children }) => {
   useEffect(() => {
     if (!currentShow?.connectedUsers) return;
 
-    let userObjects = new Map();
-
-    Object.values(currentShow.connectedUsers).forEach((userObject, i) => {
-      userObjects.set(userObject.user?._id, userObject.user);
-    });
-
     setUniqueParticipants(
-      Array.from(userObjects.values()).sort((userObjectA, userObjectB) =>
-        userObjectA?.username?.localeCompare?.(userObjectB?.username)
-      )
+      convertToUniqueParticipantsArray(currentShow.connectedUsers)
     );
   }, [currentShow]);
 
   useEffect(() => {
     if (!currentChatroom?.participants) return;
 
-    let userObjects = new Map();
-
-    Object.values(currentChatroom.participants).forEach((userObject, i) => {
-      userObjects.set(userObject.user?._id, userObject.user);
-    });
-
     setUniqueParticipantsInChatroom(
-      Array.from(userObjects.values()).sort((userObjectA, userObjectB) =>
-        userObjectA?.username?.localeCompare?.(userObjectB?.username)
-      )
+      convertToUniqueParticipantsArray(currentChatroom.participants)
     );
 
     if (
