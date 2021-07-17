@@ -1,9 +1,6 @@
 * {
-  --scrollbar-track-color: #{$color-secondary-darkest};
-  --scrollbar-thumb-color-inactive: #{rgba(
-      $color: $color-secondary-dark,
-      $alpha: 0.7
-    )};
+  --scrollbar-track-color: #{$color-white};
+  --scrollbar-thumb-color-inactive: #{$color-secondary-lighter};
   --scrollbar-thumb-color: #{$color-secondary-dark};
 
   scrollbar-width: thin;
@@ -29,10 +26,13 @@
   }
 }
 
-.scrollbars--light {
+.scrollbars--dark {
   & * {
-    --scrollbar-track-color: #{$color-white};
-    --scrollbar-thumb-color-inactive: #{$color-secondary-lighter};
+    --scrollbar-track-color: #{$color-secondary-darkest};
+    --scrollbar-thumb-color-inactive: #{rgba(
+        $color: $color-secondary-dark,
+        $alpha: 0.7
+      )};
     --scrollbar-thumb-color: #{$color-secondary-dark};
   }
 }
