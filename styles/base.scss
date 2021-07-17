@@ -70,6 +70,7 @@ button,
 a {
   color: inherit;
   text-decoration: none;
+  font-weight: bold;
 }
 
 button,
@@ -204,6 +205,19 @@ button,
 .pageHeader {
   text-align: center;
   margin: $page-header-margin;
+}
+
+.container {
+  width: 100%;
+  padding-left: $length-xxl;
+  padding-right: $length-xxl;
+
+  &__content {
+    width: 100%;
+    max-width: $container-width;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .form {
