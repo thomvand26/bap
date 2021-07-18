@@ -1,10 +1,8 @@
 import { DefaultLayout } from './DefaultLayout';
-import { NoSearchLayout } from './NoSearchLayout';
 import { ShowLayout } from './ShowLayout';
 
 export const Layouts = {
   default: DefaultLayout,
-  noSearch: NoSearchLayout,
   room: ShowLayout,
 };
 

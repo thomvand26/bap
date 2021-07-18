@@ -1,0 +1,57 @@
+.container {
+  position: relative;
+  height: fit-content;
+}
+
+.toggleButton {
+  color: $color-primary-light;
+  height: fit-content;
+  border: 2px solid transparent;
+  color: $color-white;
+  padding: $length-xs $length-l;
+  border-radius: $border-radius;
+
+  & > span {
+    max-width: $spacing-xl;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &--open {
+    border-color: $color-secondary-dark;
+  }
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% - 2px);
+  display: none;
+  padding: 0 $length-s;
+  background-color: $color-secondary-darker;
+  border: 2px solid $color-secondary-dark;
+  border-radius: $border-radius;
+
+  &--open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & li {
+    &:not(:last-child) {
+      & > * {
+        border-bottom: 2px solid $color-secondary-dark;
+      }
+    }
+  }
+
+  & a,
+  & button {
+    display: block;
+    padding: $length-s 0;
+    width: 100%;
+    text-align: left;
+    color: $color-white;
+    cursor: pointer;
+  }
+}

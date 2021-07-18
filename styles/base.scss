@@ -226,6 +226,15 @@ button,
   align-items: center;
 }
 
+.dropdownIcon {
+  transition: transform $transition-duration $transition-easing;
+  margin-left: $length-xs;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
 .focus-inset {
   &:focus {
     outline: none;

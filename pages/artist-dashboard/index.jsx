@@ -56,4 +56,4 @@ export default function ArtistDashboardPage() {
   );
 }
 
-ArtistDashboardPage.layout = Layouts.noSearch;
+ArtistDashboardPage.layout = Layouts.default;

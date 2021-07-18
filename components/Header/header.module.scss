@@ -3,24 +3,75 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-height: $spacing-xxs;
   height: $spacing-xxs;
-  background-color: $color-primary-light;
+  background-color: $color-secondary-darker;
+  font-weight: bold;
+  padding: 0 $length-xxl;
+
+  & a {
+    color: $color-white;
+    white-space: nowrap;
+  }
 }
 
 .inner {
   display: flex;
-  justify-content: center;
-  max-width: 100%;
-  width: $container-width;
-  margin: 0 $length-xs;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: $container-width;
+
+  &--visitor {
+    & > * {
+      flex: 1;
+    }
+  }
 }
 
-.left {
+.col {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  & > * {
+    margin-left: $spacing-xxs;
+  }
 }
 
 .right {
-  flex: 1;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+
+  & > * {
+    margin-left: $spacing-xxs;
+  }
+}
+
+.headerCTAButton {
+  height: fit-content;
+  padding: $length-xs $length-l;
+  color: $color-white;
+}
+
+.homeLink {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  & a {
+    display: flex;
+    color: $color-primary-light;
+  }
+
+  & svg {
+    height: $length-xl;
+    margin-top: 2px;
+  }
+}
+
+.notificationButton {
+  --button-color: #{$color-secondary-lighter};
 }
