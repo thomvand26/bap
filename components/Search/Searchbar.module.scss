@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.searchInputContainer {
+  position: relative;
+  flex: 2;
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    top: $length-xxs;
+    right: 0;
+    bottom: $length-xxs;
+    background-color: $color-secondary-lightest;
+  }
+}
+
+.searchInput {
+  border-radius: $border-radius 0 0 $border-radius !important;
+}
+
+.dateInputContainer {
+  flex: 1;
+}
+
+.dateInput {
+  border-radius: 0 $border-radius $border-radius 0 !important;
+}
+
+.button {
+  display: flex;
+  align-content: center;
+  height: $input-min-height;
+  width: $spacing-m;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: $border-radius;
+  z-index: 1;
+  color: $color-secondary-darkest;
+}

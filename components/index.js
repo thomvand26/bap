@@ -6,6 +6,7 @@ export * from './Inputs';
 export * from './LoadingSpinner';
 export * from './Logo';
 export * from './Participants';
+export * from './Search';
 export * from './Shows';
 export * from './SongRequests';
 export * from './Tooltip';

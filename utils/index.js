@@ -77,3 +77,20 @@ export const convertToUniqueParticipantsArray = (array) => {
 
   return userObjects;
 };
+
+export const dateBetweenShowDatesMongoDBQuery = ({ dateObject, isFullDay }) => {
+  return isFullDay
+    ? {
+        // Starts before the end of the day
+        startDate: {
+          $lt: new Date(
+            dateObject.getFullYear(),
+            dateObject.getMonth(),
+            dateObject.getDate() + 1
+          ),
+        },
+        // Ends after before the beginning of the day
+        endDate: { $gt: dateObject },
+      }
+    : { startDate: { $lte: dateObject }, endDate: { $gt: dateObject } };
+};
