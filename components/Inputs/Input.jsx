@@ -7,6 +7,7 @@ import styles from './input.module.scss';
 import { DateInput } from './DateInput';
 import { InputSlider } from './InputSlider';
 import { InputToggle } from './InputToggle';
+import { InputSelect } from './InputSelect';
 
 // variant: 'default', 'darkest', 'dark' or 'light'
 export const Input = ({
@@ -19,6 +20,8 @@ export const Input = ({
   noPadding,
   noErrors,
   onChange,
+  className,
+  containerClassName,
   ...props
 }) => {
   const id = props?.id || name;
@@ -27,8 +30,12 @@ export const Input = ({
   return (
     <div
       className={`${styles.container} ${styles[`container--${props.type}`]} ${
-        variant === 'darkest' || 'dark' || 'light' ? styles[`container--${variant}`] : ''
-      } ${noPadding ? styles['container--noPadding'] :''}`}
+        variant === 'darkest' || 'dark' || 'light'
+          ? styles[`container--${variant}`]
+          : ''
+      } ${noPadding ? styles['container--noPadding'] : ''} ${
+        props.noPaddingBottom ? styles['container--noPaddingBottom'] : ''
+      } ${containerClassName || ''} `}
     >
       <Field name={name} {...props}>
         {({ form, field }) => {
@@ -52,7 +59,6 @@ export const Input = ({
               {...field}
               {...props}
               id={id}
-              isRange={props.type === 'range'}
               label={label}
               info={info}
               hasFocused={hasFocused}
@@ -60,6 +66,21 @@ export const Input = ({
               variant={variant}
               onChange={(value) => {
                 form.setFieldValue(field.name, value);
+              }}
+            />
+          ) : props.type === 'select' ? (
+            <InputSelect
+              {...field}
+              {...props}
+              id={id}
+              label={label}
+              info={info}
+              hasFocused={hasFocused}
+              onFocus={() => setHasFocused(true)}
+              variant={variant}
+              onChange={(option) => {
+                onChange?.(option.value);
+                form.setFieldValue(field.name, option?.value);
               }}
             />
           ) : (
@@ -75,7 +96,7 @@ export const Input = ({
               </label>
               {props.type.includes?.('date') ? (
                 <DateInput
-                  className={`${styles.input} ${props?.className || ''}`}
+                  className={`${styles.input} ${className || ''}`}
                   {...field}
                   {...props}
                   id={id}
@@ -87,7 +108,7 @@ export const Input = ({
                 />
               ) : (
                 <input
-                  className={`${styles.input} ${props?.className || ''}`}
+                  className={`${styles.input} ${className || ''}`}
                   {...field}
                   {...props}
                   id={id}

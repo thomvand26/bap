@@ -25,13 +25,14 @@
 
   .input {
     border: none;
-    padding: $length-s $length-m;
+    padding: $length-s $length-m 0.6rem;
     font-size: $font-size-s;
     border-radius: $border-radius;
     min-height: $input-min-height;
     font-weight: bold;
     background-color: $color-secondary-lightest;
     color: $color-secondary-darkest;
+    width: 100%;
 
     &::placeholder {
       font-weight: bold;
@@ -75,12 +76,20 @@
     }
   }
 
+  &--defaultWidth {
+    width: $input-width;
+  }
+
   &--toggle {
     padding-top: 0;
   }
 
   &--noPadding {
     padding: 0;
+  }
+
+  &--noPaddingBottom {
+    padding-bottom: 0;
   }
 }
 
@@ -138,5 +147,110 @@
     & .checkbox {
       background-color: $color-white;
     }
+  }
+}
+
+.selectContainer {
+  &--noPaddingBottom {
+    padding-bottom: 0;
+
+    & .menu {
+      top: calc(100% + #{$focus-border-width});
+    }
+  }
+
+  & .input {
+    justify-content: space-between;
+    cursor: pointer;
+
+    &:focus {
+      box-shadow: 0 0 0 $focus-border-width $color-primary;
+    }
+
+    & .dropdownIcon {
+      color: $color-primary;
+      width: $length-m;
+      height: $length-m;
+    }
+
+    &--open {
+      box-shadow: 0 0 0 $focus-border-width $color-primary;
+    }
+  }
+
+  & .menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% - #{$font-size-s} - #{$length-xs} + #{$focus-border-width});
+    display: none;
+    padding: 0 $length-s;
+    background-color: $color-white;
+    box-shadow: 0 0 0 $focus-border-width $color-primary;
+    border-radius: $border-radius;
+    z-index: 10;
+    width: 100%;
+
+    &--open {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &--noPaddingBottom {
+      top: calc(100% + #{$focus-border-width});
+    }
+
+    & li {
+      &:not(:last-child) {
+        & > * {
+          border-bottom: 2px solid $color-secondary-lighter;
+        }
+      }
+    }
+
+    & a,
+    & button {
+      display: block;
+      padding: $length-s 0;
+      width: 100%;
+      text-align: left;
+      font-weight: bold;
+      font-size: $font-size-s;
+      color: rgba($color: $color-secondary-darkest, $alpha: 0.7);
+      cursor: pointer;
+    }
+  }
+}
+
+.dateContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  & .input {
+    cursor: pointer;
+
+    &--withCalendarIcon {
+      padding-left: $spacing-xxs;
+    }
+
+    &--withClearButton {
+      padding-right: $length-xxl + $length-m;
+    }
+  }
+
+  & .calendarIcon {
+    position: absolute;
+    width: $length-l;
+    height: $length-l;
+    color: $color-secondary-dark;
+    left: $length-m;
+    pointer-events: none;
+  }
+
+  & .closeButton {
+    position: absolute;
+    right: $length-xs;
+    cursor: pointer;
+    min-height: 0;
   }
 }
