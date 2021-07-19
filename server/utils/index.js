@@ -17,7 +17,7 @@ export const parseObjectStrings = (object) => {
   const parsedObject = { ...object };
   Object.keys(parsedObject).forEach(
     (key) =>
-      (parsedObject[key] = parsedObject[key].startsWith('{')
+      (parsedObject[key] = parsedObject[key]?.startsWith?.('{')
         ? JSON.parse(parsedObject[key])
         : parsedObject[key])
   );
