@@ -73,5 +73,5 @@
 }
 
 .notificationButton {
-  --button-color: #{$color-secondary-lighter};
+  --button-color: #{$color-secondary-lighter} !important;
 }
