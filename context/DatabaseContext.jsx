@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_SHOW } from '@/routes';
+import { API_SHOW, API_SHOWS } from '@/routes';
 
 export const DatabaseContext = createContext();
 export const useDatabase = () => useContext(DatabaseContext);
@@ -8,7 +8,7 @@ export const useDatabase = () => useContext(DatabaseContext);
 export const DatabaseProvider = ({ children }) => {
   const getShows = async (filters) => {
     try {
-      const response = await axios.get(API_SHOW, { params: filters });
+      const response = await axios.post(API_SHOWS, filters);
       if (response?.status === 200) {
         return response?.data?.data;
       }

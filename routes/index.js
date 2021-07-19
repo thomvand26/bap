@@ -15,6 +15,7 @@ export const PERFORM_SHOW = '/show/perform';
 // export const ROOMS = '/rooms';
 
 export const API_SHOW = '/api/show';
+export const API_SHOWS = '/api/shows';
 
 export const API_CHAT = '/api/chat';
 
