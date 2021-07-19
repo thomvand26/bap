@@ -12,18 +12,21 @@ import {
 import { useShow } from '@/context';
 import { LoadingSpinner } from '@/components';
 import { EDIT_SHOW } from '@/routes';
-import { convertToUniqueParticipantsArray } from '@/utils';
+import {
+  convertToUniqueParticipantsArray,
+  isShowIsCurrentlyPlaying,
+} from '@/utils';
 
 import styles from './showListItem.module.scss';
 
-
 /**
- * variant: one of: "playing", "upcoming", "artistDashboard"
+ * variant: one of: "default", "artistDashboard"
  */
-export const ShowListItem = ({ show, variant = 'playing', cards }) => {
+export const ShowListItem = ({ show, variant = 'default', cards }) => {
   const { goToShow, saveShow, deleteShow, setCurrentShow } = useShow();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const isPlaying = isShowIsCurrentlyPlaying(show);
 
   const handleJoinClick = () => {
     if (!show) return;
@@ -95,7 +98,7 @@ export const ShowListItem = ({ show, variant = 'playing', cards }) => {
         <>
           <div className={styles.showName}>{show?.title}</div>
           <div className={styles.middle}>
-            {variant === 'playing'
+            {isPlaying
               ? `Until ${moment(show?.endDate).format('HH:mm')}`
               : `${moment(show?.startDate).format(
                   'DD-MM-YYYY'
@@ -104,7 +107,7 @@ export const ShowListItem = ({ show, variant = 'playing', cards }) => {
                 )} - ${moment(show?.endDate).format('HH:mm')}`}
           </div>
           <div className={styles.actions}>
-            {variant === 'playing' ? (
+            {isPlaying ? (
               <>
                 <div className={styles.watching}>
                   <FaUser className={styles.watching__icon} size="1.4rem" />

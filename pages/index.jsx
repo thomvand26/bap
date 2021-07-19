@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { ShowList, LoadingSpinner } from '@/components';
@@ -15,6 +15,7 @@ export default function HomePage() {
   const { getShows } = useDatabase();
   const { setCurrentShow, fetchedShows, setFetchedShows } = useShow();
   const router = useRouter();
+  const [isFetching, setIsFetching] = useState();
 
   useEffect(() => {
     if (session === undefined) return;
@@ -23,6 +24,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (loading) return;
+    setIsFetching(true);
     setCurrentShow(null);
 
     const userId = session?.user?._id;
@@ -33,11 +35,9 @@ export default function HomePage() {
     }
 
     (async () => {
-      const currentDate = new Date().toISOString();
-
       const response = await getShows({
-        startDate: {
-          $lt: currentDate,
+        endDate: {
+          $gte: new Date(),
         },
         visible: true,
       });
@@ -46,6 +46,8 @@ export default function HomePage() {
         setFunction: setFetchedShows,
         documentsArray: response,
       });
+
+      setIsFetching(false);
     })();
   }, [session, loading]);
 
@@ -58,8 +60,9 @@ export default function HomePage() {
           shows={filterShowsPlayingNow({
             shows: fetchedShows,
             onlyVisible: true,
-          }).slice(0, 3)}
+          }).currentlyPlayingShows.slice(0, 3)}
           cards
+          loading={isFetching}
           isOnHome
           withBrowseAllButton
         />

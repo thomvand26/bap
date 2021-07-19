@@ -51,6 +51,7 @@ export default function ArtistDashboardPage() {
         shows={ownShows}
         variant="artistDashboard"
         headers={['Show name', 'Date', 'Actions']}
+        loading={loadingShows}
       />
     </div>
   );

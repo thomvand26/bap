@@ -30,7 +30,6 @@
 .showList {
   display: flex;
   flex-direction: column;
-  margin-bottom: $length-xxl;
   width: 100%;
 
   & > * {
@@ -57,4 +56,5 @@
 
 .browseAllLink {
   color: $color-secondary-darker;
+  margin-top: $length-xxl;
 }

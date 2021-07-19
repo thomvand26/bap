@@ -25,16 +25,29 @@ export const removeDocumentFromArrayState = ({ setFunction, document }) => {
   );
 };
 
-export const filterShowsPlayingNow = ({ shows, onlyVisible }) => {
+export const isShowIsCurrentlyPlaying = (show) => {
   const now = Date.now();
 
-  return shows?.filter?.((show) => {
-    const isCurrentlyPlaying =
-      now >= new Date(show?.startDate).getTime() &&
-      now < new Date(show?.endDate).getTime();
+  return (
+    now >= new Date(show?.startDate).getTime() &&
+    now < new Date(show?.endDate).getTime()
+  );
+};
+
+export const filterShowsPlayingNow = ({ shows, onlyVisible }) => {
+  let currentlyPlayingShows = [];
+  let upcomingShows = [];
+
+  shows?.forEach?.((show) => {
+    const isCurrentlyPlaying = isShowIsCurrentlyPlaying(show);
     const isVisible = show?.visible;
-    return isCurrentlyPlaying && onlyVisible ? isVisible : true;
+
+    if (onlyVisible && !isVisible) return;
+
+    (isCurrentlyPlaying ? currentlyPlayingShows : upcomingShows).push(show);
   });
+
+  return { currentlyPlayingShows, upcomingShows };
 };
 
 /**
