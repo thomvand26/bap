@@ -47,13 +47,13 @@ export const Header = () => {
             <div className={styles.col}>
               <Link
                 href={
-                  router.asPath.startsWith(`${REGISTER}`) ? LOGIN : REGISTER
+                  router?.asPath?.startsWith(`${REGISTER}`) ? LOGIN : REGISTER
                 }
               >
                 <a
                   className={`button button--fit button--noMinHeight button--ghost ${styles.headerCTAButton}`}
                 >
-                  {router.asPath.startsWith(`${REGISTER}`)
+                  {router?.asPath?.startsWith(`${REGISTER}`)
                     ? 'Login'
                     : 'Register'}
                 </a>

@@ -4,12 +4,16 @@
 }
 
 .toggleButton {
+  --button-color: transparent;
   color: $color-primary-light;
   height: fit-content;
-  border: 2px solid transparent;
   color: $color-white;
   padding: $length-xs $length-l;
   border-radius: $border-radius;
+
+  &:focus {
+    box-shadow: 0 0 0 $focus-border-width $color-secondary-dark;
+  }
 
   & > span {
     max-width: $spacing-xl;
@@ -18,19 +22,20 @@
   }
 
   &--open {
-    border-color: $color-secondary-dark;
+    box-shadow: 0 0 0 $focus-border-width $color-secondary-dark;
   }
 }
 
 .menu {
   position: absolute;
   right: 0;
-  top: calc(100% - 2px);
+  top: calc(100% + #{$focus-border-width});
   display: none;
   padding: 0 $length-s;
   background-color: $color-secondary-darker;
-  border: 2px solid $color-secondary-dark;
   border-radius: $border-radius;
+  z-index: 10;
+  box-shadow: 0 0 0 $focus-border-width $color-secondary-dark;
 
   &--open {
     display: flex;

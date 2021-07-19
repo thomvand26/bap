@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { useSession } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { MdArrowDropDown } from 'react-icons/md';
 
-import { ARTIST_DASHBOARD } from '@/routes';
+import { ARTIST_DASHBOARD, LANDING } from '@/routes';
 
 import styles from './userDropdown.module.scss';
 
@@ -11,6 +12,12 @@ export const UserDropdown = () => {
   const [session] = useSession();
   const [open, setOpen] = useState(false);
   const containerRef = useRef();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    signOut();
+    router.push(LANDING);
+  };
 
   return (
     <div
@@ -23,7 +30,7 @@ export const UserDropdown = () => {
       }}
     >
       <button
-        className={`button--ghost button--noMinHeight button--fit ${
+        className={`button--noMinHeight button--fit ${
           styles.toggleButton
         } ${open ? styles['toggleButton--open'] : ''}`}
         onClick={() => setOpen((prev) => !prev)}
@@ -42,7 +49,9 @@ export const UserDropdown = () => {
           <button className={`button--unstyled`}>Settings</button>
         </li>
         <li>
-          <button className={`button--unstyled`}>Logout</button>
+          <button className={`button--unstyled`} onClick={handleLogout}>
+            Logout
+          </button>
         </li>
       </ul>
     </div>
