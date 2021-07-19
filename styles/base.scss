@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@400;700&display=swap');
 
+@mixin focus {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 $focus-border-width $color-primary;
+  }
+}
+
 :root {
   --button-color: #{$color-primary-light};
 }
@@ -57,13 +64,10 @@ select,
 a,
 button,
 .button {
+  @include focus;
+
   &:hover {
     filter: opacity(0.8);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 $focus-border-width $color-primary;
   }
 }
 
