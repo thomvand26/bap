@@ -3,12 +3,12 @@
   --scrollbar-thumb-color-inactive: #{$color-secondary-lighter};
   --scrollbar-thumb-color: #{$color-secondary-dark};
 
-  scrollbar-width: thin;
+  scrollbar-width: auto;
   scrollbar-color: var(--scrollbar-thumb-color-inactive)
     var(--scrollbar-track-color);
 
   &::-webkit-scrollbar {
-    width: $length-s;
+    width: $length-m;
 
     &-track {
       background-color: var(--scrollbar-track-color);
