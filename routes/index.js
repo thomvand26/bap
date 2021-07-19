@@ -1,5 +1,6 @@
 export const LANDING = '/';
 export const HOME = '/home';
+export const ABOUT = '/about';
 
 export const LOGIN = '/auth/login';
 export const REGISTER = '/auth/register';
