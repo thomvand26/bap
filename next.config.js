@@ -1,5 +1,4 @@
 const path = require('path');
-const { SETTINGS, SETTINGS_ACCOUNT } = require('./routes');
 
 module.exports = {
   sassOptions: {
@@ -9,8 +8,8 @@ module.exports = {
   async redirects() {
     return [
       {
-        source: SETTINGS,
-        destination: SETTINGS_ACCOUNT,
+        source: '/settings',
+        destination: '/settings/account',
         permanent: true,
       },
     ];
