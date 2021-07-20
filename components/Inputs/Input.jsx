@@ -22,6 +22,8 @@ export const Input = ({
   onChange,
   className,
   containerClassName,
+  defaultWidth,
+  noPaddingBottom,
   ...props
 }) => {
   const id = props?.id || name;
@@ -34,8 +36,10 @@ export const Input = ({
           ? styles[`container--${variant}`]
           : ''
       } ${noPadding ? styles['container--noPadding'] : ''} ${
-        props.noPaddingBottom ? styles['container--noPaddingBottom'] : ''
-      } ${containerClassName || ''} `}
+        noPaddingBottom ? styles['container--noPaddingBottom'] : ''
+      } ${defaultWidth ? styles['container--defaultWidth'] : ''} ${
+        containerClassName || ''
+      } `}
     >
       <Field name={name} {...props}>
         {({ form, field }) => {
