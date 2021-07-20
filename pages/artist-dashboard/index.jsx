@@ -11,7 +11,7 @@ import { SearchForm } from '@/components/Search/SearchForm';
 
 export default function ArtistDashboardPage() {
   const { setCurrentShow, ownShows, setOwnShows } = useShow();
-  const [loadingShows, setLoadingShows] = useState();
+  const [loadingShows, setLoadingShows] = useState(true);
 
   const onSearch = ({ currentlyPlayingShows, upcomingShows }) => {
     setOwnShows([...currentlyPlayingShows, ...upcomingShows]);
