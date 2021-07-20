@@ -1,4 +1,5 @@
 import { Input } from '@/components';
+import { Layouts } from '@/layouts/LayoutWrapper';
 import { LOGIN } from '@/routes';
 import { Form, Formik } from 'formik';
 import { csrfToken, getSession, signIn } from 'next-auth/client';
@@ -51,40 +52,39 @@ export default function RegisterPage({ csrfToken }) {
 
   return (
     <div className="page">
-      <h1 className="page__title">Register</h1>
+      <h1 className="page__title">Welcome to <span className={styles.pageTitleRoomStage}>RoomStage</span>!</h1>
+      <h1 className={styles.formTitle}>Register</h1>
       <Formik
         validationSchema={() => validationSchema(() => router.push('/'))}
         initialValues={{ email: '', username: '', password: '' }}
         validateOnChange={false}
         validateOnBlur={false}
       >
-        <Form
-          onChange={(event) =>
-            event?.target?.id === 'videoId' &&
-            setVideoURLInput(event.target?.value?.trim?.())
-          }
-          className="form"
-        >
+        <Form className={styles.form}>
           <Input
             name="email"
             label="Email"
             type="email"
             // autoComplete="off"
+            defaultWidth
           />
           <Input
             name="username"
             label="Username"
             type="username"
             // autoComplete="off"
+            defaultWidth
           />
           <Input
             name="password"
             label="Password"
             type="password"
             // autoComplete="off"
+            defaultWidth
+            noPaddingBottom
           />
           <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
-          <button type="submit">Create account</button>
+          <button type="submit" className={styles.submitButton}>Create account</button>
           <span className={styles.authSwitch}>
             Already have an account?
             <Link href={LOGIN}>
@@ -96,6 +96,8 @@ export default function RegisterPage({ csrfToken }) {
     </div>
   );
 }
+
+RegisterPage.layout = Layouts.default;
 
 RegisterPage.getInitialProps = async (context) => {
   const { req, res } = context;

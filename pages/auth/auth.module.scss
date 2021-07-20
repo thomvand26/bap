@@ -1,3 +1,23 @@
+.pageTitleRoomStage {
+  color: $color-primary;
+}
+
+.formTitle {
+  font-size: $font-size-l;
+  margin-bottom: $length-xxl;
+  color: $color-secondary-darker;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submitButton {
+  margin-top: $spacing-m;
+}
+
 .authSwitch {
   display: flex;
   font-size: $font-size-s;

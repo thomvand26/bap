@@ -1,12 +1,6 @@
 import { Input } from '@/components';
 import { Form, Formik } from 'formik';
-import {
-  csrfToken,
-  getSession,
-  providers,
-  signIn,
-  useSession,
-} from 'next-auth/client';
+import { csrfToken, signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -14,6 +8,7 @@ import * as Yup from 'yup';
 import { REGISTER } from '@/routes';
 
 import styles from './auth.module.scss';
+import { Layouts } from '@/layouts/LayoutWrapper';
 
 const validationSchema = (onValid) =>
   Yup.object()
@@ -63,34 +58,34 @@ export default function LoginPage({ providers, csrfToken }) {
 
   return (
     <div className="page">
-      <h1 className="page__title">Login</h1>
+      <h1 className="page__title">Welcome back!</h1>
+      <h1 className={styles.formTitle}>Login</h1>
       <Formik
         validationSchema={() => validationSchema(() => router.push('/'))}
         initialValues={{ email: '', password: '' }}
         validateOnChange={false}
         validateOnBlur={false}
       >
-        <Form
-          onChange={(event) =>
-            event?.target?.id === 'videoId' &&
-            setVideoURLInput(event.target?.value?.trim?.())
-          }
-          className="form"
-        >
+        <Form className={styles.form}>
           <Input
             name="email"
             label="Email"
             type="email"
             // autoComplete="off"
+            defaultWidth
           />
           <Input
             name="password"
             label="Password"
             type="password"
             // autoComplete="off"
+            defaultWidth
+            noPaddingBottom
           />
           <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
-          <button type="submit">Login</button>
+          <button type="submit" className={styles.submitButton}>
+            Login
+          </button>
           <span className={styles.authSwitch}>
             Don't have an account yet?
             <Link href={REGISTER}>
@@ -103,20 +98,26 @@ export default function LoginPage({ providers, csrfToken }) {
   );
 }
 
+LoginPage.layout = Layouts.default;
+
 LoginPage.getInitialProps = async (context) => {
-  const { req, res } = context;
-  const session = await getSession({ req });
-  if (res && session?.accessToken) {
-    res.WriteHead(302, {
-      Location: '/',
-    });
-    res.end();
-    return;
-  }
+  // const { req, res } = context;
+  // const session = await getSession({ req });
+  // if (res && session?.accessToken) {
+  //   res.WriteHead(302, {
+  //     Location: '/',
+  //   });
+  //   res.end();
+  //   return;
+  // }
+  // res.end();
+  console.time('csrf');
+  const csrf = await csrfToken(context);
+  console.timeEnd('csrf');
 
   return {
-    session: undefined,
-    providers: await providers(context),
-    csrfToken: await csrfToken(context),
+    // session: undefined,
+    // providers: await providers(context),
+    csrfToken: csrf,
   };
 };
