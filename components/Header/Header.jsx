@@ -15,7 +15,7 @@ export const Header = () => {
   const router = useRouter();
 
   return (
-    <div className={styles.header}>
+    <header className={styles.header}>
       <div
         className={`${styles.inner} ${
           !session ? styles['inner--visitor'] : ''
@@ -77,6 +77,6 @@ export const Header = () => {
           </div>
         )}
       </div>
-    </div>
+    </header>
   );
 };

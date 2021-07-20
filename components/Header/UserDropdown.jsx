@@ -30,9 +30,9 @@ export const UserDropdown = () => {
       }}
     >
       <button
-        className={`button--noMinHeight button--fit ${
-          styles.toggleButton
-        } ${open ? styles['toggleButton--open'] : ''}`}
+        className={`button--noMinHeight button--fit ${styles.toggleButton} ${
+          open ? styles['toggleButton--open'] : ''
+        }`}
         onClick={() => setOpen((prev) => !prev)}
       >
         <span>{session?.user?.username}</span>
