@@ -6,6 +6,10 @@
 
 .searchGroup {
   margin-bottom: $length-xxl;
+
+  &--artistDashboard {
+    margin-bottom: $spacing-m;
+  }
 }
 
 .filterGroup {

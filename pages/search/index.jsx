@@ -1,64 +1,19 @@
 import React, { useState } from 'react';
 
 import { Layouts } from '@/layouts';
-import { useDatabase } from '@/context';
 import { SearchForm, ShowList } from '@/components';
 
 import styles from './searchPage.module.scss';
-import {
-  dateBetweenShowDatesMongoDBQuery,
-  filterShowsPlayingNow,
-} from '@/utils';
 
 export default function SearchPage() {
-  const { getShows } = useDatabase();
   const [upcomingShows, setUpcomingShows] = useState([]);
   const [currentlyPlayingShows, setCurrentlyPlayingShows] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  async function searchShows(data) {
-    setLoading(true);
-
-    const dateObject = new Date(data?.date);
-
-    // Format the date query
-    const date =
-      data?.date && data?.date !== ''
-        ? dateBetweenShowDatesMongoDBQuery({ dateObject, isFullDay: true })
-        : {};
-
-    // Format the rest of the query
-    let query = {
-      ...(data?.search
-        ? { title: { $regex: data.search, $options: 'i' } }
-        : {}),
-      // TODO: reminders
-      // ...(data?.reminded ? { reminded: data.date } : {}),
-      ...(data?.currentlyPlaying === true
-        ? dateBetweenShowDatesMongoDBQuery({ dateObject: new Date() })
-        : data?.currentlyPlaying === false
-        ? { startDate: { $gt: new Date() } }
-        : {}),
-      visible: true,
-    };
-
-    // Join the query
-    query = { $and: [query, date, { endDate: { $gte: new Date() } }] };
-
-    const response = await getShows(query);
-
-    // Filter and set separate show groups
-    const { currentlyPlayingShows: currentlyPlaying, upcomingShows: upcoming } =
-      filterShowsPlayingNow({
-        shows: response,
-        onlyVisible: true,
-      });
-
-    setUpcomingShows(upcoming);
-    setCurrentlyPlayingShows(currentlyPlaying);
-
-    setLoading(false);
-  }
+  const onSearch = (shows) => {
+    setUpcomingShows(shows?.upcomingShows);
+    setCurrentlyPlayingShows(shows?.currentlyPlayingShows);
+  };
 
   return (
     <div>
@@ -66,7 +21,11 @@ export default function SearchPage() {
         <h1>Search shows</h1>
         <section className={styles.searchSection}>
           <div className=" container__content">
-            <SearchForm searchShows={searchShows} />
+            <SearchForm
+              variant="light"
+              onSearch={onSearch}
+              setLoadingShow={setLoading}
+            />
           </div>
         </section>
       </div>

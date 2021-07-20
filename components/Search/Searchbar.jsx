@@ -5,14 +5,14 @@ import { Input } from '@/components';
 
 import styles from './Searchbar.module.scss';
 
-export const Searchbar = ({ inArtistDashboard, className }) => {
+export const Searchbar = ({ artistDashboard, className, variant }) => {
   return (
     <div className={`${styles.container} ${className || ''}`}>
       <Input
         name="search"
         type="text"
         autoComplete="off"
-        variant="light"
+        variant={variant}
         placeholder="Search shows"
         noPadding
         noErrors
@@ -26,11 +26,11 @@ export const Searchbar = ({ inArtistDashboard, className }) => {
         className={`${styles.dateInput}`}
         containerClassName={`${styles.dateInputContainer}`}
         autoComplete="off"
-        variant="light"
+        variant={variant}
         withClearButton
         noPadding
         withIcon
-        minDate={!inArtistDashboard ? 'today' : null}
+        minDate={!artistDashboard ? 'today' : null}
       />
       <button
         type="submit"
