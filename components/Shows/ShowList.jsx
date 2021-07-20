@@ -12,7 +12,7 @@ import styles from './showList.module.scss';
 export const ShowList = ({
   shows,
   loading,
-  variant = 'playing',
+  variant,
   className,
   cards,
   headers,

@@ -98,7 +98,7 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
         <>
           <div className={styles.showName}>{show?.title}</div>
           <div className={styles.middle}>
-            {isPlaying
+            {isPlaying && variant !== 'artistDashboard'
               ? `Until ${moment(show?.endDate).format('HH:mm')}`
               : `${moment(show?.startDate).format(
                   'DD-MM-YYYY'
@@ -107,20 +107,7 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
                 )} - ${moment(show?.endDate).format('HH:mm')}`}
           </div>
           <div className={styles.actions}>
-            {isPlaying ? (
-              <>
-                <div className={styles.watching}>
-                  <FaUser className={styles.watching__icon} size="1.4rem" />
-                  {
-                    convertToUniqueParticipantsArray(show?.connectedUsers)
-                      ?.length
-                  }
-                </div>
-                <button onClick={handleJoinClick}>Join</button>
-              </>
-            ) : variant === 'upcoming' ? (
-              <button onClick={handleRemindClick}>Remind me!</button>
-            ) : (
+            {variant === 'artistDashboard' ? (
               <>
                 <button
                   className="button button--icon"
@@ -155,6 +142,19 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
                   <FaTrash size="1.4rem" />
                 </button>
               </>
+            ) : isPlaying ? (
+              <>
+                <div className={styles.watching}>
+                  <FaUser className={styles.watching__icon} size="1.4rem" />
+                  {
+                    convertToUniqueParticipantsArray(show?.connectedUsers)
+                      ?.length
+                  }
+                </div>
+                <button onClick={handleJoinClick}>Join</button>
+              </>
+            ) : (
+              <button onClick={handleRemindClick}>Remind me!</button>
             )}
           </div>
         </>
