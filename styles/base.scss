@@ -203,6 +203,7 @@ button,
 
   &__title {
     margin-bottom: $spacing-m;
+    color: $color-secondary-darkest;
   }
 }
 
@@ -222,12 +223,6 @@ button,
     margin-left: auto;
     margin-right: auto;
   }
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .dropdownIcon {
