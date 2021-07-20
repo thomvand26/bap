@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { MdArrowDropDown } from 'react-icons/md';
 
-import { ARTIST_DASHBOARD, LANDING } from '@/routes';
+import { ARTIST_DASHBOARD, LANDING, SETTINGS } from '@/routes';
 
 import styles from './userDropdown.module.scss';
 
@@ -46,7 +46,7 @@ export const UserDropdown = () => {
           <Link href={ARTIST_DASHBOARD}>Artist dashboard</Link>
         </li>
         <li>
-          <button className={`button--unstyled`}>Settings</button>
+          <Link href={SETTINGS}>Settings</Link>
         </li>
         <li>
           <button className={`button--unstyled`} onClick={handleLogout}>

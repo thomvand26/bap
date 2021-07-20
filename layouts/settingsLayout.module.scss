@@ -1,0 +1,13 @@
+.page {
+  --header-height: #{$header-height};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}

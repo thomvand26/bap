@@ -4,6 +4,9 @@ export const ABOUT = '/about';
 
 export const LOGIN = '/auth/login';
 export const REGISTER = '/auth/register';
+export const SETTINGS = '/settings'
+export const SETTINGS_ACCOUNT = '/settings/account'
+export const SETTINGS_REMINDERS = '/settings/reminders'
 
 export const SEARCH = '/search';
 
@@ -14,6 +17,8 @@ export const CREATE_SHOW = '/show/edit';
 export const EDIT_SHOW = '/show/edit';
 export const PERFORM_SHOW = '/show/perform';
 // export const ROOMS = '/rooms';
+
+export const API_USER = '/api/user';
 
 export const API_SHOW = '/api/show';
 export const API_SHOWS = '/api/shows';

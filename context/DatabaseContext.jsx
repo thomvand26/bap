@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_SHOW, API_SHOWS } from '@/routes';
+import { API_SHOW, API_SHOWS, API_USER } from '@/routes';
 
 export const DatabaseContext = createContext();
 export const useDatabase = () => useContext(DatabaseContext);
@@ -32,7 +32,19 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const exports = { getShow, getShows };
+  const updateUser = async (data) => {
+    try {
+      const response = await axios.post(API_USER, data);
+      if (response?.status === 200) {
+        return response?.data?.data;
+      }
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const exports = { getShow, getShows, updateUser };
 
   return (
     <DatabaseContext.Provider value={exports}>

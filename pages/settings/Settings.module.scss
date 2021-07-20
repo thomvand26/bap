@@ -1,0 +1,17 @@
+.page {
+  flex: 1;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.saveButton {
+  margin-top: $spacing-m;
+}
+
+.deleteButton {
+  margin-top: $length-xxl;
+}

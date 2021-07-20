@@ -149,7 +149,7 @@ button,
     padding: 0 $length-xxs;
     min-height: fit-content;
     background-color: transparent;
-    color: $color-primary;
+    color: var(--button-color);
     width: fit-content;
   }
 
