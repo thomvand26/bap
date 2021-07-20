@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { Header } from '@/components';
+import { Header, Footer } from '@/components';
 import { appConfig } from '@/config';
 
 import styles from './defaultLayout.module.scss';
@@ -16,6 +16,8 @@ export const DefaultLayout = ({ children }) => {
       <Header />
 
       <main>{children}</main>
+
+      <Footer />
     </div>
   );
 };

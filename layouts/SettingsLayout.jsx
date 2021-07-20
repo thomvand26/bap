@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { Header, SettingsSidebar } from '@/components';
+import { Header, SettingsSidebar, Footer } from '@/components';
 import { appConfig } from '@/config';
 
 import styles from './settingsLayout.module.scss';
@@ -19,6 +19,8 @@ export const SettingsLayout = ({ children }) => {
         <SettingsSidebar />
         {children}
       </main>
+
+      <Footer />
     </div>
   );
 };
