@@ -10,6 +10,23 @@
   padding: 0 $length-xxl;
   color: $color-secondary-darkest;
 
+  & li {
+    &:global(.active) {
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: $color-primary-light;
+        height: $length-xxs;
+        border-radius: $border-radius-s;
+      }
+    }
+  }
+
   & a {
     white-space: nowrap;
   }

@@ -42,6 +42,12 @@
   }
 
   & li {
+    &:global(.active) {
+      &:after {
+        display: none;
+      }
+    }
+
     &:not(:last-child) {
       & > * {
         border-bottom: 2px solid $color-secondary-lighter;

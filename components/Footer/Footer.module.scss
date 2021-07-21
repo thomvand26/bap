@@ -38,6 +38,23 @@
   justify-content: flex-end;
   margin-left: $length-xl;
 
+  & li {
+    &:global(.active) {
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: $color-primary-light;
+        height: $length-xxs;
+        border-radius: $border-radius-s;
+      }
+    }
+  }
+
   & > * {
     &:not(:last-child) {
       margin-right: $spacing-xxs;

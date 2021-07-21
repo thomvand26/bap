@@ -30,16 +30,16 @@ export const Header = () => {
         {!session ? (
           <>
             <ul className={styles.col}>
-              <li>
+              <li className={router.pathname === LANDING ? 'active' : ''}>
                 <Link href={LANDING}>Home</Link>
               </li>
-              <li>
+              <li className={router.pathname === LANDING ? 'active' : ''}>
                 <Link href={LANDING}>About</Link>
               </li>
-              <li>
+              <li className={router.pathname === LANDING ? 'active' : ''}>
                 <Link href={LANDING}>Features</Link>
               </li>
-              <li>
+              <li className={router.pathname === LANDING ? 'active' : ''}>
                 <Link href={LANDING}>Shows</Link>
               </li>
             </ul>
@@ -62,10 +62,10 @@ export const Header = () => {
         ) : (
           <div className={styles.right}>
             <ul className={styles.col}>
-              <li>
+              <li className={router.pathname === SEARCH ? 'active' : ''}>
                 <Link href={SEARCH}>Find shows</Link>
               </li>
-              <li>
+              <li className={router.pathname === ABOUT ? 'active' : ''}>
                 <Link href={ABOUT}>About</Link>
               </li>
             </ul>

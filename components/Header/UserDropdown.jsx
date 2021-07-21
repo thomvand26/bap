@@ -42,10 +42,10 @@ export const UserDropdown = () => {
         />
       </button>
       <ul className={`${styles.menu} ${open ? styles['menu--open'] : ''}`}>
-        <li>
+        <li className={router.pathname === ARTIST_DASHBOARD ? 'active' : ''}>
           <Link href={ARTIST_DASHBOARD}>Artist dashboard</Link>
         </li>
-        <li>
+        <li className={router.pathname === SETTINGS ? 'active' : ''}>
           <Link href={SETTINGS}>Settings</Link>
         </li>
         <li>
