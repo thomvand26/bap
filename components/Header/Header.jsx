@@ -8,7 +8,6 @@ import { UserDropdown } from './UserDropdown';
 
 import styles from './header.module.scss';
 import { useRouter } from 'next/router';
-import { MdNotificationsNone } from 'react-icons/md';
 
 export const Header = () => {
   const [session] = useSession();
@@ -70,9 +69,6 @@ export const Header = () => {
                 <Link href={ABOUT}>About</Link>
               </li>
             </ul>
-            <button className={`button--icon ${styles.notificationButton}`}>
-              <MdNotificationsNone size="30px" />
-            </button>
             <UserDropdown />
           </div>
         )}
