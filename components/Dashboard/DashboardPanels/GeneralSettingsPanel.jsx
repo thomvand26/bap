@@ -18,19 +18,14 @@ const validationSchema = Yup.object().shape({
     .required('Required'),
   startDate: Yup.string().required('Required'),
   endDate: Yup.string().required('Required'),
+  visible: Yup.boolean(),
+  streamURL: Yup.string(),
+  maxSongRequestsPerUser: Yup.number(),
 });
 
-export const GeneralSettingsPannel = ({
-  isNewShow,
-  ...props
-}) => {
-  const {
-    currentShow,
-    setCurrentShow,
-    saveShow,
-    deleteShow,
-    loadingShow,
-  } = useShow();
+export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
+  const { currentShow, setCurrentShow, saveShow, deleteShow, loadingShow } =
+    useShow();
   const router = useRouter();
 
   const [saving, setSaving] = useState(false);
@@ -142,7 +137,7 @@ export const GeneralSettingsPannel = ({
                   label="Visible"
                   type="toggle"
                   variant="light"
-                  info="Should everyone be able to see & get reminders to this show?"
+                  info="Should everyone be able to see this show?"
                 />
               </div>
             </div>
