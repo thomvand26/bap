@@ -4,6 +4,7 @@ import { GoogleApiProvider } from './GoogleApiContext';
 import { DatabaseProvider } from './DatabaseContext';
 import { SocketProvider } from './SocketContext';
 import { ShowProvider } from './ShowContext';
+import { ModalProvider } from './ModalContext';
 
 export const GlobalContext = createContext();
 
@@ -17,7 +18,9 @@ export const GlobalProvider = ({ children, pageProps }) => {
           <SocketProvider>
             <GoogleApiProvider>
               <ShowProvider>
-                {children}
+                <ModalProvider>
+                  {children}
+                </ModalProvider>
               </ShowProvider>
             </GoogleApiProvider>
           </SocketProvider>

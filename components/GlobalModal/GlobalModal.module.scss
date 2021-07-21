@@ -1,0 +1,29 @@
+.container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($color: $color-secondary-darkest, $alpha: 0.7);
+  z-index: 100;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $color-white;
+  border-radius: $border-radius-l;
+  padding: $spacing-m;
+}
+
+.actionList {
+  display: flex;
+  margin-top: $spacing-m;
+
+  & > * {
+    &:not(:last-child) {
+      margin-right: $spacing-xxs;
+    }
+  }
+}
