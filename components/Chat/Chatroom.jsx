@@ -90,10 +90,8 @@ export const Chatroom = ({ inDashboard }) => {
               {currentChatroom?.name}
               {availableChatrooms?.length > 1 && (
                 <MdArrowDropDown
-                  className={`${styles.chatHeader__titleIcon} ${
-                    showAvailableChatrooms
-                      ? styles['chatHeader__titleIcon--open']
-                      : ''
+                  className={`dropdownIcon ${
+                    showAvailableChatrooms ? 'open' : ''
                   }`}
                   viewBox="6 6 12 12"
                 />

@@ -39,6 +39,8 @@
   }
 
   &__title {
+    display: flex;
+    align-items: center;
     position: relative;
     margin-right: $length-xs;
     white-space: nowrap;
@@ -51,23 +53,9 @@
     }
   }
 
-  &__titleIcon {
-    position: absolute;
-    right: 0;
-
-    transition: transform $transition-duration $transition-easing;
-
-    &--open {
-      transform: rotate(180deg);
-    }
-  }
-
   &__chatroomList {
-    // position: absolute;
-    // top: 100%;
     position: sticky;
     top: -$length-l/2;
-    // left: $length-l/2;
     margin-top: -$length-l/2;
     background-color: $color-secondary-darker;
     z-index: 8;

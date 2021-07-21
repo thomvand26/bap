@@ -48,9 +48,7 @@ export const Chat = () => {
         >
           <h2 className={`h4 ${styles.requests__title}`}>Song requests</h2>
           <MdArrowDropDown
-            className={`${styles.requests__titleIcon} ${
-              !minimizeShowRequests ? styles['requests__titleIcon--open'] : ''
-            }`}
+            className={`dropdownIcon ${!minimizeShowRequests ? 'open' : ''}`}
             viewBox="6 6 12 12"
           />
         </button>

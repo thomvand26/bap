@@ -54,21 +54,13 @@
 
   &__titleButton {
     padding: 0 $length-m;
+    color: $color-secondary-lightest;
   }
 
   &__title {
     padding: $length-m;
+    padding-right: 0;
     color: $color-secondary-lightest;
-  }
-
-  &__titleIcon {
-    color: $color-secondary-lightest;
-
-    transition: transform $transition-duration $transition-easing;
-
-    &--open {
-      transform: rotate(180deg);
-    }
   }
 
   & > ul {
