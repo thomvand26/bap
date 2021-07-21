@@ -1,4 +1,4 @@
-import '../styles/globals.scss';
+import '../styles/app.scss';
 import { GlobalProvider } from '../context';
 import { LayoutWrapper } from '../layouts';
 
