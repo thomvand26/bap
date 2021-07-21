@@ -62,8 +62,9 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
     setLoading(false);
   };
 
-  const handleRemindClick = () => {
-    console.log('toggle reminder');
+  const handleAddCalendarClick = () => {
+    // TODO
+    console.log('Add to calendar');
   };
 
   const handleDeleteClick = async () => {
@@ -154,7 +155,7 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
                 <button onClick={handleJoinClick}>Join</button>
               </>
             ) : (
-              <button onClick={handleRemindClick}>Remind me!</button>
+              <button onClick={handleAddCalendarClick}>Add to calendar</button>
             )}
           </div>
         </>
