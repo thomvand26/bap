@@ -18,7 +18,7 @@ export default function ArtistDashboardPage() {
   };
 
   return (
-    <div className={`page container ${styles.page}`}>
+    <div className={`page container`}>
       <div className="container__content">
         <h2 className="pageHeader">Artist Dashboard</h2>
         <Link href={CREATE_SHOW}>

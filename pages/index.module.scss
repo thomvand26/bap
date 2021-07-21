@@ -1,21 +1,14 @@
-// .main {
-//   background-color: $color-primary;
-//   // background-color: blue;
-//   height: 100%;
-// }
-
-// .page {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// }
-
 .section {
-  margin-bottom: $spacing-xl;
+  &:not(:last-child) {
+    margin-bottom: $spacing-xl;
+  }
 }
 
 .page404 {
-  padding: $spacing-xl $length-xxl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-xl $length-xxl 0;
   text-align: center;
 }
 

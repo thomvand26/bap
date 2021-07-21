@@ -15,10 +15,8 @@
 
 .showListSection {
   & > * {
-    margin-bottom: $spacing-m;
-
-    &:last-child {
-      margin-bottom: $spacing-xl;
+    &:not(:last-child) {
+      margin-bottom: $spacing-m;
     }
   }
 }
