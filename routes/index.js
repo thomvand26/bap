@@ -5,8 +5,6 @@ export const ABOUT = '/about';
 export const LOGIN = '/auth/login';
 export const REGISTER = '/auth/register';
 export const SETTINGS = '/settings'
-export const SETTINGS_ACCOUNT = '/settings/account'
-export const SETTINGS_REMINDERS = '/settings/reminders'
 
 export const SEARCH = '/search';
 

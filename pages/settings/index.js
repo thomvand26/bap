@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Layouts } from '@/layouts';
-import { useDatabase } from '@/context';
+import { useDatabase, useModal } from '@/context';
 import { Input, ProtectedRoute } from '@/components';
 
 import styles from './Settings.module.scss';
-import { useRouter } from 'next/router';
 
 const validationSchema = () =>
   Yup.object().shape({
     username: Yup.string().required('Username is required.'),
   });
 
-export default function AccountSettingsPage() {
+export default function SettingsPage() {
   const [session] = useSession();
   const { updateUser } = useDatabase();
+  const { setModalData } = useModal();
   const router = useRouter();
 
   const [updating, setUpdating] = useState(false);
@@ -30,10 +30,31 @@ export default function AccountSettingsPage() {
     setUpdating(false);
   };
 
+  const confirmDelete = async () => {
+    console.log('Confirmed. Account can be deleted now');
+  };
+
+  const handleDelete = async () => {
+    // Show warning modal
+    setModalData({
+      heading: 'Are you sure you want to delete your account?',
+      actions: [
+        { type: 'danger', text: 'Yes, delete it', onClick: confirmDelete },
+        { text: 'No, go back', onClick: () => setModalData(null) },
+      ],
+    });
+
+    // Delete account
+    // TODO
+
+    // Redirect
+    // TODO
+  };
+
   return (
     <div className={`page ${styles.page}`}>
       <ProtectedRoute />
-      <h1 className="pageHeader">Account settings</h1>
+      <h1 className="pageHeader">Settings</h1>
       <Formik
         validationSchema={validationSchema}
         enableReinitialize={true}
@@ -56,6 +77,7 @@ export default function AccountSettingsPage() {
           <button
             type="button"
             className={`button--text button--danger ${styles.deleteButton}`}
+            onClick={handleDelete}
           >
             Delete account
           </button>
@@ -64,5 +86,3 @@ export default function AccountSettingsPage() {
     </div>
   );
 }
-
-AccountSettingsPage.layout = Layouts.settings;
