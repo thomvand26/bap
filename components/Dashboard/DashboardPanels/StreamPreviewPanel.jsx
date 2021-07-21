@@ -24,7 +24,7 @@ export const StreamPreviewPanel = (props) => {
           }}
         />
       ) : (
-        'Invalid Stream URL.'
+        <div className="centeredPlaceholder">Invalid Stream URL</div>
       )}
     </DashboardPanel>
   );

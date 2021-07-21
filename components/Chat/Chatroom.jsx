@@ -161,10 +161,9 @@ export const Chatroom = ({ inDashboard }) => {
 
         {!inDashboard && <ChatModal />}
 
-        {!loadingChat &&
-          !loadingShow &&
-          !currentChatroom?.messages?.length &&
-          'No messages yet'}
+        {!loadingChat && !loadingShow && !currentChatroom?.messages?.length && (
+          <div className="centeredPlaceholder">No messages yet</div>
+        )}
 
         {currentChatroom?.messages?.map?.((messageObject, i) => {
           return (

@@ -36,9 +36,10 @@ export const SongRequestList = ({ inDashboard }) => {
       )}
 
       {!loadingShow &&
-        inDashboard &&
-        !currentSongRequests?.length &&
-        'No song requests yet'}
+        !(inDashboard ? currentSongRequests : visibleCurrentSongRequests)
+          ?.length && (
+          <div className="centeredPlaceholder">No song requests yet</div>
+        )}
 
       {(inDashboard ? currentSongRequests : visibleCurrentSongRequests)?.map?.(
         (songRequest, i) => (

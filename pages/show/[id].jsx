@@ -72,7 +72,7 @@ export default function ShowPage(params) {
             }}
           />
         ) : (
-          'Invalid Stream URL.'
+          <div className="centeredPlaceholder">Invalid Stream URL</div>
         )}
       </div>
       <Chat />
