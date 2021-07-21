@@ -57,6 +57,10 @@ $line-height-s: 1.25rem; // 20px
 $page-header-margin: 0 0 100px 0;
 $header-height: $spacing-xxs;
 
+$min-main-height: calc(
+  100vh - var(--header-height, 0px) - var(--footer-height, 0px)
+);
+
 $footer-height: 18.75rem; // 300px
 
 $button-border-width: 2px;

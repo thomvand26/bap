@@ -3,7 +3,7 @@ $column-width: 20vw;
 .page {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: $min-main-height;
   padding-top: $length-xxl;
 }
 

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useSession } from 'next-auth/client';
 
+import { Layouts } from '@/layouts';
 import { useShow, useDatabase } from '@/context';
 import { ShowSettingsDashboard } from '@/components';
 import { CREATE_SHOW } from '@/routes';
@@ -71,3 +72,5 @@ export default function CreateShowPage() {
     </div>
   );
 }
+
+CreateShowPage.layout = Layouts.noFooter;

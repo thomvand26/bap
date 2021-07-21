@@ -1,8 +1,10 @@
 import { DefaultLayout } from './DefaultLayout';
+import { NoFooterLayout } from './NoFooterLayout';
 import { ShowLayout } from './ShowLayout';
 
 export const Layouts = {
   default: DefaultLayout,
+  noFooter: NoFooterLayout,
   room: ShowLayout,
 };
 

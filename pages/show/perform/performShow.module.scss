@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: $min-main-height;
   min-height: 0;
   padding-top: $length-xxl;
 }

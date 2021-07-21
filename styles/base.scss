@@ -29,7 +29,7 @@ body {
 main {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - var(--header-height, 0) - var(--footer-height, 0));
+  min-height: $min-main-height;
   width: 100%;
 
   &.horizontal {

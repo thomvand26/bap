@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useSession } from 'next-auth/client';
 
+import { Layouts } from '@/layouts';
 import { useShow } from '@/context';
 import { ShowPerformanceDashboard } from '@/components';
 import { EDIT_SHOW } from '@/routes';
@@ -42,3 +43,5 @@ export default function PerformShowPage() {
     </div>
   );
 }
+
+PerformShowPage.layout = Layouts.noFooter;
