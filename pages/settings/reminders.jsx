@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Layouts } from '@/layouts';
 
-import styles from './settings.module.scss';
+import styles from './Settings.module.scss';
 
 export default function RemindersSettingsPage() {
   return;
