@@ -7,7 +7,7 @@ import { Layouts } from '@/layouts';
 import { useDatabase } from '@/context';
 import { Input, ProtectedRoute } from '@/components';
 
-import styles from './settings.module.scss';
+import styles from './Settings.module.scss';
 import { useRouter } from 'next/router';
 
 const validationSchema = () =>
