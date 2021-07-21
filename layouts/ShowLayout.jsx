@@ -12,7 +12,7 @@ export const ShowLayout = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>{children}</main>
+      <main className={styles.main}>{children}</main>
     </div>
   );
 };
