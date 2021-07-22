@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.searchGroup {
+  margin-bottom: $length-xxl;
+
+  &--artistDashboard {
+    margin-bottom: $spacing-m;
+  }
+}
+
+.filterGroup {
+  display: flex;
+
+  & > * {
+    &:not(:last-child) {
+      margin-right: $length-l;
+    }
+  }
+}

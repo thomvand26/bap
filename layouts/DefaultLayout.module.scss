@@ -1,0 +1,12 @@
+.page {
+  --header-height: #{$header-height};
+  --footer-height: #{$footer-height};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main {
+  padding-bottom: $spacing-xl;
+}

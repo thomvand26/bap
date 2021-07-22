@@ -9,7 +9,6 @@
   font-weight: bold;
   padding: 0 $length-xxl;
   color: $color-secondary-darkest;
-  z-index: 20;
 
   & li {
     &:global(.active) {

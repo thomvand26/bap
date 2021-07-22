@@ -1,0 +1,70 @@
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-secondary-lightest;
+  border-radius: $border-radius;
+
+  &__name {
+    background-color: $color-secondary-darker;
+    padding: $length-s $length-s $length-xs $length-s;
+    font-size: $font-size-s;
+    font-weight: bold;
+    color: $color-white;
+    border-radius: $border-radius;
+    width: fit-content;
+    z-index: 10;
+
+    &--toggle {
+      cursor: pointer;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    padding: $length-s;
+    padding-top: 0;
+    min-height: 0;
+  }
+
+  &__subtitle {
+    margin: $length-l 0;
+    margin-top: $spacing-xxs;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  &__buttonGroup {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: $length-xs;
+    max-width: 100%;
+
+    & > * {
+      margin-right: $length-xl;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+
+  &--2col {
+    & .inputContainer {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: $length-xl;
+    }
+  }
+}

@@ -1,0 +1,67 @@
+.container {
+  position: relative;
+  height: fit-content;
+}
+
+.toggleButton {
+  --button-color: transparent;
+  color: $color-secondary-darkest;
+  height: fit-content;
+  padding: $length-xs $length-l;
+  border-radius: $border-radius;
+
+  &:focus {
+    box-shadow: 0 0 0 $focus-border-width $color-primary-light;
+  }
+
+  & > span {
+    max-width: $spacing-xl;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &--open {
+    box-shadow: 0 0 0 $focus-border-width $color-primary-light;
+  }
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + #{$focus-border-width});
+  display: none;
+  padding: 0 $length-s;
+  background-color: $color-secondary-lightest;
+  border-radius: $border-radius;
+  z-index: 10;
+  box-shadow: 0 0 0 $focus-border-width $color-primary-light;
+
+  &--open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & li {
+    &:global(.active) {
+      &:after {
+        display: none;
+      }
+    }
+
+    &:not(:last-child) {
+      & > * {
+        border-bottom: 2px solid $color-secondary-lighter;
+      }
+    }
+  }
+
+  & a,
+  & button {
+    display: block;
+    padding: $length-s 0;
+    width: 100%;
+    text-align: left;
+    color: $color-secondary-darker;
+    cursor: pointer;
+  }
+}
