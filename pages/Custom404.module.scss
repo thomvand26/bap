@@ -1,0 +1,15 @@
+.page404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-xl $length-xxl 0;
+  text-align: center;
+}
+
+.heading {
+  margin-bottom: $length-xxl;
+}
+
+.info {
+  margin-bottom: $spacing-m;
+}

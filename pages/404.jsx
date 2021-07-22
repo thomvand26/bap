@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Layouts } from '@/layouts';
 import { LANDING } from '@/routes';
 
-import styles from './index.module.scss';
+import styles from './Custom404.module.scss';
 
 export default function Custom404() {
   return (
