@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Layouts } from '@/layouts';
 import { SearchForm, ShowList } from '@/components';
 
-import styles from './searchPage.module.scss';
+import styles from './SearchPage.module.scss';
 
 export default function SearchPage() {
   const [upcomingShows, setUpcomingShows] = useState([]);

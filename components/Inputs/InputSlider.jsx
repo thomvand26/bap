@@ -3,7 +3,7 @@ import Slider from 'rc-slider';
 
 import { InfoHover } from '@/components';
 
-import styles from './input.module.scss';
+import styles from './Input.module.scss';
 
 export const InputSlider = ({
   isRange,

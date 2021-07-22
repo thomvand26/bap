@@ -1,14 +1,15 @@
-import { Input } from '@/components';
-import { Form, Formik } from 'formik';
+import React, { useEffect } from 'react';
 import { csrfToken, signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
+
+import { Layouts } from '@/layouts';
+import { Input } from '@/components';
 import { REGISTER } from '@/routes';
 
-import styles from './auth.module.scss';
-import { Layouts } from '@/layouts/LayoutWrapper';
+import styles from './AuthPage.module.scss';
 
 const validationSchema = (onValid) =>
   Yup.object()

@@ -1,13 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 
 import { Logo } from '@/components';
 import { ABOUT, LANDING, LOGIN, REGISTER, SEARCH } from '@/routes';
 import { UserDropdown } from './UserDropdown';
 
-import styles from './header.module.scss';
-import { useRouter } from 'next/router';
+import styles from './Header.module.scss';
 
 export const Header = () => {
   const [session] = useSession();

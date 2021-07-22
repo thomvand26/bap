@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './dashboardPanel.module.scss';
+import styles from './DashboardPanel.module.scss';
 
 export const DashboardPanel = ({
   name,

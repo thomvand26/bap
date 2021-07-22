@@ -6,7 +6,7 @@ import { MdArrowDropDown } from 'react-icons/md';
 
 import { ARTIST_DASHBOARD, LANDING, SETTINGS } from '@/routes';
 
-import styles from './userDropdown.module.scss';
+import styles from './UserDropdown.module.scss';
 
 export const UserDropdown = () => {
   const [session] = useSession();

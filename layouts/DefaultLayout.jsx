@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { Header, Footer } from '@/components';
 import { appConfig } from '@/config';
 
-import styles from './defaultLayout.module.scss';
+import styles from './DefaultLayout.module.scss';
 
 export const DefaultLayout = ({ children }) => {
   return (

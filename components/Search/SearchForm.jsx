@@ -12,7 +12,7 @@ import { useDatabase } from '@/context';
 import { Input } from '@/components';
 import { Searchbar } from './Searchbar';
 
-import styles from './searchForm.module.scss';
+import styles from './SearchForm.module.scss';
 
 const validationSchema = Yup.object().shape({
   search: Yup.string().nullable(true),

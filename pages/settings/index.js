@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { useDatabase, useModal } from '@/context';
 import { Input, ProtectedRoute } from '@/components';
 
-import styles from './Settings.module.scss';
+import styles from './SettingsPage.module.scss';
 
 const validationSchema = () =>
   Yup.object().shape({

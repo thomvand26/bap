@@ -9,7 +9,7 @@ import { Input, LoadingSpinner } from '@/components';
 import { useShow } from '@/context';
 import { ARTIST_DASHBOARD, EDIT_SHOW } from '@/routes';
 
-import styles from './dashboardPanel.module.scss';
+import styles from './DashboardPanel.module.scss';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()

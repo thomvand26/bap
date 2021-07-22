@@ -8,7 +8,7 @@ import { useShow } from '@/context';
 import { ShowPerformanceDashboard } from '@/components';
 import { EDIT_SHOW } from '@/routes';
 
-import styles from './performShow.module.scss';
+import styles from './PerformShowPage.module.scss';
 
 export default function PerformShowPage() {
   const { currentShow, joinShow, loadingShow, setLoadingShow } = useShow();

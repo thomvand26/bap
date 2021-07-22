@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './dashboard.module.scss';
+import styles from './Dashboard.module.scss';
 
 export const Dashboard = ({ horizontal, children }) => {
   return (

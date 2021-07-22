@@ -17,7 +17,7 @@ import {
   isShowIsCurrentlyPlaying,
 } from '@/utils';
 
-import styles from './showListItem.module.scss';
+import styles from './ShowListItem.module.scss';
 
 /**
  * variant: one of: "default", "artistDashboard"

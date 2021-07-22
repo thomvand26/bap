@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ReactPlayer from 'react-player';
 
 import { LANDING } from '@/routes';
-import { Chat } from '@/components';
+import { Chat, LoadingSpinner } from '@/components';
 import { Layouts } from '@/layouts';
 import { useShow } from '@/context';
 
-import styles from './show.module.scss';
-import { useSession } from 'next-auth/client';
-import { LoadingSpinner } from '@/components/LoadingSpinner/LoadingSpinner';
+import styles from './ShowPage.module.scss';
 
 export default function ShowPage(params) {
   const router = useRouter();

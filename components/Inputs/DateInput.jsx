@@ -6,7 +6,7 @@ import { FaRegCalendarAlt, FaTimes } from 'react-icons/fa';
 
 import 'flatpickr/dist/themes/material_green.css';
 
-import styles from './input.module.scss';
+import styles from './Input.module.scss';
 
 export const DateInput = ({
   withTime,

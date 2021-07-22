@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-import { ShowList } from '@/components';
+import { ShowList, SearchForm } from '@/components';
 import { useShow } from '@/context';
 import { Layouts } from '@/layouts';
 import { CREATE_SHOW } from '@/routes';
 
-import styles from './artistDashboardPage.module.scss';
-import { SearchForm } from '@/components/Search/SearchForm';
+import styles from './ArtistDashboardPage.module.scss';
 
 export default function ArtistDashboardPage() {
   const { setCurrentShow, ownShows, setOwnShows } = useShow();

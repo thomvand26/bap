@@ -9,9 +9,9 @@ import { ShowSettingsDashboard } from '@/components';
 import { CREATE_SHOW } from '@/routes';
 import { PERFORM_SHOW } from '@/routes';
 
-import styles from './editShow.module.scss';
+import styles from './EditShowPage.module.scss';
 
-export default function CreateShowPage() {
+export default function EditShowPage() {
   const { currentShow, setCurrentShow, setLoadingShow } = useShow();
   const { getShow } = useDatabase();
   const router = useRouter();
@@ -73,4 +73,4 @@ export default function CreateShowPage() {
   );
 }
 
-CreateShowPage.layout = Layouts.noFooter;
+EditShowPage.layout = Layouts.noFooter;

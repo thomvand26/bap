@@ -1,7 +1,7 @@
 import React from 'react';
 import { Arrow, useHover, useLayer } from 'react-laag';
 
-import styles from './tooltip.module.scss';
+import styles from './Tooltip.module.scss';
 
 export const Tooltip = ({ children, content, ...props }) => {
   const [isOver, hoverProps] = useHover();

@@ -3,7 +3,7 @@ import React from 'react';
 import { SongRequestList, Chatbox } from '@/components';
 import { DashboardPanel } from './DashboardPanel';
 
-import styles from './songRequestsPanel.module.scss';
+import styles from './SongRequestsPanel.module.scss';
 
 export const SongRequestsPanel = (props) => {
   return (

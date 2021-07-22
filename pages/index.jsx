@@ -8,7 +8,7 @@ import { LOGIN } from '@/routes';
 import { useDatabase, useShow } from '@/context';
 import { upsertDocumentInArrayState, filterShowsPlayingNow } from '@/utils';
 
-import styles from './index.module.scss';
+import styles from './HomePage.module.scss';
 
 export default function HomePage() {
   const [session, loading] = useSession();

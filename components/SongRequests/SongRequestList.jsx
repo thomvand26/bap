@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import { useShow } from '@/context';
+import { LoadingSpinner } from '@/components';
 import { SongRequestListItem } from './SongRequestListItem';
 
-import styles from './songRequests.module.scss';
-import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
+import styles from './SongRequests.module.scss';
 
 export const SongRequestList = ({ inDashboard }) => {
   const { currentSongRequests, loadingShow } = useShow();

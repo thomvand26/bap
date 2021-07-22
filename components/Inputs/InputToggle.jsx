@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { InfoHover } from '@/components';
 
-import styles from './input.module.scss';
+import styles from './Input.module.scss';
 
 export const InputToggle = ({
   hasFocused,

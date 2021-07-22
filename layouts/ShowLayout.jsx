@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 import { appConfig } from '@/config';
 
-import styles from './showLayout.module.scss';
+import styles from './ShowLayout.module.scss';
 
 export const ShowLayout = ({ children }) => {
   return (

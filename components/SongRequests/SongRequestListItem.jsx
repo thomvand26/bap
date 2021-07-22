@@ -6,7 +6,7 @@ import { FaTimes, FaTrash } from 'react-icons/fa';
 
 import { useShow } from '@/context';
 
-import styles from './songRequests.module.scss';
+import styles from './SongRequests.module.scss';
 
 export const SongRequestListItem = ({ songRequest, inDashboard }) => {
   const [session] = useSession();

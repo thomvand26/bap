@@ -3,7 +3,7 @@ import React from 'react';
 import { Chatroom, Chatbox, ParticipantsButton } from '@/components';
 import { DashboardPanel } from './DashboardPanel';
 
-import styles from './chatPanel.module.scss';
+import styles from './ChatPanel.module.scss';
 
 export const ChatPanel = (props) => {
   return (

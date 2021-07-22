@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Field } from 'formik';
 
-import { InfoHover } from '../Info/InfoHover';
-
-import styles from './input.module.scss';
+import { InfoHover } from '@/components';
 import { DateInput } from './DateInput';
 import { InputSlider } from './InputSlider';
 import { InputToggle } from './InputToggle';
 import { InputSelect } from './InputSelect';
+
+import styles from './Input.module.scss';
 
 // variant: 'default', 'darkest', 'dark' or 'light'
 export const Input = ({

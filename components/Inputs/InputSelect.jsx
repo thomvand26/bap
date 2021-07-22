@@ -3,7 +3,7 @@ import { MdArrowDropDown } from 'react-icons/md';
 
 import { InfoHover } from '@/components';
 
-import styles from './input.module.scss';
+import styles from './Input.module.scss';
 
 export const InputSelect = ({
   id,

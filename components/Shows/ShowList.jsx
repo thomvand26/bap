@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { SEARCH } from '@/routes';
 import { ShowListItem } from './ShowListItem';
 
-import styles from './showList.module.scss';
+import styles from './ShowList.module.scss';
 
 /**
  * variant: one of: "default", "artistDashboard"
