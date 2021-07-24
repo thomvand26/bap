@@ -116,8 +116,5 @@ button,
     min-height: 0;
   }
 
-  &:disabled {
-    opacity: $opacity-disabled;
-    pointer-events: none;
-  }
+  @include disabled;
 }

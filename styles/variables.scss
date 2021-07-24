@@ -71,3 +71,27 @@ $border-radius-l: 8px;
 
 $transition-duration: 200ms;
 $transition-easing: ease-out;
+
+@mixin focus {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 $focus-border-width $color-primary;
+  }
+}
+
+@mixin disable {
+  opacity: $opacity-disabled;
+  pointer-events: none;
+}
+
+@mixin disabled {
+  &:disabled {
+    @include disable;
+  }
+}
+
+@mixin scrollbar--light {
+  --scrollbar-track-color: #{$color-white};
+  --scrollbar-thumb-color-inactive: #{$color-secondary-lighter};
+  --scrollbar-thumb-color: #{$color-secondary-dark};
+}
