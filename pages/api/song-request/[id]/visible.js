@@ -20,7 +20,6 @@ const visible = async (req, res) => {
     let responseData;
 
     switch (method) {
-      // Add vote to SongRequest
       case 'POST':
         if (!session || !session?.user?._id) throw new Error('Not logged in!');
         if (!io) throw new Error('No io!');
