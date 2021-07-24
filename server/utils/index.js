@@ -2,6 +2,7 @@ export * from './authUtils';
 export * from './chatUtils';
 export * from './chatroomUtils';
 export * from './dbUtils';
+export * from './pollUtils';
 export * from './showUtils';
 export * from './songRequestUtils';
 

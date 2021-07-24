@@ -5,7 +5,7 @@ import Link from 'next/link';
 import ReactPlayer from 'react-player';
 
 import { LANDING } from '@/routes';
-import { Chat, LoadingSpinner } from '@/components';
+import { Chat, LoadingSpinner, PollWindow } from '@/components';
 import { Layouts } from '@/layouts';
 import { useShow } from '@/context';
 
@@ -73,6 +73,7 @@ export default function ShowPage(params) {
         ) : (
           <div className="centeredPlaceholder">Invalid Stream URL</div>
         )}
+        <PollWindow />
       </div>
       <Chat />
     </div>

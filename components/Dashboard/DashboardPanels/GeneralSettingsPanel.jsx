@@ -61,7 +61,9 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
       return;
     }
 
+    setSaving(true);
     await deleteShow(currentShow);
+    setSaving(false);
 
     router.push(ARTIST_DASHBOARD);
   };
@@ -85,7 +87,7 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
           onSubmit={handleSubmit}
         >
           <Form
-            className={`${styles.form} ${styles[`form--2col`]}`}
+            className={styles.form}
             onChange={(event) => {
               event?.target?.id === 'streamURL' &&
                 setCurrentShow((prev) => ({
@@ -94,84 +96,84 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
                 }));
             }}
           >
-            <h3 className={styles.panel__subtitle}>General</h3>
-            <div className={styles.inputContainer}>
-              <div>
+            <fieldset
+              className={`${styles.fieldset} ${styles[`fieldset--2col`]}`}
+              disabled={saving}
+            >
+              <h3 className={styles.panel__subtitle}>General</h3>
+              <div className={styles.inputContainer}>
+                <div>
+                  <Input
+                    name="title"
+                    label="Show title"
+                    type="text"
+                    autoComplete="off"
+                    variant="light"
+                  />
+                  <Input
+                    name="startDate"
+                    label="Start date"
+                    type="datetime"
+                    autoComplete="off"
+                    variant="light"
+                    withTime
+                  />
+                  <Input
+                    name="endDate"
+                    label="End date"
+                    type="datetime"
+                    autoComplete="off"
+                    variant="light"
+                    withTime
+                  />
+                </div>
+                <div>
+                  <Input
+                    name="maxSongRequestsPerUser"
+                    label="Maximum song requests per user"
+                    type="slider"
+                    variant="light"
+                    min={0}
+                    max={10}
+                    step={1}
+                    info="How many song requests can the user make? (Song requests will be disabled if this is set to 0.)"
+                  />
+                  <Input
+                    name="visible"
+                    label="Visible"
+                    type="toggle"
+                    variant="light"
+                    info="Should everyone be able to see this show?"
+                  />
+                </div>
+              </div>
+              <h3 className={styles.panel__subtitle}>Stream</h3>
+              <div className={styles.inputContainer}>
                 <Input
-                  name="title"
-                  label="Show title"
+                  name="streamURL"
+                  label="Stream URL"
                   type="text"
                   autoComplete="off"
                   variant="light"
                 />
-                <Input
-                  name="startDate"
-                  label="Start date"
-                  type="datetime"
-                  autoComplete="off"
-                  variant="light"
-                  withTime
-                />
-                <Input
-                  name="endDate"
-                  label="End date"
-                  type="datetime"
-                  autoComplete="off"
-                  variant="light"
-                  withTime
-                />
               </div>
-              <div>
-                <Input
-                  name="maxSongRequestsPerUser"
-                  label="Maximum song requests per user"
-                  type="slider"
-                  variant="light"
-                  min={0}
-                  max={10}
-                  step={1}
-                  info="How many song requests can the user make? (Song requests will be disabled if this is set to 0.)"
-                />
-                <Input
-                  name="visible"
-                  label="Visible"
-                  type="toggle"
-                  variant="light"
-                  info="Should everyone be able to see this show?"
-                />
+              <div className={styles.panel__buttonGroup}>
+                {loadingShow === false && currentShow?._id ? (
+                  <>
+                    <button type="submit">Save</button>
+                    <button
+                      className="button button--ghost button--danger"
+                      type="button"
+                      onClick={handleDelete}
+                    >
+                      Delete this show
+                    </button>
+                  </>
+                ) : (
+                  <button type="submit">Create show</button>
+                )}
               </div>
-            </div>
-            <h3 className={styles.panel__subtitle}>Stream</h3>
-            <div className={styles.inputContainer}>
-              <Input
-                name="streamURL"
-                label="Stream URL"
-                type="text"
-                autoComplete="off"
-                variant="light"
-              />
-            </div>
-            <div className={styles.panel__buttonGroup}>
-              {loadingShow === false && currentShow?._id ? (
-                <>
-                  <button type="submit" disabled={saving}>
-                    Save
-                  </button>
-                  <button
-                    className="button button--ghost button--danger"
-                    type="button"
-                    onClick={handleDelete}
-                    disabled={saving}
-                  >
-                    Delete this show
-                  </button>
-                </>
-              ) : (
-                <button type="submit" disabled={saving}>
-                  Create show
-                </button>
-              )}
-            </div>
+            </fieldset>
           </Form>
         </Formik>
       )}

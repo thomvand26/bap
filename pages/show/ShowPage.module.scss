@@ -17,4 +17,7 @@
 
 .showStream {
   flex: 1;
+  position: relative;
+  background-color: $color-secondary-darkest;
+  color: $color-secondary-lightest;
 }

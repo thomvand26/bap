@@ -2,7 +2,7 @@ import { getSession } from 'next-auth/client';
 
 import { defaultShowPopulation, emitShowsUpdate } from '@/server';
 import { withDB } from 'middleware';
-import { Show, Chatroom, ChatMessage, SongRequest } from 'models';
+import { Show, Chatroom, ChatMessage, SongRequest, Poll } from 'models';
 
 const show = async (req, res) => {
   const {
@@ -71,19 +71,20 @@ const show = async (req, res) => {
         // Kick user (remove from showUpdate + send kicked emit) --> based on connectedUsers
         responseData.connectedUsers?.forEach?.((user) => {
           const socket = io.sockets.sockets.get(`${user?.socketId}`);
-          socket.emit('kicked', {
+          socket?.emit('kicked', {
             type: 'show',
             data: { _id: id },
           });
           socket?.leave(`${id}`);
         });
 
-        // Delete all Chatrooms, ChatMessages and SongRequests linked to this show
-        if (responseData.ok === 1) {
+        // Delete all Chatrooms, ChatMessages, SongRequests and Polls linked to this show
+        if (responseData._id) {
           await Promise.all([
             Chatroom.deleteMany({ show: id }),
             ChatMessage.deleteMany({ show: id }),
             SongRequest.deleteMany({ show: id }),
+            Poll.deleteMany({ show: id }),
           ]);
         }
 

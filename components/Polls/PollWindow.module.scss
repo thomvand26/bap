@@ -1,0 +1,98 @@
+.container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: $length-s;
+  max-height: calc(100% - (2 * #{$length-s}));
+  overflow-y: auto;
+  border-radius: $border-radius;
+  background-color: $color-white;
+  padding: $length-m $length-s $length-s;
+  color: $color-secondary-darker;
+  font-size: $font-size-s;
+
+  @include scrollbar--light;
+}
+
+.pollTitleContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: $length-m;
+}
+
+.pollTitle {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: $font-size-s;
+}
+
+.optionContainer {
+  display: flex;
+  align-items: center;
+
+  &:not(:last-child) {
+    margin-bottom: $length-xs;
+  }
+}
+
+.option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: $color-secondary-lightest;
+  padding: $length-xs;
+  background-color: $color-secondary-lightest;
+  font-weight: bold;
+  border-radius: $border-radius;
+  cursor: pointer;
+
+  &--disabled {
+    @include disable;
+  }
+
+  &__input {
+    position: absolute;
+    margin-right: $length-xs;
+    width: $length-l;
+    height: $length-l;
+    opacity: 0 !important;
+    cursor: pointer;
+
+    @include disabled;
+  }
+
+  &__label {
+    margin-top: $length-xxs;
+  }
+}
+
+.checkbox {
+  width: $length-l;
+  height: $length-l;
+  border: $length-xxs solid $color-primary-light;
+  border-radius: $border-radius;
+  margin-right: $length-xs;
+  cursor: pointer;
+
+  &--checked {
+    background-color: $color-primary-light;
+  }
+}
+
+.percentage {
+  display: block;
+  color: $color-secondary-dark;
+  width: $spacing-xxs;
+  text-align: right;
+
+  &--highest {
+    font-weight: bold;
+  }
+}
+
+.saveButton {
+  margin: 0 auto;
+  margin-top: $length-s;
+  color: $color-secondary-darkest;
+}

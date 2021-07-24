@@ -26,3 +26,8 @@ export const API_CHAT = '/api/chat';
 export const API_CHATROOM = '/api/chatroom';
 
 export const API_SONG_REQUEST = '/api/song-request';
+
+export const API_POLL = '/api/poll';
+export const API_POLLS = '/api/polls';
+
+// TODO: socket events zoals routes

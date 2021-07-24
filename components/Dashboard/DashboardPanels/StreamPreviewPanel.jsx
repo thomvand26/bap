@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 
 import { useShow } from '@/context';
+import { PollWindow } from '@/components';
 import { DashboardPanel } from './DashboardPanel';
+
+import styles from './StreamPreviewPanel.module.scss';
 
 export const StreamPreviewPanel = (props) => {
   const { currentShow } = useShow();
@@ -14,18 +17,21 @@ export const StreamPreviewPanel = (props) => {
 
   return (
     <DashboardPanel {...props}>
-      {urlValid ? (
-        <ReactPlayer
-          url={currentShow?.streamURL}
-          width="100%"
-          height="100%"
-          onError={() => {
-            setUrlValid(false);
-          }}
-        />
-      ) : (
-        <div className="centeredPlaceholder">Invalid Stream URL</div>
-      )}
+      <div className={styles.previewContainer}>
+        {urlValid ? (
+          <ReactPlayer
+            url={currentShow?.streamURL}
+            width="100%"
+            height="100%"
+            onError={() => {
+              setUrlValid(false);
+            }}
+          />
+        ) : (
+          <div className="centeredPlaceholder">Invalid Stream URL</div>
+        )}
+        <PollWindow />
+      </div>
     </DashboardPanel>
   );
 };

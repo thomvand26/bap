@@ -94,3 +94,16 @@ export const dateBetweenShowDatesMongoDBQuery = ({ dateObject, isFullDay }) => {
       }
     : { startDate: { $lte: dateObject }, endDate: { $gt: dateObject } };
 };
+
+export const getTotalPollVotes = (poll) => {
+  return poll.options.reduce(
+    (total, option) => total + option.voters.length,
+    0
+  );
+};
+
+export const getHighestPollOption = (poll) => {
+  return poll.options.sort(
+    (optionA, optionB) => optionB.voters.length - optionA.voters.length
+  )[0];
+};

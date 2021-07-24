@@ -6,6 +6,8 @@ import axios from 'axios';
 import {
   API_CHAT,
   API_CHATROOM,
+  API_POLL,
+  API_POLLS,
   API_SHOW,
   API_SONG_REQUEST,
   LANDING,
@@ -47,6 +49,12 @@ export const ShowProvider = ({ children }) => {
 
   // Song requests
   const [currentSongRequests, setCurrentSongRequests] = useState([]);
+
+  // Polls
+  const [loadingPolls, setLoadingPolls] = useState();
+  const [currentPolls, setCurrentPolls] = useState([]);
+  const [currentPoll, setCurrentPoll] = useState();
+  const [presentedPoll, setPresentedPoll] = useState();
 
   useEffect(() => {
     if (!socket) return;
@@ -145,6 +153,23 @@ export const ShowProvider = ({ children }) => {
       );
     });
 
+    socket.on('pollUpdate', ({ type, updatedPoll }) => {
+      console.log('pollUpdate', type, updatedPoll);
+      if (type !== 'delete') {
+        setCurrentPolls((prev) =>
+          prev.map((poll) =>
+            poll._id === updatedPoll._id ? updatedPoll : poll
+          )
+        );
+        setCurrentPoll((prev) =>
+          prev?._id === updatedPoll._id ? updatedPoll : prev
+        );
+      }
+      setPresentedPoll(
+        type === 'delete' || !updatedPoll?.visible ? null : updatedPoll
+      );
+    });
+
     router.events.on('routeChangeComplete', handleRouteChange);
 
     return () => {
@@ -212,6 +237,9 @@ export const ShowProvider = ({ children }) => {
         setOpenChatMessage(null);
         setChatModalQueue([]);
         setCurrentSongRequests([]);
+        setCurrentPolls([]);
+        setCurrentPoll(null);
+        setPresentedPoll(null);
         if (router.asPath.startsWith(`${SHOW}/${data?._id || data}`)) {
           router.push(LANDING);
         }
@@ -329,7 +357,7 @@ export const ShowProvider = ({ children }) => {
         showId,
         userId,
       },
-      (response) => {
+      async (response) => {
         if (response?.type === 'success') {
           setCurrentShow(response.data.show);
           setCurrentChatroom({
@@ -346,6 +374,15 @@ export const ShowProvider = ({ children }) => {
           setCurrentSongRequests(
             defaultSongRequestArraySort(response.data.songRequests)
           );
+          setLoadingPolls(true);
+          const polls = await getPolls({
+            show: currentShow?._id,
+            visible: true,
+          });
+          if (polls.length) {
+            setPresentedPoll(polls[0]);
+          }
+          setLoadingPolls(false);
         }
         setLoadingChat(false);
         callback?.(response);
@@ -559,6 +596,69 @@ export const ShowProvider = ({ children }) => {
     return response;
   };
 
+  const getPolls = async (filters) => {
+    if (!socket) return;
+
+    const response = await axios.post(API_POLLS, filters);
+
+    if (response?.status === 200) {
+      return response?.data?.data;
+    }
+    return response;
+  };
+
+  const createPoll = async (data) => {
+    if (!socket || !currentShow?._id) return;
+
+    const response = await axios.post(`${API_POLL}/`, {
+      show: currentShow?._id,
+      ...data,
+    });
+
+    if (response?.status === 200) {
+      return response?.data?.data;
+    }
+    return response;
+  };
+
+  const updatePoll = async (data) => {
+    if (!socket || !currentShow?._id) return;
+
+    const response = await axios.post(`${API_POLL}/${data._id}/`, {
+      show: currentShow?._id,
+      ...data,
+    });
+
+    if (response?.status === 200) {
+      return response?.data?.data;
+    }
+    return response;
+  };
+
+  const deletePoll = async (pollId) => {
+    if (!socket) return;
+
+    const response = await axios.delete(`${API_POLL}/${pollId}`);
+
+    if (response?.status === 200) {
+      return response?.data?.data;
+    }
+    return response;
+  };
+
+  const votePoll = async ({ pollId, optionIds }) => {
+    if (!socket) return;
+
+    const response = await axios.post(`${API_POLL}/${pollId}/vote`, {
+      optionIds,
+    });
+
+    if (response?.status === 200) {
+      return response?.data?.data;
+    }
+    return response;
+  };
+
   const goToShow = (showId) => {
     router.push(`${SHOW}/${showId}`);
   };
@@ -638,6 +738,21 @@ export const ShowProvider = ({ children }) => {
     hideSongRequest,
     deleteSongRequest,
     voteSongRequest,
+
+    // Polls
+    loadingPolls,
+    setLoadingPolls,
+    presentedPoll,
+    setPresentedPoll,
+    currentPolls,
+    setCurrentPolls,
+    currentPoll,
+    setCurrentPoll,
+    getPolls,
+    createPoll,
+    updatePoll,
+    deletePoll,
+    votePoll,
   };
 
   return (

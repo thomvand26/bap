@@ -1,3 +1,4 @@
+export * from './AddButton';
 export * from './Authentication';
 export * from './Chat';
 export * from './Dashboard';
@@ -9,6 +10,7 @@ export * from './Inputs';
 export * from './LoadingSpinner';
 export * from './Logo';
 export * from './Participants';
+export * from './Polls';
 export * from './Search';
 export * from './Shows';
 export * from './SongRequests';
