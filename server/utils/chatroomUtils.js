@@ -49,12 +49,12 @@ export const sendToAllMemberSocketsInChatroom = ({
     return userToCheck.includes(`${userObject?.user?._id}`);
   });
 
-  memberSocketIds = memberSocketIds.map((userObject) => userObject?.socketId);
+  memberSocketIds = memberSocketIds?.map((userObject) => userObject?.socketId);
 
   sendToUniqueSockets({
     emitType: 'chatroomUpdate',
     emitData: { type, chatroom },
-    socketIds: [...extraSocketIds, ...memberSocketIds],
+    socketIds: [...extraSocketIds, ...(memberSocketIds || [])],
     io,
   });
 };
@@ -281,7 +281,7 @@ export const joinChatroom = async ({ chatroomId, userId, socket, io }) => {
   let userSocketIdsInChatroom = chatroom?.show?.connectedUsers?.filter(
     (userObject) => `${userObject?.user?._id}` === `${userId}`
   );
-  userSocketIdsInChatroom = userSocketIdsInChatroom.map(
+  userSocketIdsInChatroom = userSocketIdsInChatroom?.map(
     (userObject) => userObject?.socketId
   );
 
@@ -385,7 +385,7 @@ export const kickFromChatroom = async ({
   let userSocketIdsInRoom = originalChatroom?.show?.connectedUsers?.filter(
     (userObject) => `${userObject?.user?._id}` === `${userId}`
   );
-  userSocketIdsInRoom = userSocketIdsInRoom.map(
+  userSocketIdsInRoom = userSocketIdsInRoom?.map(
     (userObject) => userObject?.socketId
   );
 
