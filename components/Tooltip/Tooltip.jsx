@@ -7,7 +7,16 @@ export const Tooltip = ({ children, content, ...props }) => {
   const [isOver, hoverProps] = useHover();
   const { triggerProps, layerProps, arrowProps, renderLayer } = useLayer({
     isOpen: isOver,
+    auto: true,
     placement: 'top-center',
+    possiblePlacements: [
+      "bottom-start",
+      "bottom-end",
+      "bottom-center",
+      "top-start",
+      "top-center",
+      "top-end"
+    ],
     triggerOffset: 10,
   });
 
