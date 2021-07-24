@@ -1,18 +1,10 @@
-import { getSession } from 'next-auth/client';
-
 import { withDB } from 'middleware';
 import { Show } from 'models';
-import {
-  removeUndefinedFromObject,
-  parseObjectStrings,
-  emitShowsUpdate,
-} from 'server/utils';
 
 const shows = async (req, res) => {
   const { method, body } = req;
 
   try {
-    const io = req.io;
     let responseData;
 
     switch (method) {
