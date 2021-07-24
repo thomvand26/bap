@@ -19,7 +19,7 @@ export const Footer = () => {
           </div>
           <div className={styles.info}>
             RoomStage is een platform gemaakt als bachelorproef binnen de
-            afstudeerrichting Grafische en digitale media - Multimediaproductie
+            afstudeerrichting Grafische en Digitale Media - Multimediaproductie
             - New Media Development aan de Arteveldehogeschool.
           </div>
         </div>
