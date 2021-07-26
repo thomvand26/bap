@@ -78,6 +78,8 @@ fieldset {
     text-align: center;
     margin-bottom: $spacing-m;
     color: $color-secondary-darkest;
+    max-width: 100%;
+    padding: 0 $length-l;
   }
 }
 
