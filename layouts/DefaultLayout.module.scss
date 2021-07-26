@@ -9,10 +9,16 @@
 
 .main {
   padding-bottom: $spacing-xl;
+  min-height: $min-main-height;
 }
 
 @media (max-width: $breakpoint-l) {
+  .page {
+    --footer-height: #{$footer-height-mobile};
+  }
+
   .main {
     padding-bottom: $spacing-m;
+    min-height: $min-main-height;
   }
 }

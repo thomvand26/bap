@@ -24,6 +24,7 @@
 
 .logo {
   width: $spacing-xl;
+  max-width: 100%;
   color: $color-primary;
   margin-bottom: $length-m;
 }
@@ -64,15 +65,20 @@
 
 @media (max-width: $breakpoint-l) {
   .container {
-    height: fit-content;
+    height: $footer-height-mobile;
   }
 
   .content {
     flex-direction: column-reverse;
+    justify-content: center;
+
+    & > * {
+      flex: unset;
+    }
   }
 
   .info {
-    margin-left: 0;
+    margin: 0;
     align-items: center;
     padding-top: $spacing-xxs;
   }
@@ -89,6 +95,8 @@
     padding-bottom: $spacing-xxs;
 
     & > * {
+      text-align: center;
+
       &:not(:last-child) {
         margin-right: 0;
         margin-bottom: $length-xl;
