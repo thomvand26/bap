@@ -52,9 +52,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className={`page ${styles.page}`}>
+    <div className={`page`}>
       <ProtectedRoute />
-      <h1 className="pageHeader">Settings</h1>
+      <h1 className="page__title">Settings</h1>
       <Formik
         validationSchema={validationSchema}
         enableReinitialize={true}
