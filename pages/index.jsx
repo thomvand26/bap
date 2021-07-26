@@ -2,7 +2,7 @@ import { useSession } from 'next-auth/client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { ShowList, LoadingSpinner } from '@/components';
+import { ShowList } from '@/components';
 import { Layouts } from '@/layouts';
 import { LOGIN } from '@/routes';
 import { useDatabase, useShow } from '@/context';
@@ -16,6 +16,7 @@ export default function HomePage() {
   const { setCurrentShow, fetchedShows, setFetchedShows } = useShow();
   const router = useRouter();
   const [isFetching, setIsFetching] = useState();
+  const [groupedShows, setGroupedShows] = useState();
 
   useEffect(() => {
     if (session === undefined) return;
@@ -51,16 +52,23 @@ export default function HomePage() {
     })();
   }, [session, loading]);
 
+  useEffect(() => {
+    // Filter and set separate show groups
+    setGroupedShows(
+      filterShowsPlayingNow({
+        shows: fetchedShows,
+        onlyVisible: true,
+      })
+    );
+  }, [fetchedShows]);
+
   return (
     <div className="page container">
       {/* <h2 className="pageHeader">Shows</h2> */}
       <section className={`container__content ${styles.section}`}>
         <ShowList
           headers={['Currently playing']}
-          shows={filterShowsPlayingNow({
-            shows: fetchedShows,
-            onlyVisible: true,
-          }).currentlyPlayingShows.slice(0, 3)}
+          shows={groupedShows?.currentlyPlayingShows.slice(0, 3)}
           cards
           loading={isFetching}
           isOnHome
@@ -70,8 +78,7 @@ export default function HomePage() {
       <section className={`container__content ${styles.section}`}>
         <ShowList
           headers={['Upcoming shows']}
-          // TODO: NOT now playing
-          shows={fetchedShows.filter((show) => show?.visible).slice(0, 3)}
+          shows={groupedShows?.upcomingShows.slice(0, 3)}
           isOnHome
           withBrowseAllButton
           variant="upcoming"
