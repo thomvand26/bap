@@ -10,3 +10,9 @@
 .main {
   padding-bottom: $spacing-xl;
 }
+
+@media (max-width: $breakpoint-l) {
+  .main {
+    padding-bottom: $spacing-m;
+  }
+}

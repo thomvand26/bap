@@ -28,3 +28,9 @@
     font-size: $font-size-s;
   }
 }
+
+@media (max-width: $breakpoint-l) {
+  .submitButton {
+    margin-top: $spacing-xxs;
+  }
+}

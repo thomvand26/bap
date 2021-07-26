@@ -75,11 +75,13 @@ fieldset {
   padding-top: $spacing-m;
 
   &__title {
+    text-align: center;
     margin-bottom: $spacing-m;
     color: $color-secondary-darkest;
   }
 }
 
+// = .page__title ?
 .pageHeader {
   text-align: center;
   margin: $page-header-margin;
@@ -129,4 +131,14 @@ fieldset {
 // For tooltips (react-laag)
 #layers {
   z-index: 1000;
+}
+
+@media (max-width: $breakpoint-l) {
+  .page {
+    padding-top: $spacing-xxs;
+
+    &__title {
+      margin-bottom: $spacing-xxs;
+    }
+  }
 }
