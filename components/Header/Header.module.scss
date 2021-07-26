@@ -1,4 +1,6 @@
 .header {
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,6 +11,7 @@
   font-weight: bold;
   padding: 0 $length-xxl;
   color: $color-secondary-darkest;
+  z-index: 90;
 
   & li {
     &:global(.active) {
@@ -33,15 +36,42 @@
 }
 
 .inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   max-width: $container-width;
+  height: 100%;
 
   &--visitor {
     & > * {
       flex: 1;
+    }
+
+    & .offScreen {
+      position: relative;
+
+      &__inner {
+        display: flex;
+        align-items: center;
+
+        & > * {
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+
+.centerNav {
+  position: absolute;
+  justify-content: center;
+  transform: translateX(-50%);
+
+  & > * {
+    &:first-child {
+      margin-left: 0;
     }
   }
 }
@@ -55,6 +85,12 @@
   & > * {
     margin-left: $spacing-xxs;
   }
+}
+
+.menuButton {
+  position: absolute;
+  right: -$length-xs;
+  display: none;
 }
 
 .right {
@@ -91,4 +127,75 @@
 
 .notificationButton {
   --button-color: #{$color-secondary-lighter} !important;
+}
+
+@media (max-width: $breakpoint-l) {
+  .inner {
+    & .offScreen {
+      position: fixed;
+      left: 0;
+      top: $header-height;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba($color: $color-secondary-darkest, $alpha: 0.7);
+      transition: transform $transition-duration $transition-easing;
+      transform: translateX(100vw);
+
+      &__inner {
+        display: flex;
+        flex-direction: column;
+        padding: $spacing-xxs $length-l;
+        background-color: $color-secondary-lightest;
+      }
+
+      &--open {
+        transform: translateX(0);
+      }
+
+      & .centerNav {
+        position: static;
+        flex-direction: column;
+        margin-bottom: $spacing-xxs;
+        transform: translateX(0);
+
+        & > * {
+          margin-left: 0;
+
+          &:not(:last-child) {
+            margin-bottom: $length-xl;
+          }
+        }
+      }
+    }
+  }
+
+  .menuButton {
+    display: flex;
+  }
+
+  .headerCTAButton {
+    margin-left: 0;
+  }
+
+  .right {
+    flex-direction: column;
+    justify-content: center;
+  
+    & > * {
+      margin-left: 0;
+    }
+  }
+
+  .loggedInNav {
+    flex-direction: column;
+    margin-bottom: $spacing-xxs;
+
+    & > * {
+      margin-left: 0;
+
+      &:not(:last-child) {
+        margin-bottom: $length-xl;
+      }
+    }
+  }
 }

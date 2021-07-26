@@ -72,6 +72,12 @@ $border-radius-l: 8px;
 $transition-duration: 200ms;
 $transition-easing: ease-out;
 
+$breakpoint-s: 576px;
+$breakpoint-m: 768px;
+$breakpoint-l: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
 @mixin focus {
   &:focus {
     outline: none;
