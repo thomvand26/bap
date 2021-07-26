@@ -3,3 +3,11 @@
     margin-bottom: $spacing-xl;
   }
 }
+
+@media (max-width: $breakpoint-l) {
+  .section {
+    &:not(:last-child) {
+      margin-bottom: $spacing-m;
+    }
+  }
+}
