@@ -13,17 +13,17 @@ export const Footer = () => {
   return (
     <footer className={`container ${styles.container}`}>
       <div className={`container__content ${styles.content}`}>
-        <div className={styles.left}>
+        <div className={styles.info}>
           <div className={styles.logo}>
             <Logo />
           </div>
-          <div className={styles.info}>
+          <div className={styles.about}>
             RoomStage is een platform gemaakt als bachelorproef binnen de
             afstudeerrichting Grafische en Digitale Media - Multimediaproductie
             - New Media Development aan de Arteveldehogeschool.
           </div>
         </div>
-        <ul className={styles.right}>
+        <ul className={styles.navigation}>
           <li className={router.pathname === SEARCH ? 'active' : ''}>
             <Link href={SEARCH}>Shows</Link>
           </li>
