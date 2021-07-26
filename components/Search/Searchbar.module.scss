@@ -21,6 +21,7 @@
 
 .searchInput {
   border-radius: $border-radius 0 0 $border-radius !important;
+  height: $spacing-xxs;
 }
 
 .dateInputContainer {
@@ -29,16 +30,40 @@
 
 .dateInput {
   border-radius: 0 $border-radius $border-radius 0 !important;
+  height: $spacing-xxs;
 }
 
 .button {
   display: flex;
   align-content: center;
-  height: $input-min-height;
+  height: $spacing-xxs;
   width: $spacing-m;
   padding-top: 0;
   padding-bottom: 0;
   border-radius: $border-radius;
   z-index: 1;
   color: $color-secondary-darkest;
+}
+
+@media (max-width: $breakpoint-m) {
+  .container {
+    flex-direction: column;
+
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: $length-s;
+      }
+    }
+  }
+
+  .searchInputContainer,
+  .dateInputContainer {
+    flex: unset;
+    width: $input-width;
+    max-width: 100%;
+
+    &::after {
+      display: none;
+    }
+  }
 }

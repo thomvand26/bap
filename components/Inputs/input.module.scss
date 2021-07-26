@@ -152,6 +152,8 @@
 }
 
 .selectContainer {
+  max-width: 100%;
+
   &--noPaddingBottom {
     padding-bottom: 0;
 
@@ -182,7 +184,8 @@
   & .menu {
     position: absolute;
     right: 0;
-    top: calc(100% - #{$font-size-s} - #{$length-xs} + #{$focus-border-width});
+    // top: calc(100% - #{$font-size-s} - #{$length-xs} + #{$focus-border-width});
+    top: calc(100% + #{$focus-border-width});
     display: none;
     padding: 0 $length-s;
     background-color: $color-white;
