@@ -64,7 +64,6 @@ export default function HomePage() {
 
   return (
     <div className="page container">
-      {/* <h2 className="pageHeader">Shows</h2> */}
       <section className={`container__content ${styles.section}`}>
         <ShowList
           headers={['Currently playing']}
