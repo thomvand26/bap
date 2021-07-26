@@ -72,4 +72,11 @@
       }
     }
   }
+
+  .listHeader {
+    &--home {
+      font-size: $font-size-l;
+      color: $color-secondary-dark;
+    }
+  }
 }
