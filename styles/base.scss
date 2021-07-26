@@ -143,4 +143,9 @@ fieldset {
       margin-bottom: $spacing-xxs;
     }
   }
+
+  .container {
+    padding-left: $length-l;
+    padding-right: $length-l;
+  }
 }
