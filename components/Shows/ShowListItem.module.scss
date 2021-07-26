@@ -45,6 +45,7 @@
   font-weight: bold;
   color: $color-secondary-dark;
   margin: 0 $length-xl;
+  text-align: center;
 }
 
 .actions {
@@ -68,5 +69,68 @@
 
   &__icon {
     margin-right: $length-xs;
+  }
+}
+
+@media (max-width: $breakpoint-l) {
+  .container {
+    flex-direction: column;
+    padding: $length-xxl $length-l;
+
+    &--cards {
+      min-height: 0;
+
+      & .showName {
+        margin-bottom: 0;
+      }
+    }
+
+    &--inDashboard {
+      & .showName {
+        margin-bottom: $length-xxl;
+      }
+    }
+  }
+
+  .middle {
+    margin-bottom: $length-xxl;
+  }
+
+  .mobileBottom {
+    display: flex;
+    align-items: center;
+    margin-top: $length-xxl;
+    width: $max-mobile-button-width;
+    max-width: 100%;
+
+    & > * {
+      flex: 1;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: $length-xs;
+  }
+
+  .date {
+    margin-bottom: $length-s;
+    font-weight: bold;
+    color: $color-secondary-dark;
+    text-align: center;
+
+    &__hour {
+      font-weight: normal;
+    }
+  }
+
+  .mobileButton {
+    min-height: 0;
+    height: fit-content;
+    width: 100%;
+    padding: $length-s;
+    margin-left: $length-xs;
   }
 }

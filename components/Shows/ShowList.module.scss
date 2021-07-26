@@ -39,8 +39,6 @@
   }
 
   &--cards {
-    // display: grid;
-    // grid-template-columns: repeat(3, 1fr);
     flex-direction: row;
 
     & > * {
@@ -57,4 +55,21 @@
 .browseAllLink {
   color: $color-secondary-darker;
   margin-top: $length-xxl;
+}
+
+@media (max-width: $breakpoint-l) {
+  .showList {
+    &--cards {
+      flex-direction: column;
+
+      & > * {
+        flex: unset;
+
+        &:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: $length-m;
+        }
+      }
+    }
+  }
 }
