@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -13,6 +13,16 @@ export const UserDropdown = () => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef();
   const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = () => setOpen(false);
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router]);
 
   const handleLogout = () => {
     signOut();
