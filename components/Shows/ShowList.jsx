@@ -17,6 +17,7 @@ export const ShowList = ({
   cards,
   headers,
   isOnHome,
+  inDashboard,
   useH2Headers,
   onDuplicate,
   onDelete,
@@ -25,7 +26,11 @@ export const ShowList = ({
   return (
     <div className={`${styles.container} ${className || ''}`}>
       {headers?.length ? (
-        <div className={styles.listHeaderContainer}>
+        <div
+          className={`${styles.listHeaderContainer} ${
+            inDashboard ? styles['listHeaderContainer--inDashboard'] : ''
+          }`}
+        >
           {headers.map((header, i) =>
             isOnHome ? (
               <h2

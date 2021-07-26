@@ -19,7 +19,7 @@ export default function ArtistDashboardPage() {
   return (
     <div className={`page container`}>
       <div className="container__content">
-        <h2 className="pageHeader">Artist Dashboard</h2>
+        <h2 className="page__title">Artist Dashboard</h2>
         <Link href={CREATE_SHOW}>
           <a
             className={`button ${styles.createShowButton}`}
@@ -39,6 +39,7 @@ export default function ArtistDashboardPage() {
           variant="artistDashboard"
           headers={['Show name', 'Date', 'Actions']}
           loading={loadingShows}
+          inDashboard
         />
       </div>
     </div>

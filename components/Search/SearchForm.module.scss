@@ -22,6 +22,14 @@
   }
 }
 
+@media (max-width: $breakpoint-l) {
+  .searchGroup {
+    &--artistDashboard {
+      margin-bottom: $spacing-xxs;
+    }
+  }
+}
+
 @media (max-width: $breakpoint-m) {
   .filterGroup {
     justify-content: center;

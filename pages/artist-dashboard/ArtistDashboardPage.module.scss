@@ -1,3 +1,9 @@
 .createShowButton {
   margin: 0 auto $spacing-m;
 }
+
+@media (max-width: $breakpoint-l) {
+  .createShowButton {
+    margin-bottom: $spacing-xxs;
+  }
+}

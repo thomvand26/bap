@@ -79,4 +79,10 @@
       color: $color-secondary-dark;
     }
   }
+
+  .listHeaderContainer {
+    &--inDashboard {
+      display: none;
+    }
+  }
 }
