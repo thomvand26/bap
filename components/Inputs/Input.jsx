@@ -89,15 +89,18 @@ export const Input = ({
             />
           ) : (
             <>
-              <label
-                htmlFor={id}
-                className={`${styles.label} ${
-                  hasFocused ? styles['label--touched'] : ''
-                }`}
-              >
-                {label}
-                {info && <InfoHover content={info} />}
-              </label>
+              {label && (
+                <label htmlFor={id} className={`${styles.label}`}>
+                  <span
+                    className={`${
+                      info ? styles['label__content--withInfo'] : ''
+                    }`}
+                  >
+                    {label}
+                  </span>
+                  {info && <InfoHover content={info} />}
+                </label>
+              )}
               {props.type.includes?.('date') ? (
                 <DateInput
                   className={`${styles.input} ${className || ''}`}

@@ -16,17 +16,13 @@ export const InputSlider = ({
   value,
   ...props
 }) => {
-
   return (
     <div className={styles.sliderContainer}>
-      <label
-        htmlFor={id}
-        className={`${styles.label} ${
-          hasFocused ? styles['label--touched'] : ''
-        }`}
-      >
-        <div className={styles.label__left}>
-          {label}
+      <label htmlFor={id} className={`${styles.label}`}>
+        <div className={`${styles.label__left}`}>
+          <span className={`${info ? styles['label__content--withInfo'] : ''}`}>
+            {label}
+          </span>
           {info && <InfoHover content={info} />}
         </div>
         <div className={styles.label__right}>

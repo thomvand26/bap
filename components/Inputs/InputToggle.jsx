@@ -49,7 +49,9 @@ export const InputToggle = ({
         }`}
       >
         <div className={styles.label__left}>
-          {label}
+          <span className={`${info ? styles['label__content--withInfo'] : ''}`}>
+            {label}
+          </span>
           {info && <InfoHover content={info} />}
         </div>
         <div className={styles.label__right}>
