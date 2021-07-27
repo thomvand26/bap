@@ -130,6 +130,10 @@
 }
 
 @media (max-width: $breakpoint-l) {
+  .header {
+    padding: 0 $length-l;
+  }
+
   .inner {
     & .offScreen {
       position: fixed;
@@ -180,7 +184,7 @@
   .right {
     flex-direction: column;
     justify-content: center;
-  
+
     & > * {
       margin-left: 0;
     }
