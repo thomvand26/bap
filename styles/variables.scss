@@ -66,6 +66,8 @@ $min-main-height: calc(
 $footer-height: 18.75rem; // 300px
 $footer-height-mobile: 28.75rem; // 460px
 
+$stream-height-mobile: min(calc(100vw / 1.777), 30vh);
+
 $button-border-width: 2px;
 $focus-border-width: 3px;
 $border-radius-s: 2px;

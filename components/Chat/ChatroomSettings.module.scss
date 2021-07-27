@@ -1,11 +1,13 @@
 .container {
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 0;
   right: 0;
   background-color: $color-secondary-darker;
-  z-index: 8;
+  z-index: 10;
   padding: $length-l;
+  max-height: calc(100vh - 23.25rem);
+  overflow-y: auto;
 }
 
 .top {
@@ -59,4 +61,13 @@
 .deleteButton {
   margin-top: $length-xxl;
   color: $color-danger;
+}
+
+@media (max-width: $breakpoint-l) {
+  .container {
+    position: fixed;
+    top: $stream-height-mobile;
+    height: calc(100vh - #{$stream-height-mobile});
+    max-height: calc(100vh - #{$stream-height-mobile});
+  }
 }

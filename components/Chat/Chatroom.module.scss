@@ -160,3 +160,13 @@
     align-self: flex-end;
   }
 }
+
+@media (max-width: $breakpoint-l) {
+  .chatHeader {
+    padding: $length-s $length-l;
+
+    &__title {
+      font-size: $font-size-m;
+    }
+  }
+}

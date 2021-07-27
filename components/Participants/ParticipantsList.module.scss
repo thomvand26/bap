@@ -3,7 +3,7 @@
   top: 100%;
   left: 0;
   width: 100%;
-  max-height: 600%;
+  max-height: calc(100vh - 27.5rem);
   overflow: auto;
   padding: $length-l;
   padding-top: 0;
@@ -12,8 +12,10 @@
   &--inChatroom {
     --participants-button-secondary-color: #{$color-secondary-darkest};
     position: initial;
-    padding: 0;
-    max-height: 20vh;
+    padding: 0 $length-l;
+    max-height: 16vh;
+    margin-left: -$length-l;
+    width: calc(100% + #{2 * $length-l});
   }
 }
 
@@ -74,5 +76,21 @@
 
   &--show {
     display: flex;
+  }
+}
+
+@media (max-width: $breakpoint-l) {
+  .userListContainer {
+    &:not(.userListContainer--inChatroom) {
+      position: fixed;
+      top: $stream-height-mobile;
+      height: calc(100vh - #{$stream-height-mobile});
+      max-height: calc(100vh - #{$stream-height-mobile});
+      padding-top: $length-s;
+    }
+
+    &--inChatroom {
+      max-height: calc(60vh - #{$spacing-xl});
+    }
   }
 }

@@ -21,3 +21,15 @@
   background-color: $color-secondary-darkest;
   color: $color-secondary-lightest;
 }
+
+@media (max-width: $breakpoint-l) {
+  .page {
+    flex-direction: column;
+  }
+
+  .showStream {
+    flex: unset;
+    height: $stream-height-mobile;
+    min-height: $stream-height-mobile;
+  }
+}
