@@ -51,6 +51,16 @@
   }
 }
 
+.loadingContainer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+  z-index: 10;
+  background-color: $color-loading-overlay;
+}
+
 .form {
   height: 100%;
   overflow-y: auto;
