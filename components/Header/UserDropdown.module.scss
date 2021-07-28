@@ -65,3 +65,11 @@
     cursor: pointer;
   }
 }
+
+@media (max-width: $breakpoint-l) {
+  .menu {
+    right: unset;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
