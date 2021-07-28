@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from 'react';
 
 export const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: (process.browser && window?.innerWidth) || 1600,
-    height: (process.browser && window?.innerHeight) || 900,
-  });
+  const [hasWindow, setHasWindow] = useState(typeof window !== undefined);
+  const [windowSize, setWindowSize] = useState({});
 
   useEffect(() => {
-    if (!process.browser || !window) return;
+    setHasWindow(typeof window !== undefined);
+  }, [typeof window]);
+
+  useEffect(() => {
+    if (!hasWindow) return;
 
     const updateWindowSize = () => {
       setWindowSize({ width: window?.innerWidth, height: window?.innerHeight });
     };
 
+    updateWindowSize();
+
     window?.addEventListener('resize', updateWindowSize);
 
     return () => {
-      if (process.browser && window) {
+      if (hasWindow) {
         window?.removeEventListener('resize', updateWindowSize);
       }
     };
-  }, []);
+  }, [hasWindow]);
 
   return windowSize;
 };
