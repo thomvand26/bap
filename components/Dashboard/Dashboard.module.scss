@@ -11,8 +11,49 @@
   width: $container-width-xl;
 
   & > * {
-    display: grid;
-    gap: $length-xl;
-    grid-template-rows: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: $length-xl;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-xl) {
+  .container {
+    &--performance {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows:
+        repeat(2, auto) repeat(3, calc(#{$dashboardpanel-height-x-large} / 3))
+        repeat(2, calc(min(50vh, 40rem) / 2)) 25vh;
+      padding: $spacing-xxs $length-l $length-l;
+      gap: $length-l;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-l) {
+  .container {
+    &:not(.container--performance) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      padding: $spacing-xxs $length-l $length-l;
+      gap: $length-l;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-m) {
+  .container {
+    &--performance {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, auto) $dashboardpanel-height-medium;
+      padding: $spacing-xxs $length-l $length-l;
+      gap: 0;
+      row-gap: $length-l;
+    }
   }
 }

@@ -1,0 +1,49 @@
+.dashboardPanelContent {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+
+  & > * {
+    height: 100%;
+  }
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  padding: 0 $length-xl;
+  margin: $length-l 0 $spacing-xxs;
+  color: $color-secondary-darkest;
+  font-weight: bold;
+
+  & > * {
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-right: $length-l;
+    }
+
+    &:global(.active) {
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: $color-primary-light;
+        height: $length-xxs;
+        border-radius: $border-radius-s;
+      }
+    }
+  }
+}

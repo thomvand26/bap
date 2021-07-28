@@ -5,3 +5,17 @@
   background-color: $color-secondary-darkest;
   color: $color-secondary-lightest;
 }
+
+@media (max-width: $breakpoint-xl) {
+  .previewContainer {
+    &--performance {
+      height: $stream-height-mobile-in-panel;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-l) {
+  .previewContainer {
+    height: $stream-height-mobile-in-panel;
+  }
+}

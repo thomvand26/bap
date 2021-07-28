@@ -32,7 +32,6 @@ export default function EditShowPage() {
     }
 
     (async () => {
-      console.log(session);
       if (!session) return;
 
       // Use current show if it's the requested show
@@ -63,7 +62,7 @@ export default function EditShowPage() {
   return (
     <div className={styles.page}>
       <div className={styles.top}>
-        <h1>{currentShow?.title}</h1>
+        <h1 className={styles.title}>{currentShow?.title}</h1>
         <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>
           <a className={`button button--fit`}>Go to performance view</a>
         </Link>

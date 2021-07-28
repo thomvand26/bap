@@ -74,6 +74,10 @@
     }
   }
 
+  &--slider {
+    padding-bottom: $length-xxl;
+  }
+
   &--defaultWidth {
     width: $input-width;
   }

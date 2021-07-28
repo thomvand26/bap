@@ -16,3 +16,19 @@ $column-width: 20vw;
   max-width: 100%;
   margin: 0 auto;
 }
+
+@media (max-width: $breakpoint-l) {
+  .page {
+    height: unset;
+  }
+
+  .top {
+    flex-direction: column;
+    padding: 0 $length-l;
+    padding-top: $spacing-xxs;
+  }
+
+  .title {
+    margin-bottom: $length-xxl;
+  }
+}

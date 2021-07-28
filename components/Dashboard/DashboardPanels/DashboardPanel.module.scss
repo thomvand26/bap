@@ -4,6 +4,7 @@
   flex-direction: column;
   background-color: $color-secondary-lightest;
   border-radius: $border-radius;
+  min-width: 0;
 
   &__name {
     background-color: $color-secondary-darker;
@@ -43,10 +44,8 @@
     max-width: 100%;
 
     & > * {
-      margin-right: $length-xl;
-
-      &:last-child {
-        margin-right: 0;
+      &:not(:last-child) {
+        margin-right: $length-xl;
       }
     }
   }
@@ -54,6 +53,7 @@
 
 .form {
   height: 100%;
+  overflow-y: auto;
 }
 
 .fieldset {
@@ -69,6 +69,38 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: $length-xl;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-l) {
+  .panel {
+    &__buttonGroup {
+      margin-top: $length-xl;
+    }
+  }
+
+  .fieldset {
+    &--2col {
+      & .inputContainer {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-s) {
+  .panel {
+    &__buttonGroup {
+      flex-direction: column;
+
+      & > * {
+        &:not(:last-child) {
+          margin-bottom: $length-m;
+          margin-right: 0;
+        }
+      }
     }
   }
 }

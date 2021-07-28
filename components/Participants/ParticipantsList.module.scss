@@ -9,6 +9,10 @@
   padding-top: 0;
   background-color: var(--participants-button-tertiary-color);
 
+  &--inDashboard {
+    border-radius: $border-radius;
+  }
+
   &--inChatroom {
     --participants-button-secondary-color: #{$color-secondary-darkest};
     position: initial;
@@ -79,9 +83,17 @@
   }
 }
 
+@media (max-width: $breakpoint-xl) {
+  .userListContainer {
+    &--inDashboard {
+      max-height: calc(#{$dashboardpanel-height-x-large} - 0.75rem);
+    }
+  }
+}
+
 @media (max-width: $breakpoint-l) {
   .userListContainer {
-    &:not(.userListContainer--inChatroom) {
+    &:not(.userListContainer--inChatroom):not(.userListContainer--inDashboard) {
       position: fixed;
       top: $stream-height-mobile;
       height: calc(100vh - #{$stream-height-mobile});
@@ -91,6 +103,14 @@
 
     &--inChatroom {
       max-height: calc(60vh - #{$spacing-xl});
+    }
+  }
+}
+
+@media (max-width: $breakpoint-m) {
+  .userListContainer {
+    &--inDashboard {
+      max-height: calc(#{$dashboardpanel-height-medium} - 9.5rem);
     }
   }
 }

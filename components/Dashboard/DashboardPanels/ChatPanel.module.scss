@@ -14,3 +14,9 @@
   padding: $length-l / 2;
   padding-top: 0;
 }
+
+@media (max-width: $breakpoint-m) {
+  .panelContainer {
+    margin-top: $spacing-xxs;
+  }
+}

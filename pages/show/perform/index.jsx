@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useSession } from 'next-auth/client';
@@ -34,7 +34,7 @@ export default function PerformShowPage() {
   return (
     <div className={styles.page}>
       <div className={styles.top}>
-        <h1>{currentShow?.title}</h1>
+        <h1 className={styles.title}>{currentShow?.title}</h1>
         <Link href={{ pathname: EDIT_SHOW, query: router.query }}>
           <a className={`button button--fit`}>Go to settings view</a>
         </Link>

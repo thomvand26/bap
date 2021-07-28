@@ -28,7 +28,7 @@ export const ParticipantsList = ({
     <div
       className={`${styles.userListContainer} ${
         inChatroom ? styles['userListContainer--inChatroom'] : ''
-      }`}
+      } ${inDashboard ? styles['userListContainer--inDashboard'] : ''}`}
     >
       {!inChatroom && (
         <button

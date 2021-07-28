@@ -67,6 +67,12 @@ $footer-height: 18.75rem; // 300px
 $footer-height-mobile: 28.75rem; // 460px
 
 $stream-height-mobile: min(calc(100vw / 1.777), 30vh);
+$stream-height-mobile-in-panel: calc((100vw - 4rem) / 1.777);
+
+$dashboardpanel-height-medium: calc(100vh - #{$header-height} - 2.5rem);
+$dashboardpanel-height-x-large: calc(
+  min(calc(100vh - #{$header-height} - 2.5rem), 40rem)
+);
 
 $button-border-width: 2px;
 $focus-border-width: 3px;

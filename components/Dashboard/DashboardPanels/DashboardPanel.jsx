@@ -9,11 +9,12 @@ export const DashboardPanel = ({
   colspan = 1,
   rowspan = 1,
   children,
+  className,
   contentClassName,
 }) => {
   return (
     <div
-      className={`${styles.panel} ${styles[`row--${row}`]}`}
+      className={`${styles.panel} ${styles[`row--${row}`]} ${className || ''}`}
       style={{ gridColumn: `span ${colspan}`, gridRow: `span ${rowspan}` }}
     >
       {name && (
@@ -25,7 +26,9 @@ export const DashboardPanel = ({
           {name}
         </div>
       )}
-      <div className={`${styles.panel__content} ${contentClassName || ''}`}>{children}</div>
+      <div className={`${styles.panel__content} ${contentClassName || ''}`}>
+        {children}
+      </div>
     </div>
   );
 };

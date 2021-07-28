@@ -7,7 +7,7 @@ import { DashboardPanel } from './DashboardPanel';
 
 import styles from './StreamPreviewPanel.module.scss';
 
-export const StreamPreviewPanel = (props) => {
+export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
   const { currentShow } = useShow();
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
 
@@ -17,7 +17,11 @@ export const StreamPreviewPanel = (props) => {
 
   return (
     <DashboardPanel {...props}>
-      <div className={styles.previewContainer}>
+      <div
+        className={`${styles.previewContainer} ${
+          isPerformance ? styles['previewContainer--performance'] : ''
+        }`}
+      >
         {urlValid ? (
           <ReactPlayer
             url={currentShow?.streamURL}

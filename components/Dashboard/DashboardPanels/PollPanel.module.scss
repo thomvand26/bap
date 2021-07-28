@@ -10,14 +10,12 @@
 .placeholder {
   text-align: center;
   font-size: $font-size-m;
-
-  &--withMarginBottom {
-    margin-bottom: $length-s;
-  }
+  margin-bottom: $length-s;
 }
 
 .pollList {
   padding-right: $length-s;
+  overflow-y: auto;
 
   &__item {
     width: 100%;
@@ -47,81 +45,14 @@
   justify-content: center;
 }
 
-.pollSettings {
-  padding-left: $length-s;
-  margin-top: -$length-xl - $length-s;
-  max-height: calc(100% + #{$length-xl} + #{$length-s});
-  overflow-y: auto;
-  padding-right: $length-s;
-  border-left: 2px solid $color-secondary-lighter;
-}
-
-.label {
-  display: block;
-  font-weight: bold;
-  color: $color-secondary-dark;
-  margin-bottom: $length-xs;
-}
-
-.optionList {
-  margin-bottom: $length-l;
-
-  &__item {
-    display: flex;
-    align-items: center;
-
-    &:not(:last-child) {
-      margin-bottom: $length-s;
-    }
+@media (max-width: $breakpoint-m) {
+  .panelContainer {
+    flex-direction: column;
+    padding: 0;
   }
 
-  &__bullet {
-    font-weight: bold;
-    color: $color-secondary-dark;
-    margin-right: $length-s;
-    width: $length-s;
-    text-align: right;
-  }
-
-  &__input {
-    flex: 3;
-  }
-
-  &__percentage {
-    flex: 1;
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-left: $length-xs;
-    font-weight: bold;
-    color: $color-secondary-dark;
-    border-radius: $border-radius;
-
-    &--highest {
-      color: $color-secondary-darkest;
-      background-color: $color-primary-light;
-    }
-  }
-
-  &__deleteButton {
-    align-self: stretch;
-  }
-}
-
-.buttonGroup {
-  display: flex;
-  align-items: stretch;
-  margin-top: $length-xl;
-
-  & > * {
-    flex: 1;
-    width: 100%;
-    min-height: 0;
-
-    &:not(:last-child) {
-      margin-right: $length-s;
-    }
+  .pollList {
+    padding-left: $length-s;
+    padding-right: $length-s;
   }
 }
