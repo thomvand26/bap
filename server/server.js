@@ -1,10 +1,12 @@
 // import Peer from "simple-peer";
 
-const server = require('express')();
+const express = require('express');
+const server = express();
 const http = require('http').Server(server);
 const io = require('socket.io')(http);
 const { Types } = require('mongoose');
 const next = require('next');
+// const path = require('path');
 
 const {
   connectDB,
@@ -25,8 +27,6 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-connectDB();
-
 // const emitClientsUpdate = () => {
 //   io.sockets.emit('clientsUpdate', {
 //     connectedSockets: [...io.sockets.sockets.keys()],
@@ -35,6 +35,8 @@ connectDB();
 
 async function start() {
   await app.prepare();
+
+  await connectDB();
 
   // Remove all socket references in chatrooms & shows
   // Show.
@@ -177,6 +179,11 @@ async function start() {
       emitChatUpdate({ io, chatroomId, message: newMessage });
     });
   });
+
+  // server.get('/service-worker.js', (req, res) => {
+  //   console.log(path.join(__dirname, '../../', '.next/', 'service-worker.js'));
+  //   app.serveStatic(req, res, path.join(__dirname, '../../', '.next/', 'service-worker.js'));
+  // });
 
   server.get('*', (req, res) => {
     req.io = io;
