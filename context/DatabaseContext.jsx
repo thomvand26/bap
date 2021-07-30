@@ -44,7 +44,19 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const exports = { getShow, getShows, updateUser };
+  const deleteAccount = async (locale) => {
+    try {
+      const response = await axios.post(API_USER, {delete: true, locale});
+      if (response?.status === 200) {
+        return response?.data?.data;
+      }
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const exports = { getShow, getShows, updateUser, deleteAccount };
 
   return (
     <DatabaseContext.Provider value={exports}>

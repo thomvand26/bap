@@ -2,6 +2,7 @@ import { getSession } from 'next-auth/client';
 
 import { withDB } from 'middleware';
 import { User } from 'models';
+import { sendGoodbyeEmail } from '@/server';
 
 const user = async (req, res) => {
   const { method } = req;
@@ -13,6 +14,15 @@ const user = async (req, res) => {
     switch (method) {
       case 'POST':
         if (!session?.user?._id) throw new Error('Not logged in!');
+
+        if (req.body.delete) {
+          responseData = await User.findByIdAndRemove(
+            session.user._id,
+          );
+  
+          // Send goodbye email
+          await sendGoodbyeEmail(responseData, req.body.locale);
+        }
 
         responseData = await User.findOneAndUpdate(
           { _id: session.user._id },

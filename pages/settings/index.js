@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 
 import { useDatabase, useModal } from '@/context';
 import { Input, ProtectedRoute } from '@/components';
+import { LANDING } from '@/routes';
 
 import styles from './SettingsPage.module.scss';
 
@@ -16,7 +17,7 @@ const validationSchema = () =>
 
 export default function SettingsPage() {
   const [session] = useSession();
-  const { updateUser } = useDatabase();
+  const { updateUser, deleteAccount } = useDatabase();
   const { setModalData } = useModal();
   const router = useRouter();
 
@@ -30,8 +31,16 @@ export default function SettingsPage() {
     setUpdating(false);
   };
 
+
   const confirmDelete = async () => {
-    console.log('Confirmed. Account can be deleted now');
+    // Delete account
+    await deleteAccount(router.locale);
+
+    // Close modal
+    setModalData(null);
+
+    // Redirect
+    router.push(LANDING);
   };
 
   const handleDelete = async () => {
@@ -43,12 +52,6 @@ export default function SettingsPage() {
         { text: 'No, go back', onClick: () => setModalData(null) },
       ],
     });
-
-    // Delete account
-    // TODO
-
-    // Redirect
-    // TODO
   };
 
   return (
