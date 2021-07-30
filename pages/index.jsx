@@ -1,6 +1,8 @@
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { ShowList } from '@/components';
 import { Layouts } from '@/layouts';
@@ -10,11 +12,12 @@ import { upsertDocumentInArrayState, filterShowsPlayingNow } from '@/utils';
 
 import styles from './HomePage.module.scss';
 
-export default function HomePage() {
+export default function HomePage(props) {
   const [session, loading] = useSession();
   const { getShows } = useDatabase();
   const { setCurrentShow, fetchedShows, setFetchedShows } = useShow();
   const router = useRouter();
+  const { t } = useTranslation('home-page');
   const [isFetching, setIsFetching] = useState();
   const [groupedShows, setGroupedShows] = useState();
 
@@ -66,7 +69,7 @@ export default function HomePage() {
     <div className="page container">
       <section className={`container__content ${styles.section}`}>
         <ShowList
-          headers={['Currently playing']}
+          headers={[t('currently-playing')]}
           shows={groupedShows?.currentlyPlayingShows.slice(0, 3)}
           cards
           loading={isFetching}
@@ -88,3 +91,12 @@ export default function HomePage() {
 }
 
 HomePage.layout = Layouts.default;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, ['home-page'])),
+      session: await getSession(context)
+    }
+  }
+}

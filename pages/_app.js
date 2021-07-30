@@ -1,13 +1,18 @@
-import '../styles/app.scss';
+import { appWithTranslation } from 'next-i18next';
+
 import { GlobalProvider } from '../context';
 import { LayoutWrapper } from '../layouts';
 
-export default function MyApp({ Component, pageProps }) {
+import '../styles/app.scss';
+
+const MyApp = ({ Component, pageProps }) => {
   return (
-    <GlobalProvider pageProps={pageProps} >
+    <GlobalProvider pageProps={pageProps}>
       <LayoutWrapper>
         <Component {...pageProps} />
       </LayoutWrapper>
     </GlobalProvider>
   );
-}
+};
+
+export default appWithTranslation(MyApp);
