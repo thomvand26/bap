@@ -33,6 +33,12 @@
   & a {
     white-space: nowrap;
   }
+
+  & .headerCTAButton {
+    height: fit-content;
+    padding: $length-xs $length-l;
+    color: $color-secondary-darkest;
+  }
 }
 
 .inner {
@@ -101,12 +107,6 @@
   & > * {
     margin-left: $spacing-xxs;
   }
-}
-
-.headerCTAButton {
-  height: fit-content;
-  padding: $length-xs $length-l;
-  color: $color-secondary-darkest;
 }
 
 .homeLink {

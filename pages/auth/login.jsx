@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import { Layouts } from '@/layouts';
 import { Input } from '@/components';
-import { REGISTER } from '@/routes';
+import { LANDING, REGISTER } from '@/routes';
 
 import styles from './AuthPage.module.scss';
 
@@ -31,8 +31,6 @@ const validationSchema = (onValid) =>
           ...values,
         });
 
-        console.log(response);
-
         if (!response?.error && onValid instanceof Function) {
           onValid();
           return;
@@ -54,7 +52,7 @@ export default function LoginPage({ providers, csrfToken }) {
   const [session, loading] = useSession();
 
   useEffect(() => {
-    if (session) router.push('/');
+    if (session?.user?._id) router.push(LANDING);
   }, [session]);
 
   return (
@@ -62,7 +60,7 @@ export default function LoginPage({ providers, csrfToken }) {
       <h1 className="page__title">Welcome back!</h1>
       <h1 className={styles.formTitle}>Login</h1>
       <Formik
-        validationSchema={() => validationSchema(() => router.push('/'))}
+        validationSchema={() => validationSchema(() => router.push(LANDING))}
         initialValues={{ email: '', password: '' }}
         validateOnChange={false}
         validateOnBlur={false}

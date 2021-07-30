@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
-import { Provider } from 'next-auth/client';
+import { Provider as NextAuthProvider } from 'next-auth/client';
+
 import { GoogleApiProvider } from './GoogleApiContext';
 import { DatabaseProvider } from './DatabaseContext';
 import { SocketProvider } from './SocketContext';
@@ -13,7 +14,7 @@ export const GlobalProvider = ({ children, pageProps }) => {
 
   return (
     <GlobalContext.Provider value={exports}>
-      <Provider session={pageProps.session}>
+      <NextAuthProvider session={pageProps.session}>
         <DatabaseProvider>
           <SocketProvider>
             <GoogleApiProvider>
@@ -25,7 +26,7 @@ export const GlobalProvider = ({ children, pageProps }) => {
             </GoogleApiProvider>
           </SocketProvider>
         </DatabaseProvider>
-      </Provider>
+      </NextAuthProvider>
     </GlobalContext.Provider>
   );
 };
