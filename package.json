@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "babel-node server/server.js",
-    "build": "next build && babel server/ -d dist/server && babel models/ -d dist/models",
+    "build": "next build && babel server/ -d dist/server && babel models/ -d dist/models && babel emails/ -d dist/emails",
     "start": "node dist/server/server.js -p $PORT",
     "start:local": "node dist/server/server.js",
     "export": "next export",
