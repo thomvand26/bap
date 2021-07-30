@@ -11,7 +11,7 @@ import { LOGIN } from '@/routes';
 
 import styles from './AuthPage.module.scss';
 
-const validationSchema = (onValid) =>
+const validationSchema = (locale, onValid) =>
   Yup.object()
     .shape({
       email: Yup.string().required('Email is required.'),
@@ -29,6 +29,7 @@ const validationSchema = (onValid) =>
 
         const response = await signIn('email-password', {
           redirect: false,
+          locale,
           ...values,
         });
 
@@ -56,7 +57,7 @@ export default function RegisterPage({ csrfToken }) {
       <h1 className="page__title">Welcome to <span className={styles.pageTitleRoomStage}>RoomStage</span>!</h1>
       <h1 className={styles.formTitle}>Register</h1>
       <Formik
-        validationSchema={() => validationSchema(() => router.push('/'))}
+        validationSchema={() => validationSchema(router.locale, () => router.push('/'))}
         initialValues={{ email: '', username: '', password: '' }}
         validateOnChange={false}
         validateOnBlur={false}

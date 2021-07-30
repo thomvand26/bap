@@ -29,7 +29,7 @@ export default NextAuth({
         },
       },
       authorize: async (credentials) => {
-        const { email, password: plainPassword, username } = credentials;
+        const { email, password: plainPassword, username, locale } = credentials;
 
         const password = await new Promise((resolve, reject) => {
           bcrypt.hash(
@@ -43,7 +43,7 @@ export default NextAuth({
         });
 
         const loginResponse = username
-          ? await register({ email, password, username })
+          ? await register({ email, password, username, locale })
           : await login({ email, password: plainPassword });
 
         if (loginResponse?.success) {

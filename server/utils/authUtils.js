@@ -1,5 +1,6 @@
 import { User } from '../../models';
 import bcrypt from 'bcrypt';
+import { sendWelcomeEmail } from './emailUtils';
 
 export const login = async ({ email, password }) => {
   const user = await User.findOne({ email });
@@ -35,7 +36,7 @@ export const login = async ({ email, password }) => {
   }
 };
 
-export const register = async ({ email, password, username }) => {
+export const register = async ({ email, password, username, locale }) => {
   try {
     const user = await User.create({ email, password, username });
 
@@ -45,6 +46,8 @@ export const register = async ({ email, password, username }) => {
         field: 'email',
       };
     }
+
+    await sendWelcomeEmail(user, locale);
 
     return { success: true, user };
   } catch (error) {
