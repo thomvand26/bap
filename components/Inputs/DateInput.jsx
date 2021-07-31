@@ -3,6 +3,8 @@
 import React from 'react';
 import Flatpickr from 'react-flatpickr';
 import { FaRegCalendarAlt, FaTimes } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import { Dutch } from 'flatpickr/dist/l10n/nl';
 
 import 'flatpickr/dist/themes/material_green.css';
 
@@ -20,6 +22,8 @@ export const DateInput = ({
   maxDate,
   ...props
 }) => {
+  const router = useRouter();
+
   return (
     <div className={`${styles.dateContainer}`}>
       <Flatpickr
@@ -40,6 +44,7 @@ export const DateInput = ({
           dateFormat: withTime ? 'd-m-Y  H:i' : 'd-m-Y',
           minDate,
           maxDate,
+          locale: router.locale === 'en' ? 'en' : Dutch,
         }}
         placeholder={placeholder}
       />

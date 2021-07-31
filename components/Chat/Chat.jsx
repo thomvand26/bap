@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { MdArrowDropDown, MdExitToApp } from 'react-icons/md';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { LANDING } from '@/routes';
@@ -12,6 +13,7 @@ import styles from './Chat.module.scss';
 
 export const Chat = () => {
   const { currentShow, loadingChat } = useShow();
+  const { t } = useTranslation(['chat']);
 
   const [showSongRequestChatbox, setShowSongRequestChatbox] = useState(false);
   const [minimizeShowRequests, setMinimizeShowRequests] = useState(false);
@@ -46,7 +48,9 @@ export const Chat = () => {
           className={`button--text focus-inset ${styles.requests__titleButton}`}
           onClick={() => setMinimizeShowRequests((prev) => !prev)}
         >
-          <h2 className={`h4 ${styles.requests__title}`}>Song requests</h2>
+          <h2 className={`h4 ${styles.requests__title}`}>
+            {t('chat:song-requests')}
+          </h2>
           <MdArrowDropDown
             className={`dropdownIcon ${!minimizeShowRequests ? 'open' : ''}`}
             viewBox="6 6 12 12"

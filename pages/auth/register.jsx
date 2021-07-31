@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Input } from '@/components';
 import { Layouts } from '@/layouts';
@@ -11,12 +13,16 @@ import { LOGIN } from '@/routes';
 
 import styles from './AuthPage.module.scss';
 
-const validationSchema = (locale, onValid) =>
+const validationSchema = (
+  { emailRequired, usernameRequired, passRequired },
+  locale,
+  onValid
+) =>
   Yup.object()
     .shape({
-      email: Yup.string().required('Email is required.'),
-      username: Yup.string().required('Username is required.'),
-      password: Yup.string().required('Password is required.'),
+      email: Yup.string().required(emailRequired),
+      username: Yup.string().required(usernameRequired),
+      password: Yup.string().required(passRequired),
     })
     .test({
       name: 'auth-check',
@@ -51,13 +57,27 @@ const validationSchema = (locale, onValid) =>
 
 export default function RegisterPage({ csrfToken }) {
   const router = useRouter();
+  const { t } = useTranslation(['register-page', 'auth']);
 
   return (
     <div className="page">
-      <h1 className="page__title">Welcome to <span className={styles.pageTitleRoomStage}>RoomStage</span>!</h1>
-      <h1 className={styles.formTitle}>Register</h1>
+      <h1 className="page__title">
+        {t('register-page:page-title')}
+        <span className={styles.pageTitleRoomStage}>RoomStage</span>!
+      </h1>
+      <h1 className={styles.formTitle}>{t('auth:register')}</h1>
       <Formik
-        validationSchema={() => validationSchema(router.locale, () => router.push('/'))}
+        validationSchema={() =>
+          validationSchema(
+            {
+              emailRequired: t('auth:error-email-required'),
+              usernameRequired: t('auth:error-username-required'),
+              passRequired: t('auth:error-password-required'),
+            },
+            router.locale,
+            () => router.push('/')
+          )
+        }
         initialValues={{ email: '', username: '', password: '' }}
         validateOnChange={false}
         validateOnBlur={false}
@@ -65,32 +85,31 @@ export default function RegisterPage({ csrfToken }) {
         <Form className={styles.form}>
           <Input
             name="email"
-            label="Email"
+            label={t('auth:email')}
             type="email"
-            // autoComplete="off"
             defaultWidth
           />
           <Input
             name="username"
-            label="Username"
+            label={t('auth:username')}
             type="username"
-            // autoComplete="off"
             defaultWidth
           />
           <Input
             name="password"
-            label="Password"
+            label={t('auth:password')}
             type="password"
-            // autoComplete="off"
             defaultWidth
             noPaddingBottom
           />
           <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
-          <button type="submit" className={styles.submitButton}>Create account</button>
+          <button type="submit" className={styles.submitButton}>
+            {t('auth:create-account')}
+          </button>
           <span className={styles.authSwitch}>
-            Already have an account?
+            {t('register-page:already-account')}
             <Link href={LOGIN}>
-              <a className="button button--text">Login</a>
+              <a className="button button--text">{t('auth:login')}</a>
             </Link>
           </span>
         </Form>
@@ -101,19 +120,16 @@ export default function RegisterPage({ csrfToken }) {
 
 RegisterPage.layout = Layouts.default;
 
-RegisterPage.getInitialProps = async (context) => {
-  const { req, res } = context;
-  const session = await getSession({ req });
-  if (res && session?.accessToken) {
-    res.WriteHead(302, {
-      Location: '/',
-    });
-    res.end();
-    return;
-  }
-
+export async function getServerSideProps(context) {
   return {
-    session: undefined,
-    csrfToken: await csrfToken(context),
+    props: {
+      ...(await serverSideTranslations(context.locale, [
+        'register-page',
+        'auth',
+        'navigation',
+      ])),
+      session: await getSession(context),
+      csrfToken: await csrfToken(context),
+    },
   };
-};
+}

@@ -44,7 +44,7 @@ export default NextAuth({
 
         const loginResponse = username
           ? await register({ email, password, username, locale })
-          : await login({ email, password: plainPassword });
+          : await login({ email, password: plainPassword, locale });
 
         if (loginResponse?.success) {
           return loginResponse.user;

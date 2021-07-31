@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import ReactPlayer from 'react-player';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
-import { LANDING } from '@/routes';
 import { Chat, LoadingSpinner, PollWindow } from '@/components';
 import { Layouts } from '@/layouts';
 import { useShow } from '@/context';
@@ -15,9 +15,9 @@ export default function ShowPage(params) {
   const router = useRouter();
   const { id } = router.query;
   const { joinShow, currentShow, loadingShow, setLoadingShow } = useShow();
-  const [error, setError] = useState();
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
   const [session, loadingSession] = useSession();
+  const { t } = useTranslation(['show-page']);
 
   useEffect(() => {
     if (!id || loadingSession) return;
@@ -27,7 +27,7 @@ export default function ShowPage(params) {
     joinShow(id, (response) => {
       if (response?.type === 'error') {
         console.log('error');
-        setError(response);
+        router.push('/404');
       } else {
         console.log('success');
       }
@@ -42,13 +42,6 @@ export default function ShowPage(params) {
 
   return loadingShow ? (
     <LoadingSpinner />
-  ) : error ? (
-    <div className={`page ${styles.page} ${styles.pageError}`}>
-      <h2>Error: show not found</h2>
-      <Link href={`${LANDING}`}>
-        <button>Go back</button>
-      </Link>
-    </div>
   ) : (
     <div className={`scrollbars--dark ${styles.page}`}>
       <div className={styles.showStream}>
@@ -71,7 +64,9 @@ export default function ShowPage(params) {
             }}
           />
         ) : (
-          <div className="centeredPlaceholder">Invalid Stream URL</div>
+          <div className="centeredPlaceholder">
+            {t('show-page:stream-unavailable')}
+          </div>
         )}
         <PollWindow />
       </div>
@@ -81,3 +76,16 @@ export default function ShowPage(params) {
 }
 
 ShowPage.layout = Layouts.room;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, [
+        'show-page',
+        'common',
+        'chat',
+      ])),
+      session: await getSession(context),
+    },
+  };
+}

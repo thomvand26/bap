@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 
@@ -8,6 +9,7 @@ import styles from './ChatroomInviteButton.module.scss';
 export const ChatroomInviteButton = ({ user }) => {
   const { ownChatroom, inviteToChatroom, kickFromChatroom } = useShow();
   const [session] = useSession();
+  const { t } = useTranslation(['chat']);
 
   const [isInvited, setIsInvited] = useState();
   const [isMember, setIsMember] = useState();
@@ -76,10 +78,10 @@ export const ChatroomInviteButton = ({ user }) => {
         onClick={() => handleUserAction({ isMember, isInvited })}
       >
         {isMember
-          ? `Kick from ${ownChatroom?.name}`
+          ? `${t('chat:kick-from')} ${ownChatroom?.name}`
           : isInvited
-          ? 'Cancel invite'
-          : `Invite to ${ownChatroom?.name}`}
+          ? t('chat:cancel-invite')
+          : `${t('chat:invite-to')} ${ownChatroom?.name}`}
       </button>
     )
   );

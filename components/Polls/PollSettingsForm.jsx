@@ -1,6 +1,7 @@
 import React from 'react';
 import { FieldArray, Form, Formik } from 'formik';
 import { FaTrash } from 'react-icons/fa';
+import { useTranslation } from 'next-i18next';
 
 import {
   getHighestPollOption,
@@ -15,6 +16,7 @@ import styles from './PollSettingsForm.module.scss';
 export const PollSettingsForm = ({ saving, setSaving }) => {
   const { currentPoll, setCurrentPoll, createPoll, updatePoll, deletePoll } =
     useShow();
+  const { t } = useTranslation(['artist-dashboard', 'common']);
 
   const handleSubmit = async (data) => {
     setSaving(true);
@@ -68,12 +70,14 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
               <fieldset disabled={saving}>
                 <Input
                   name="pollTitle"
-                  label="Title"
+                  label={t('artist-dashboard:title')}
                   type="text"
                   variant="light"
                   autoComplete="off"
                 />
-                <label className={styles.label}>Options</label>
+                <label className={styles.label}>
+                  {t('artist-dashboard:options')}
+                </label>
                 <FieldArray>
                   <ol className={styles.optionList}>
                     {!!currentPoll?.options?.length &&
@@ -151,23 +155,25 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
                     </li>
                   </ol>
                 </FieldArray>
-                <label className={styles.label}>Settings</label>
+                <label className={styles.label}>
+                  {t('artist-dashboard:settings')}
+                </label>
                 <Input
                   name="allowMultipleChoices"
-                  label="Allow multiple choices"
+                  label={t('artist-dashboard:allow-multiple-choices')}
                   type="toggle"
                   variant="light"
                 />
                 <Input
                   name="showResults"
-                  label="Show results"
+                  label={t('artist-dashboard:show-results')}
                   type="toggle"
                   variant="light"
-                  info="Participants will still be able to vote, until you hide the poll"
+                  info={t('artist-dashboard:show-results-info')}
                 />
                 <div className={styles.buttonGroup}>
                   <button type="submit" className="focus-inset">
-                    Save
+                    {t('common:save')}
                   </button>
                   <button
                     type="button"
@@ -177,7 +183,9 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
                     }}
                     className="focus-inset"
                   >
-                    {currentPoll.visible ? 'Hide' : 'Start'}
+                    {currentPoll.visible
+                      ? t('artist-dashboard:hide-poll')
+                      : t('artist-dashboard:start-poll')}
                   </button>
                   <button
                     type="button"
@@ -185,7 +193,7 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
                     onClick={handleDelete}
                     disabled={!currentPoll?._id}
                   >
-                    Delete
+                    {t('common:delete')}
                   </button>
                 </div>
               </fieldset>
@@ -194,7 +202,7 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
         </Formik>
       ) : (
         <div className={`centeredPlaceholder ${styles.placeholder}`}>
-          Select or create a poll
+          {t('artist-dashboard:select-or-create-poll')}
         </div>
       )}
     </div>

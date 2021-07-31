@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/client';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { FaTimes } from 'react-icons/fa';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { Input } from '@/components';
@@ -28,6 +29,7 @@ export const Chatbox = ({
     currentShow,
     currentSongRequests,
   } = useShow();
+  const { t } = useTranslation(['artist-dashboard', 'chat']);
 
   const [allowSongRequests, setAllowSongRequests] = useState(true);
   const [reachedLimit, setReachedLimit] = useState(false);
@@ -77,7 +79,7 @@ export const Chatbox = ({
       >
         {showSongRequestChatbox && allowSongRequests && (
           <div className={styles.songRequestHeading}>
-            <h2 className={`h3`}>Request a song!</h2>
+            <h2 className={`h3`}>{t('chat:request-a-song-title')}</h2>
             <button
               type="button"
               className={`button--icon button--lightest button--noMinHeight ${styles.songRequestCloseButton}`}
@@ -89,15 +91,15 @@ export const Chatbox = ({
         )}
         <div className={`${styles.input}`}>
           <Input
-            name='message'
+            name="message"
             id={forSongRequest ? 'songRequest' : 'message'}
             type="text"
             autoComplete="off"
             placeholder={
               !inDashboard
                 ? showSongRequestChatbox
-                  ? 'Request a song!'
-                  : 'Say something!'
+                  ? t('chat:song-request-placeholder')
+                  : t('chat:chat-placeholder')
                 : ''
             }
             variant={
@@ -107,10 +109,12 @@ export const Chatbox = ({
                 ? 'darkest'
                 : 'dark'
             }
-            label={forSongRequest ? 'Send your own request' : ''}
+            label={
+              forSongRequest ? t('artist-dashboard:send-own-song-requests') : ''
+            }
             info={
               forSongRequest && !allowSongRequests
-                ? "Only you can send song requests. ('Maximum song requests per user' is set to 0)"
+                ? t('artist-dashboard:send-own-song-requests-info')
                 : ''
             }
             noPadding
@@ -127,22 +131,16 @@ export const Chatbox = ({
                   disabled={reachedLimit}
                 >
                   {showSongRequestChatbox
-                    ? 'Go back to chat'
+                    ? t('chat:go-back-to-chat')
                     : reachedLimit
-                    ? "You can't request more songs"
-                    : 'Request a song'}
+                    ? t('chat:request-a-song-reached-limit')
+                    : t('chat:request-a-song')}
                 </button>
               )}
-              {/* <button
-                type="button"
-                className={`button--icon button--hover-light ${styles.settingsButton}`}
-              >
-                <FiSettings size="1.4rem" />
-              </button> */}
             </div>
           )}
           <button type="submit" className={styles.sendButton}>
-            Send
+            {t('chat:send')}
           </button>
         </div>
       </Form>

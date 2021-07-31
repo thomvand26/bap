@@ -2,13 +2,16 @@ import { User } from '../../models';
 import bcrypt from 'bcrypt';
 import { sendWelcomeEmail } from './emailUtils';
 
-export const login = async ({ email, password }) => {
+export const login = async ({ email, password, locale }) => {
   const user = await User.findOne({ email });
 
   try {
     if (!user) {
       throw {
-        message: 'This email has no account yet.',
+        message:
+          locale === 'en'
+            ? 'This email has no account yet.'
+            : 'Dit e-mailadres heeft nog geen account.',
         field: 'email',
       };
     }
@@ -22,7 +25,7 @@ export const login = async ({ email, password }) => {
 
     if (!isValid)
       throw {
-        message: 'Invalid password.',
+        message: locale === 'en' ? 'Invalid password.' : 'Ongeldig wachtwoord.',
         field: 'password',
       };
 
@@ -42,7 +45,10 @@ export const register = async ({ email, password, username, locale }) => {
 
     if (!user) {
       throw {
-        message: 'Could not register new user.',
+        message:
+          locale === 'en'
+            ? 'Could not register new user.'
+            : 'Kon geen nieuwe gebruiker registreren.',
         field: 'email',
       };
     }
@@ -56,13 +62,22 @@ export const register = async ({ email, password, username, locale }) => {
       if (error.message.includes(' dup key: { email: ')) {
         return {
           success: false,
-          error: { message: 'This email is already in use.', field: 'email' },
+          error: {
+            message:
+              locale === 'en'
+                ? 'This email is already in use.'
+                : 'Dit e-mailadres is al in gebruik.',
+            field: 'email',
+          },
         };
       } else if (error.message.includes(' dup key: { username: ')) {
         return {
           success: false,
           error: {
-            message: 'This username is already in use.',
+            message:
+              locale === 'en'
+                ? 'This username is already in use.'
+                : 'Deze gebruikersnaam is al in gebruik',
             field: 'username',
           },
         };

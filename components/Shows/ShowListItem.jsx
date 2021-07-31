@@ -8,6 +8,7 @@ import {
   MdVisibility,
   MdVisibilityOff,
 } from 'react-icons/md';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { LoadingSpinner } from '@/components';
@@ -30,10 +31,11 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
   const [loading, setLoading] = useState(false);
   const isPlaying = isShowIsCurrentlyPlaying(show);
   const { width } = useWindowSize();
+  const { t } = useTranslation(['shows']);
 
   const Date = () => {
     return isPlaying && variant !== 'artistDashboard' ? (
-      `Until ${moment(show?.endDate).format('HH:mm')}`
+      `${t('shows:until')} ${moment(show?.endDate).format('HH:mm')}`
     ) : width <= breakpoints.l ? (
       <>
         <span>{moment(show?.startDate).format('DD-MM-YYYY')}</span>
@@ -143,14 +145,14 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
                   className={styles.mobileButton}
                   onClick={handleJoinClick}
                 >
-                  Join
+                  {t('shows:join')}
                 </button>
               ) : (
                 <button
                   className={styles.mobileButton}
                   onClick={handleAddCalendarClick}
                 >
-                  Add to calendar
+                  {t('shows:add-to-calendar')}
                 </button>
               )}
             </div>
@@ -206,11 +208,11 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
                         ?.length
                     }
                   </div>
-                  <button onClick={handleJoinClick}>Join</button>
+                  <button onClick={handleJoinClick}>{t('shows:join')}</button>
                 </>
               ) : (
                 <button onClick={handleAddCalendarClick}>
-                  Add to calendar
+                  {t('shows:add-to-calendar')}
                 </button>
               )}
             </div>

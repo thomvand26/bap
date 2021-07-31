@@ -1,3 +1,15 @@
+.top {
+  text-align: center;
+
+  &:not(:last-child) {
+    margin-bottom: $spacing-xl;
+  }
+
+  &__title {
+    margin-bottom: $spacing-xxs;
+  }
+}
+
 .section {
   &:not(:last-child) {
     margin-bottom: $spacing-xl;

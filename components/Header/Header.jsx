@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useTranslation } from 'next-i18next';
 
 import { Logo } from '@/components';
 import { ABOUT, LANDING, LOGIN, REGISTER, SEARCH } from '@/routes';
@@ -15,6 +16,7 @@ export const Header = () => {
   const [session] = useSession();
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState();
+  const { t } = useTranslation(['auth', 'navigation']);
 
   useEffect(() => {
     const handleRouteChange = () => setOpenMenu(false);
@@ -61,16 +63,16 @@ export const Header = () => {
               <>
                 <ul className={`${styles.col} ${styles.centerNav}`}>
                   <li className={router.pathname === LANDING ? 'active' : ''}>
-                    <Link href={LANDING}>Home</Link>
+                    <Link href={LANDING}>{t('navigation:home')}</Link>
                   </li>
                   <li className={router.pathname === LANDING ? 'active' : ''}>
-                    <Link href={LANDING}>About</Link>
+                    <Link href={LANDING}>{t('navigation:about')}</Link>
                   </li>
                   <li className={router.pathname === LANDING ? 'active' : ''}>
-                    <Link href={LANDING}>Features</Link>
+                    <Link href={LANDING}>{t('navigation:features')}</Link>
                   </li>
                   <li className={router.pathname === LANDING ? 'active' : ''}>
-                    <Link href={LANDING}>Shows</Link>
+                    <Link href={LANDING}>{t('navigation:shows')}</Link>
                   </li>
                 </ul>
                 <div className={`${styles.col} ${styles.right}`}>
@@ -86,8 +88,8 @@ export const Header = () => {
                       className={`button button--fit button--noMinHeight button--ghost ${styles.headerCTAButton}`}
                     >
                       {router?.asPath?.startsWith(`${REGISTER}`)
-                        ? 'Login'
-                        : 'Register'}
+                        ? t('auth:login')
+                        : t('auth:register')}
                     </a>
                   </Link>
                 </div>
@@ -96,10 +98,10 @@ export const Header = () => {
               <div className={styles.right}>
                 <ul className={`${styles.col} ${styles.loggedInNav}`}>
                   <li className={router.pathname === SEARCH ? 'active' : ''}>
-                    <Link href={SEARCH}>Find shows</Link>
+                    <Link href={SEARCH}>{t('navigation:find-shows')}</Link>
                   </li>
                   <li className={router.pathname === ABOUT ? 'active' : ''}>
-                    <Link href={ABOUT}>About</Link>
+                    <Link href={ABOUT}>{t('navigation:about')}</Link>
                   </li>
                 </ul>
                 <LangSwitcher className={styles.langSwitcher} />

@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { csrfToken, signIn, useSession } from 'next-auth/client';
+import { csrfToken, getSession, signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Layouts } from '@/layouts';
 import { Input } from '@/components';
@@ -11,11 +13,11 @@ import { LANDING, REGISTER } from '@/routes';
 
 import styles from './AuthPage.module.scss';
 
-const validationSchema = (onValid) =>
+const validationSchema = ({ emailRequired, passRequired }, locale, onValid) =>
   Yup.object()
     .shape({
-      email: Yup.string().required('Email is required.'),
-      password: Yup.string().required('Password is required.'),
+      email: Yup.string().required(emailRequired),
+      password: Yup.string().required(passRequired),
     })
     .test({
       name: 'auth-check',
@@ -28,6 +30,7 @@ const validationSchema = (onValid) =>
 
         const response = await signIn('email-password', {
           redirect: false,
+          locale,
           ...values,
         });
 
@@ -50,6 +53,7 @@ const validationSchema = (onValid) =>
 export default function LoginPage({ providers, csrfToken }) {
   const router = useRouter();
   const [session, loading] = useSession();
+  const { t } = useTranslation(['login-page', 'auth']);
 
   useEffect(() => {
     if (session?.user?._id) router.push(LANDING);
@@ -57,10 +61,18 @@ export default function LoginPage({ providers, csrfToken }) {
 
   return (
     <div className="page">
-      <h1 className="page__title">Welcome back!</h1>
+      <h1 className="page__title">{t('login-page:page-title')}</h1>
       <h1 className={styles.formTitle}>Login</h1>
       <Formik
-        validationSchema={() => validationSchema(() => router.push(LANDING))}
+        validationSchema={() =>
+          validationSchema(
+            {
+              emailRequired: t('auth:error-email-required'),
+              passRequired: t('auth:error-password-required'),
+            },
+            () => router.push(LANDING)
+          )
+        }
         initialValues={{ email: '', password: '' }}
         validateOnChange={false}
         validateOnBlur={false}
@@ -68,27 +80,25 @@ export default function LoginPage({ providers, csrfToken }) {
         <Form className={styles.form}>
           <Input
             name="email"
-            label="Email"
+            label={t('auth:email')}
             type="email"
-            // autoComplete="off"
             defaultWidth
           />
           <Input
             name="password"
-            label="Password"
+            label={t('auth:password')}
             type="password"
-            // autoComplete="off"
             defaultWidth
             noPaddingBottom
           />
           <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
           <button type="submit" className={styles.submitButton}>
-            Login
+            {t('auth:login')}
           </button>
           <span className={styles.authSwitch}>
-            Don't have an account yet?
+            {t('login-page:no-account-yet')}
             <Link href={REGISTER}>
-              <a className="button button--text">Register</a>
+              <a className="button button--text">{t('auth:register')}</a>
             </Link>
           </span>
         </Form>
@@ -99,24 +109,16 @@ export default function LoginPage({ providers, csrfToken }) {
 
 LoginPage.layout = Layouts.default;
 
-LoginPage.getInitialProps = async (context) => {
-  // const { req, res } = context;
-  // const session = await getSession({ req });
-  // if (res && session?.accessToken) {
-  //   res.WriteHead(302, {
-  //     Location: '/',
-  //   });
-  //   res.end();
-  //   return;
-  // }
-  // res.end();
-  console.time('csrf');
-  const csrf = await csrfToken(context);
-  console.timeEnd('csrf');
-
+export async function getServerSideProps(context) {
   return {
-    // session: undefined,
-    // providers: await providers(context),
-    csrfToken: csrf,
+    props: {
+      ...(await serverSideTranslations(context.locale, [
+        'login-page',
+        'auth',
+        'navigation',
+      ])),
+      session: await getSession(context),
+      csrfToken: await csrfToken(context),
+    },
   };
-};
+}

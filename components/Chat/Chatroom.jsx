@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import { FiSettings } from 'react-icons/fi';
 import { MdArrowDropDown } from 'react-icons/md';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { ParticipantsButton, LoadingSpinner } from '@/components';
@@ -34,6 +35,8 @@ export const Chatroom = ({ inDashboard }) => {
   const chatContentRef = useRef();
   const wasScrolledToBottom = useRef(true);
   const [session] = useSession();
+  const { t } = useTranslation(['chat']);
+
   const [showAvailableChatrooms, setShowAvailableChatrooms] = useState(false);
 
   useEffect(() => {
@@ -87,7 +90,9 @@ export const Chatroom = ({ inDashboard }) => {
                   : ''
               }`}
             >
-              {currentChatroom?.name}
+              {currentChatroom?.isGeneral
+                ? t('chat:general-chat')
+                : currentChatroom?.name}
               {availableChatrooms?.length > 1 && (
                 <MdArrowDropDown
                   className={`dropdownIcon ${
@@ -109,7 +114,7 @@ export const Chatroom = ({ inDashboard }) => {
                 className={`button--primary button--mini ${styles.chatHeader__makeRoom}`}
                 onClick={() => setShowChatroomSettings('create')}
               >
-                Make room
+                {t('chat:make-room')}
               </button>
             )}
             <ParticipantsButton />
@@ -162,7 +167,7 @@ export const Chatroom = ({ inDashboard }) => {
         {!inDashboard && <ChatModal />}
 
         {!loadingChat && !loadingShow && !currentChatroom?.messages?.length && (
-          <div className="centeredPlaceholder">No messages yet</div>
+          <div className="centeredPlaceholder">{t('chat:no-messages-yet')}</div>
         )}
 
         {currentChatroom?.messages?.map?.((messageObject, i) => {

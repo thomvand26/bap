@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { getSession } from 'next-auth/client';
 
 import { Layouts } from '@/layouts';
 import { SearchForm, ShowList } from '@/components';
@@ -9,6 +12,7 @@ export default function SearchPage() {
   const [upcomingShows, setUpcomingShows] = useState([]);
   const [currentlyPlayingShows, setCurrentlyPlayingShows] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation(['search-page', 'shows']);
 
   const onSearch = (shows) => {
     setUpcomingShows(shows?.upcomingShows);
@@ -18,7 +22,7 @@ export default function SearchPage() {
   return (
     <div>
       <div className={`container ${styles.top}`}>
-        <h1>Search shows</h1>
+        <h1>{t('search-page:page-title')}</h1>
         <section className={styles.searchSection}>
           <div className=" container__content">
             <SearchForm
@@ -35,7 +39,7 @@ export default function SearchPage() {
             shows={currentlyPlayingShows}
             className={'container__content'}
             loading={loading}
-            headers={['Currently playing']}
+            headers={[t('shows:currently-playing')]}
             useH2Headers
           />
         ) : (
@@ -47,14 +51,16 @@ export default function SearchPage() {
             variant={'upcoming'}
             className={'container__content'}
             loading={loading}
-            headers={['Upcoming']}
+            headers={[t('shows:upcoming-shows')]}
             useH2Headers
           />
         ) : (
           <></>
         )}
         {!currentlyPlayingShows?.length && !upcomingShows?.length ? (
-          <div className={'container__content'}>No shows found</div>
+          <div className={'container__content'}>
+            {t('shows:no-shows-found')}
+          </div>
         ) : (
           <></>
         )}
@@ -64,3 +70,17 @@ export default function SearchPage() {
 }
 
 SearchPage.layout = Layouts.default;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, [
+        'search-page',
+        'auth',
+        'navigation',
+        'shows',
+      ])),
+      session: await getSession(context),
+    },
+  };
+}

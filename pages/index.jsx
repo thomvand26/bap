@@ -17,7 +17,7 @@ export default function HomePage(props) {
   const { getShows } = useDatabase();
   const { setCurrentShow, fetchedShows, setFetchedShows } = useShow();
   const router = useRouter();
-  const { t } = useTranslation('home-page');
+  const { t } = useTranslation(['home-page', 'shows']);
   const [isFetching, setIsFetching] = useState();
   const [groupedShows, setGroupedShows] = useState();
 
@@ -67,9 +67,13 @@ export default function HomePage(props) {
 
   return (
     <div className="page container">
+      <div className={`container__content ${styles.top}`}>
+        <h1 className={styles.top__title}>{t('home-page:page-title')}</h1>
+        <p className={styles.top__intro}>{t('home-page:intro')}</p>
+      </div>
       <section className={`container__content ${styles.section}`}>
         <ShowList
-          headers={[t('currently-playing')]}
+          headers={[t('shows:currently-playing')]}
           shows={groupedShows?.currentlyPlayingShows.slice(0, 3)}
           cards
           loading={isFetching}
@@ -79,7 +83,7 @@ export default function HomePage(props) {
       </section>
       <section className={`container__content ${styles.section}`}>
         <ShowList
-          headers={['Upcoming shows']}
+          headers={[t('shows:upcoming-shows')]}
           shows={groupedShows?.upcomingShows.slice(0, 3)}
           isOnHome
           withBrowseAllButton
@@ -95,8 +99,13 @@ HomePage.layout = Layouts.default;
 export async function getServerSideProps(context) {
   return {
     props: {
-      ...(await serverSideTranslations(context.locale, ['home-page'])),
-      session: await getSession(context)
-    }
-  }
+      ...(await serverSideTranslations(context.locale, [
+        'home-page',
+        'auth',
+        'navigation',
+        'shows',
+      ])),
+      session: await getSession(context),
+    },
+  };
 }

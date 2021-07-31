@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { LoadingSpinner } from '@/components';
@@ -10,6 +11,7 @@ export const SongRequestList = ({ inDashboard }) => {
   const { currentSongRequests, loadingShow } = useShow();
   const [visibleCurrentSongRequests, setVisibleCurrentSongRequests] =
     useState();
+  const { t } = useTranslation(['chat']);
 
   useEffect(() => {
     if (inDashboard) return;
@@ -38,7 +40,9 @@ export const SongRequestList = ({ inDashboard }) => {
       {!loadingShow &&
         !(inDashboard ? currentSongRequests : visibleCurrentSongRequests)
           ?.length && (
-          <div className="centeredPlaceholder">No song requests yet</div>
+          <div className="centeredPlaceholder">
+            {t('chat:no-song-requests-yet')}
+          </div>
         )}
 
       {(inDashboard ? currentSongRequests : visibleCurrentSongRequests)?.map?.(

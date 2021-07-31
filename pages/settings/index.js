@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { useDatabase, useModal } from '@/context';
 import { Input, ProtectedRoute } from '@/components';
@@ -20,6 +22,7 @@ export default function SettingsPage() {
   const { updateUser, deleteAccount } = useDatabase();
   const { setModalData } = useModal();
   const router = useRouter();
+  const { t } = useTranslation(['auth', 'common']);
 
   const [updating, setUpdating] = useState(false);
 
@@ -30,7 +33,6 @@ export default function SettingsPage() {
     router.reload(window.location.pathname);
     setUpdating(false);
   };
-
 
   const confirmDelete = async () => {
     // Delete account
@@ -46,10 +48,17 @@ export default function SettingsPage() {
   const handleDelete = async () => {
     // Show warning modal
     setModalData({
-      heading: 'Are you sure you want to delete your account?',
+      heading: t('auth:delete-account-warning-title'),
       actions: [
-        { type: 'danger', text: 'Yes, delete it', onClick: confirmDelete },
-        { text: 'No, go back', onClick: () => setModalData(null) },
+        {
+          type: 'danger',
+          text: t('auth:delete-account-warning-confirm'),
+          onClick: confirmDelete,
+        },
+        {
+          text: t('auth:delete-account-warning-cancel'),
+          onClick: () => setModalData(null),
+        },
       ],
     });
   };
@@ -57,7 +66,7 @@ export default function SettingsPage() {
   return (
     <div className={`page`}>
       <ProtectedRoute />
-      <h1 className="page__title">Settings</h1>
+      <h1 className="page__title">{t('auth:settings')}</h1>
       <Formik
         validationSchema={validationSchema}
         enableReinitialize={true}
@@ -67,14 +76,19 @@ export default function SettingsPage() {
         onSubmit={handleSubmit}
       >
         <Form className={styles.form}>
-          <Input type="text" name="username" label="Username" defaultWidth />
+          <Input
+            type="text"
+            name="username"
+            label={t('auth:username')}
+            defaultWidth
+          />
 
           <button
             type="submit"
             className={styles.saveButton}
             disabled={updating}
           >
-            Save
+            {t('common:save')}
           </button>
 
           <button
@@ -82,10 +96,23 @@ export default function SettingsPage() {
             className={`button--text button--danger ${styles.deleteButton}`}
             onClick={handleDelete}
           >
-            Delete account
+            {t('auth:delete-account')}
           </button>
         </Form>
       </Formik>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, [
+        'auth',
+        'navigation',
+        'common',
+      ])),
+      session: await getSession(context),
+    },
+  };
 }

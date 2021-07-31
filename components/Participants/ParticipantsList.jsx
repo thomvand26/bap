@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSession } from 'next-auth/client';
 import { FaBan, FaTimes, FaUserPlus } from 'react-icons/fa';
 import { MdExitToApp } from 'react-icons/md';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { ChatroomInviteButton } from '@/components';
@@ -23,6 +24,7 @@ export const ParticipantsList = ({
     ownChatroom,
   } = useShow();
   const [showInviteMenu, setShowInviteMenu] = useState([]);
+  const { t } = useTranslation(['chat']);
 
   return true ? (
     <div
@@ -57,7 +59,7 @@ export const ParticipantsList = ({
               >
                 <div>
                   {userObject.username}{' '}
-                  {isCurrentUser ? <span>(you)</span> : ''}
+                  {isCurrentUser ? <span>{t('chat:you-indicator')}</span> : ''}
                 </div>
                 <div
                   className={`${styles.actionButtons} ${styles.actionButtons}`}

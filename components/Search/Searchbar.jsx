@@ -1,11 +1,14 @@
 import React from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { useTranslation } from 'next-i18next';
 
 import { Input } from '@/components';
 
 import styles from './Searchbar.module.scss';
 
 export const Searchbar = ({ artistDashboard, className, variant }) => {
+  const { t } = useTranslation(['shows']);
+
   return (
     <div className={`${styles.container} ${className || ''}`}>
       <Input
@@ -13,7 +16,7 @@ export const Searchbar = ({ artistDashboard, className, variant }) => {
         type="text"
         autoComplete="off"
         variant={variant}
-        placeholder="Search shows"
+        placeholder={t('shows:search-shows')}
         noPadding
         noErrors
         className={`${styles.searchInput}`}
@@ -21,7 +24,7 @@ export const Searchbar = ({ artistDashboard, className, variant }) => {
       />
       <Input
         name="date"
-        placeholder="Date"
+        placeholder={t('shows:date')}
         type="date"
         className={`${styles.dateInput}`}
         containerClassName={`${styles.dateInputContainer}`}

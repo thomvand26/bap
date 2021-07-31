@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import moment from 'moment';
+import { useTranslation } from 'next-i18next';
 
 import { DashboardPanel } from './DashboardPanel';
 import { Input, LoadingSpinner } from '@/components';
@@ -27,6 +28,7 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
   const { currentShow, setCurrentShow, saveShow, deleteShow, loadingShow } =
     useShow();
   const router = useRouter();
+  const { t } = useTranslation(['artist-dashboard', 'common']);
 
   const [saving, setSaving] = useState(false);
   const [enableReinitialize, setEnableReinitialize] = useState(true);
@@ -69,7 +71,7 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
   };
 
   return (
-    <DashboardPanel name="General settings" {...props}>
+    <DashboardPanel name={t('artist-dashboard:general-settings')} {...props}>
       <Formik
         validationSchema={validationSchema}
         enableReinitialize={enableReinitialize}
@@ -97,19 +99,21 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
             className={`${styles.fieldset} ${styles[`fieldset--2col`]}`}
             disabled={saving}
           >
-            <h3 className={styles.panel__subtitle}>General</h3>
+            <h3 className={styles.panel__subtitle}>
+              {t('artist-dashboard:general')}
+            </h3>
             <div className={styles.inputContainer}>
               <div>
                 <Input
                   name="title"
-                  label="Show title"
+                  label={t('artist-dashboard:show-title')}
                   type="text"
                   autoComplete="off"
                   variant="light"
                 />
                 <Input
                   name="startDate"
-                  label="Start date"
+                  label={t('artist-dashboard:start-date')}
                   type="datetime"
                   autoComplete="off"
                   variant="light"
@@ -117,7 +121,7 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
                 />
                 <Input
                   name="endDate"
-                  label="End date"
+                  label={t('artist-dashboard:end-date')}
                   type="datetime"
                   autoComplete="off"
                   variant="light"
@@ -127,28 +131,30 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
               <div>
                 <Input
                   name="maxSongRequestsPerUser"
-                  label="Maximum song requests per user"
+                  label={t('artist-dashboard:max-song-requests')}
                   type="slider"
                   variant="light"
                   min={0}
                   max={10}
                   step={1}
-                  info="How many song requests can the user make? (Song requests will be disabled if this is set to 0.)"
+                  info={t('artist-dashboard:max-song-requests-info')}
                 />
                 <Input
                   name="visible"
-                  label="Visible"
+                  label={t('artist-dashboard:visible')}
                   type="toggle"
                   variant="light"
-                  info="Should everyone be able to see this show?"
+                  info={t('artist-dashboard:visible-info')}
                 />
               </div>
             </div>
-            <h3 className={styles.panel__subtitle}>Stream</h3>
+            <h3 className={styles.panel__subtitle}>
+              {t('artist-dashboard:stream')}
+            </h3>
             <div className={styles.inputContainer}>
               <Input
                 name="streamURL"
-                label="Stream URL"
+                label={t('artist-dashboard:stream-url')}
                 type="text"
                 autoComplete="off"
                 variant="light"
@@ -157,17 +163,19 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
             <div className={styles.panel__buttonGroup}>
               {loadingShow === false && currentShow?._id ? (
                 <>
-                  <button type="submit">Save</button>
+                  <button type="submit">{t('common:save')}</button>
                   <button
                     className="button button--ghost button--danger"
                     type="button"
                     onClick={handleDelete}
                   >
-                    Delete this show
+                    {t('artist-dashboard:delete-show')}
                   </button>
                 </>
               ) : (
-                <button type="submit">Create show</button>
+                <button type="submit">
+                  {t('artist-dashboard:create-show')}
+                </button>
               )}
             </div>
           </fieldset>

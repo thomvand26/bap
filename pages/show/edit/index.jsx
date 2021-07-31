@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 import { Layouts } from '@/layouts';
 import { useShow, useDatabase } from '@/context';
@@ -17,6 +19,7 @@ export default function EditShowPage() {
   const router = useRouter();
   const [session, loadingSession] = useSession();
   const [isNewShow, setIsNewShow] = useState();
+  const { t } = useTranslation(['artist-dashboard']);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -64,7 +67,9 @@ export default function EditShowPage() {
       <div className={styles.top}>
         <h1 className={styles.title}>{currentShow?.title}</h1>
         <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>
-          <a className={`button button--fit`}>Go to performance view</a>
+          <a className={`button button--fit`}>
+            {t('artist-dashboard:go-to-performance')}
+          </a>
         </Link>
       </div>
       <ShowSettingsDashboard isNewShow={isNewShow} />
@@ -73,3 +78,18 @@ export default function EditShowPage() {
 }
 
 EditShowPage.layout = Layouts.noFooter;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, [
+        'auth',
+        'navigation',
+        'shows',
+        'common',
+        'artist-dashboard',
+      ])),
+      session: await getSession(context),
+    },
+  };
+}

@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/client';
 import moment from 'moment';
 import { FaBan, FaTimes, FaTrash } from 'react-icons/fa';
 import { MdExitToApp } from 'react-icons/md';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { ChatroomInviteButton } from '@/components';
@@ -19,6 +20,7 @@ export const ChatMessage = ({
   const { kickUser, deleteChat, openChatMessage, setOpenChatMessage } =
     useShow();
   const [session] = useSession();
+  const {t} = useTranslation(['chat'])
 
   return (
     <div
@@ -52,7 +54,7 @@ export const ChatMessage = ({
             className={styles.chatMessage__user}
             onClick={() => setOpenChatMessage(null)}
           >
-            {owner?.username}{` ${owner?._id === session?.user?._id ? '(you)' : ''}`}
+            {owner?.username}{` ${owner?._id === session?.user?._id ? t('chat:you-indicator') : ''}`}
           </strong>
           <button
             type="button"

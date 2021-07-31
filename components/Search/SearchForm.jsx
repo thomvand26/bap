@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { encode } from 'querystring';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import {
   dateBetweenShowDatesMongoDBQuery,
@@ -29,6 +30,7 @@ export const SearchForm = ({
 }) => {
   const router = useRouter();
   const { getShows } = useDatabase();
+  const { t } = useTranslation(['shows']);
 
   const [loading, setLoading] = useState(true);
 
@@ -120,13 +122,13 @@ export const SearchForm = ({
           <div className={`${styles.filterGroup}`}>
             <Input
               name="currentlyPlaying"
-              label="Currently playing"
+              label={t('shows:currently-playing')}
               type="select"
               variant={variant}
               options={[
-                { label: 'All', value: null },
-                { label: 'Currently playing', value: true },
-                { label: 'Upcoming', value: false },
+                { label: t('shows:all'), value: null },
+                { label: t('shows:currently-playing'), value: true },
+                { label: t('shows:upcoming-shows'), value: false },
               ]}
               submitOnChange
               noPaddingBottom

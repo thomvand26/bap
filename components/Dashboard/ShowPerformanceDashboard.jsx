@@ -17,25 +17,14 @@ export const ShowPerformanceDashboard = () => {
 
   return (
     <Dashboard performance>
-      <StreamPreviewPanel
-        name="Preview"
-        toggle
-        colspan={2}
-        rowspan={2}
-        isPerformance
-      />
+      <StreamPreviewPanel toggle colspan={2} rowspan={2} isPerformance />
       {width <= breakpoints.m ? (
         <PerformanceViewManagerPanel />
       ) : (
         <>
-          <SongRequestsPanel
-            name="Song requests"
-            toggle
-            colspan={1}
-            rowspan={3}
-          />
-          <ChatPanel name="Chat" toggle colspan={1} rowspan={3} />
-          <PollPanel name="Polls" toggle colspan={2} rowspan={2} />
+          <SongRequestsPanel toggle colspan={1} rowspan={3} />
+          <ChatPanel toggle colspan={1} rowspan={3} />
+          <PollPanel toggle colspan={2} rowspan={2} />
           <DashboardPanel area colspan={2} rowspan={1} />
         </>
       )}

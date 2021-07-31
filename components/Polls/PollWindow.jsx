@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import { Field, Form, Formik } from 'formik';
+import { useTranslation } from 'next-i18next';
 
 import { getHighestPollOption, getTotalPollVotes } from '@/utils';
 import { useShow } from '@/context';
@@ -11,6 +12,7 @@ import styles from './PollWindow.module.scss';
 export const PollWindow = () => {
   const [session] = useSession();
   const { presentedPoll, votePoll } = useShow();
+  const { t } = useTranslation(['common']);
   const [choices, setChoices] = useState([]);
   const [saving, setSaving] = useState();
 
@@ -35,7 +37,7 @@ export const PollWindow = () => {
     <div className={`${styles.container}`}>
       <div className={styles.pollTitleContainer}>
         <h3 className={styles.pollTitle}>{presentedPoll.pollTitle}</h3>
-        <InfoHover content="By saving you agree that your anwser will be saved and shared." />
+        <InfoHover content={t('common:poll-save-warning')} />
       </div>
       <Formik
         enableReinitialize={true}
@@ -103,7 +105,7 @@ export const PollWindow = () => {
                 type="submit"
                 className={`button--mini ${styles.saveButton}`}
               >
-                Save
+                {t('common:save')}
               </button>
             </fieldset>
           </Form>

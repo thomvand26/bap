@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { PollWindow } from '@/components';
@@ -10,13 +11,14 @@ import styles from './StreamPreviewPanel.module.scss';
 export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
   const { currentShow } = useShow();
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
+  const { t } = useTranslation(['artist-dashboard']);
 
   useEffect(() => {
     setUrlValid(currentShow?.streamURL);
   }, [currentShow?.streamURL]);
 
   return (
-    <DashboardPanel {...props}>
+    <DashboardPanel name={t('artist-dashboard:preview')} {...props}>
       <div
         className={`${styles.previewContainer} ${
           isPerformance ? styles['previewContainer--performance'] : ''
@@ -32,7 +34,9 @@ export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
             }}
           />
         ) : (
-          <div className="centeredPlaceholder">Invalid Stream URL</div>
+          <div className="centeredPlaceholder">
+            {t('artist-dashboard:invalid-stream-url')}
+          </div>
         )}
         <PollWindow />
       </div>

@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/client';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { FaTimes } from 'react-icons/fa';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { Input, ParticipantsList } from '@/components';
@@ -26,6 +27,8 @@ export const ChatroomSettings = () => {
     loadingChat,
   } = useShow();
   const [session] = useSession();
+  const { t } = useTranslation(['chat']);
+
   const [chatroomName, setChatroomName] = useState('My chatroom');
 
   useEffect(() => {
@@ -73,7 +76,7 @@ export const ChatroomSettings = () => {
           initialValues={{
             name:
               showChatroomSettings === 'create'
-                ? 'My chatroom'
+                ? t('chat:default-room-name')
                 : currentChatroom?.name,
           }}
           onSubmit={handleSubmit}
@@ -82,7 +85,7 @@ export const ChatroomSettings = () => {
             <div className={styles.inputContainer}>
               <Input
                 name="name"
-                label="Room name"
+                label={t('chat:room-name')}
                 type="text"
                 autoComplete="off"
                 variant="darkest"
@@ -91,7 +94,7 @@ export const ChatroomSettings = () => {
               />
             </div>
             <button type="submit" className={styles.saveButton}>
-              Save
+              {t('chat:save-room-name')}
             </button>
           </Form>
         </Formik>
@@ -106,8 +109,9 @@ export const ChatroomSettings = () => {
           }`}
         >
           <h4 className={styles.participantsLabel}>
-            Participants in this room{' '}
-            {`(${uniqueParticipantsInChatroom?.length})`}
+            {`${t('chat:participants-in-this-room')} (${
+              uniqueParticipantsInChatroom?.length
+            })`}
           </h4>
           <ParticipantsList
             inChatroom
@@ -127,8 +131,8 @@ export const ChatroomSettings = () => {
           }}
         >
           {currentChatroom?.owner?._id === session?.user?._id
-            ? 'Delete this room'
-            : 'Leave this room'}
+            ? t('chat:delete-room')
+            : t('chat:leave-room')}
         </button>
       )}
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
 
 import { SEARCH } from '@/routes';
 import { ShowListItem } from './ShowListItem';
@@ -23,6 +24,8 @@ export const ShowList = ({
   onDelete,
   withBrowseAllButton,
 }) => {
+  const { t } = useTranslation(['shows']);
+
   return (
     <div className={`${styles.container} ${className || ''}`}>
       {headers?.length ? (
@@ -79,7 +82,7 @@ export const ShowList = ({
 
       {withBrowseAllButton && (
         <Link href={SEARCH}>
-          <a className={styles.browseAllLink}>Browse all shows</a>
+          <a className={styles.browseAllLink}>{t('shows:browse-all-shows')}</a>
         </Link>
       )}
     </div>

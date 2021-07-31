@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MdVisibility } from 'react-icons/md';
+import { useTranslation } from 'next-i18next';
 
 import { useShow } from '@/context';
 import { AddButton, LoadingSpinner, PollSettingsForm } from '@/components';
@@ -40,6 +41,7 @@ export const PollPanel = (props) => {
   } = useShow();
   const [saving, setSaving] = useState();
   const hasInitializedPolls = useRef();
+  const { t } = useTranslation(['artist-dashboard']);
 
   const initializePolls = async () => {
     setLoadingPolls(true);
@@ -57,7 +59,11 @@ export const PollPanel = (props) => {
   }, [currentShow, currentPolls]);
 
   return (
-    <DashboardPanel contentClassName={styles.panelContainer} {...props}>
+    <DashboardPanel
+      name={t('artist-dashboard:polls')}
+      contentClassName={styles.panelContainer}
+      {...props}
+    >
       {loadingShow || loadingPolls ? (
         <LoadingSpinner />
       ) : (
@@ -86,7 +92,9 @@ export const PollPanel = (props) => {
                 </li>
               ))
             ) : (
-              <div className={`${styles.placeholder}`}>No polls yet</div>
+              <div className={`${styles.placeholder}`}>
+                {t('artist-dashboard:no-polls-yet')}
+              </div>
             )}
             <li className={styles.addButton}>
               <AddButton

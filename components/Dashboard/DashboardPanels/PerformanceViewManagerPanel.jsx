@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { DashboardPanel } from './DashboardPanel';
 import { ChatPanel } from './ChatPanel';
@@ -8,6 +9,7 @@ import { PollPanel } from './PollPanel';
 import styles from './PerformanceViewManagerPanel.module.scss';
 
 export const PerformanceViewManagerPanel = ({ isPerformance, ...props }) => {
+  const { t } = useTranslation('artist-dashboard');
   const [panelContentId, setPanelContentId] = useState('chat');
 
   return (
@@ -18,7 +20,7 @@ export const PerformanceViewManagerPanel = ({ isPerformance, ...props }) => {
             className={`button--unstyled`}
             onClick={() => setPanelContentId('chat')}
           >
-            Chat
+            {t('artist-dashboard:chat')}
           </button>
         </li>
         <li className={panelContentId === 'song-request' ? 'active' : ''}>
@@ -26,7 +28,7 @@ export const PerformanceViewManagerPanel = ({ isPerformance, ...props }) => {
             className={`button--unstyled`}
             onClick={() => setPanelContentId('song-request')}
           >
-            Song requests
+            {t('artist-dashboard:song-requests')}
           </button>
         </li>
         <li className={panelContentId === 'polls' ? 'active' : ''}>
@@ -34,7 +36,7 @@ export const PerformanceViewManagerPanel = ({ isPerformance, ...props }) => {
             className={`button--unstyled`}
             onClick={() => setPanelContentId('polls')}
           >
-            Polls
+            {t('artist-dashboard:polls')}
           </button>
         </li>
         <li>
@@ -42,14 +44,14 @@ export const PerformanceViewManagerPanel = ({ isPerformance, ...props }) => {
             className={`button--unstyled`}
             onClick={() => setPanelContentId()}
           >
-            Actions
+            {t('artist-dashboard:actions')}
           </button>
         </li>
       </ul>
       <div className={styles.content}>
-        {panelContentId === 'chat' && <ChatPanel />}
-        {panelContentId === 'song-request' && <SongRequestsPanel />}
-        {panelContentId === 'polls' && <PollPanel />}
+        {panelContentId === 'chat' && <ChatPanel name={null} />}
+        {panelContentId === 'song-request' && <SongRequestsPanel name={null} />}
+        {panelContentId === 'polls' && <PollPanel name={null} />}
       </div>
     </DashboardPanel>
   );

@@ -3,16 +3,18 @@ import { signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { MdArrowDropDown } from 'react-icons/md';
+import { useTranslation } from 'next-i18next';
 
 import { ARTIST_DASHBOARD, LANDING, SETTINGS } from '@/routes';
 
 import styles from './Dropdown.module.scss';
 
-export const UserDropdown = ({className}) => {
+export const UserDropdown = ({ className }) => {
   const [session] = useSession();
   const [open, setOpen] = useState(false);
   const containerRef = useRef();
   const router = useRouter();
+  const { t } = useTranslation(['auth', 'navigation']);
 
   useEffect(() => {
     const handleRouteChange = () => setOpen(false);
@@ -53,14 +55,16 @@ export const UserDropdown = ({className}) => {
       </button>
       <ul className={`${styles.menu} ${open ? styles['menu--open'] : ''}`}>
         <li className={router.pathname === ARTIST_DASHBOARD ? 'active' : ''}>
-          <Link href={ARTIST_DASHBOARD}>Artist dashboard</Link>
+          <Link href={ARTIST_DASHBOARD}>
+            {t('navigation:artist-dashboard')}
+          </Link>
         </li>
         <li className={router.pathname === SETTINGS ? 'active' : ''}>
-          <Link href={SETTINGS}>Settings</Link>
+          <Link href={SETTINGS}>{t('auth:settings')}</Link>
         </li>
         <li>
           <button className={`button--unstyled`} onClick={handleLogout}>
-            Logout
+            {t('auth:logout')}
           </button>
         </li>
       </ul>
