@@ -1,5 +1,4 @@
 export * from './AddButton';
-export * from './Authentication';
 export * from './Chat';
 export * from './Dashboard';
 export * from './Footer';
