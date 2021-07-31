@@ -94,6 +94,10 @@ fieldset {
     max-width: $container-width;
     margin-left: auto;
     margin-right: auto;
+
+    &--fullText {
+      max-width: $container-width-xs;
+    }
   }
 }
 

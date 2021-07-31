@@ -65,8 +65,8 @@ export const Header = () => {
                   <li className={router.pathname === LANDING ? 'active' : ''}>
                     <Link href={LANDING}>{t('navigation:home')}</Link>
                   </li>
-                  <li className={router.pathname === LANDING ? 'active' : ''}>
-                    <Link href={LANDING}>{t('navigation:about')}</Link>
+                  <li className={router.pathname === ABOUT ? 'active' : ''}>
+                    <Link href={ABOUT}>{t('navigation:about')}</Link>
                   </li>
                   <li className={router.pathname === LANDING ? 'active' : ''}>
                     <Link href={LANDING}>{t('navigation:features')}</Link>
