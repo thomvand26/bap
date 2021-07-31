@@ -20,6 +20,10 @@
     text-overflow: ellipsis;
   }
 
+  &--small {
+    padding: $length-xs $length-s;
+  }
+
   &--open {
     box-shadow: 0 0 0 $focus-border-width $color-primary-light;
   }
@@ -35,6 +39,10 @@
   border-radius: $border-radius;
   z-index: 10;
   box-shadow: 0 0 0 $focus-border-width $color-primary-light;
+
+  &--fullWidth {
+    width: 100%;
+  }
 
   &--open {
     display: flex;

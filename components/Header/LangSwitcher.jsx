@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { MdArrowDropDown } from 'react-icons/md';
-
-import { ARTIST_DASHBOARD, LANDING, SETTINGS } from '@/routes';
 
 import styles from './Dropdown.module.scss';
 
-export const UserDropdown = ({className}) => {
-  const [session] = useSession();
+export const LangSwitcher = ({ className }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef();
   const router = useRouter();
@@ -24,9 +19,9 @@ export const UserDropdown = ({className}) => {
     };
   }, [router]);
 
-  const handleLogout = () => {
-    signOut();
-    router.push(LANDING);
+  const handleLocaleChange = (locale) => {
+    const { pathname, query, asPath } = router;
+    router.push({ pathname, query }, asPath, { locale });
   };
 
   return (
@@ -41,26 +36,35 @@ export const UserDropdown = ({className}) => {
     >
       <button
         className={`button--noMinHeight button--fit ${styles.toggleButton} ${
-          open ? styles['toggleButton--open'] : ''
-        }`}
+          styles['toggleButton--small']
+        } ${open ? styles['toggleButton--open'] : ''}`}
         onClick={() => setOpen((prev) => !prev)}
       >
-        <span>{session?.user?.username}</span>
+        <span>{router.locale?.toUpperCase()}</span>
         <MdArrowDropDown
           className={`dropdownIcon ${open ? 'open' : ''}`}
           viewBox="6 6 12 12"
         />
       </button>
-      <ul className={`${styles.menu} ${open ? styles['menu--open'] : ''}`}>
-        <li className={router.pathname === ARTIST_DASHBOARD ? 'active' : ''}>
-          <Link href={ARTIST_DASHBOARD}>Artist dashboard</Link>
+      <ul
+        className={`${styles.menu} ${styles['menu--fullWidth']} ${
+          open ? styles['menu--open'] : ''
+        }`}
+      >
+        <li className={router.locale === 'nl' ? 'active' : ''}>
+          <button
+            className="button--unstyled"
+            onClick={() => handleLocaleChange('nl')}
+          >
+            NL
+          </button>
         </li>
-        <li className={router.pathname === SETTINGS ? 'active' : ''}>
-          <Link href={SETTINGS}>Settings</Link>
-        </li>
-        <li>
-          <button className={`button--unstyled`} onClick={handleLogout}>
-            Logout
+        <li className={router.locale === 'en' ? 'active' : ''}>
+          <button
+            className="button--unstyled"
+            onClick={() => handleLocaleChange('en')}
+          >
+            EN
           </button>
         </li>
       </ul>

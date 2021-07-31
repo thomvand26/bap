@@ -7,6 +7,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import { Logo } from '@/components';
 import { ABOUT, LANDING, LOGIN, REGISTER, SEARCH } from '@/routes';
 import { UserDropdown } from './UserDropdown';
+import { LangSwitcher } from './LangSwitcher';
 
 import styles from './Header.module.scss';
 
@@ -72,7 +73,8 @@ export const Header = () => {
                     <Link href={LANDING}>Shows</Link>
                   </li>
                 </ul>
-                <div className={styles.col}>
+                <div className={`${styles.col} ${styles.right}`}>
+                  <LangSwitcher className={styles.langSwitcher} />
                   <Link
                     href={
                       router?.asPath?.startsWith(`${REGISTER}`)
@@ -100,7 +102,8 @@ export const Header = () => {
                     <Link href={ABOUT}>About</Link>
                   </li>
                 </ul>
-                <UserDropdown />
+                <LangSwitcher className={styles.langSwitcher} />
+                <UserDropdown className={styles.userDropdown} />
               </div>
             )}
           </div>

@@ -38,6 +38,7 @@
     height: fit-content;
     padding: $length-xs $length-l;
     color: $color-secondary-darkest;
+    margin-left: $length-l;
   }
 }
 
@@ -109,6 +110,10 @@
   }
 }
 
+.userDropdown {
+  margin-left: $length-l;
+}
+
 .homeLink {
   display: flex;
   align-items: center;
@@ -125,13 +130,13 @@
   }
 }
 
-.notificationButton {
-  --button-color: #{$color-secondary-lighter} !important;
-}
-
 @media (max-width: $breakpoint-l) {
   .header {
     padding: 0 $length-l;
+
+    & .headerCTAButton {
+      margin-left: 0;
+    }
   }
 
   .inner {
@@ -188,6 +193,10 @@
     & > * {
       margin-left: 0;
     }
+  }
+
+  .langSwitcher {
+    margin-bottom: $length-xl;
   }
 
   .loggedInNav {
