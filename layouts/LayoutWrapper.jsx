@@ -7,6 +7,10 @@ import { DefaultLayout } from './DefaultLayout';
 import { NoFooterLayout } from './NoFooterLayout';
 import { ShowLayout } from './ShowLayout';
 
+import { LoadingSpinner } from '@/components';
+
+import styles from './LayoutWrapper.module.scss';
+
 export const Layouts = {
   default: DefaultLayout,
   noFooter: NoFooterLayout,
@@ -27,9 +31,12 @@ export const LayoutWrapper = ({ children, ...props }) => {
     if (session?.user?._id) return;
     router.push(LANDING);
   }, [isProtected, loading, typeof window]);
-
-  return typeof window !== 'undefined' && isProtected && (loading || !session?.user?._id) ? (
-    <div>Authenticating...</div>
+  return typeof window !== 'undefined' &&
+    isProtected &&
+    (loading || !session?.user?._id) ? (
+    <div className={styles.loadingContainerFull}>
+      <LoadingSpinner message={router.locale === 'en' ? 'Loading' : 'Laden'} />
+    </div>
   ) : Layout ? (
     <Layout {...props}>{children}</Layout>
   ) : (
