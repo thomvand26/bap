@@ -57,7 +57,12 @@ const validationSchema = (
 
 export default function RegisterPage({ csrfToken }) {
   const router = useRouter();
+  const [session, loading] = useSession();
   const { t } = useTranslation(['register-page', 'auth']);
+
+  useEffect(() => {
+    if (session?.user?._id) router.push(LANDING);
+  }, [session]);
 
   return (
     <div className="page">

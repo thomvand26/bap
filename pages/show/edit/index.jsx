@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { getSession, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
@@ -78,8 +78,9 @@ export default function EditShowPage() {
 }
 
 EditShowPage.layout = Layouts.noFooter;
+EditShowPage.isProtected = true;
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   return {
     props: {
       ...(await serverSideTranslations(context.locale, [
@@ -89,7 +90,6 @@ export async function getServerSideProps(context) {
         'common',
         'artist-dashboard',
       ])),
-      session: await getSession(context),
     },
   };
 }

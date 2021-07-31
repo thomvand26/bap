@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { getSession, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Layouts } from '@/layouts';
@@ -50,8 +50,9 @@ export default function PerformShowPage() {
 }
 
 PerformShowPage.layout = Layouts.noFooter;
+PerformShowPage.isProtected = true;
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   return {
     props: {
       ...(await serverSideTranslations(context.locale, [
@@ -62,7 +63,6 @@ export async function getServerSideProps(context) {
         'artist-dashboard',
         'chat',
       ])),
-      session: await getSession(context),
     },
   };
 }

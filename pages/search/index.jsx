@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { getSession } from 'next-auth/client';
 
 import { Layouts } from '@/layouts';
 import { SearchForm, ShowList } from '@/components';
@@ -70,8 +69,9 @@ export default function SearchPage() {
 }
 
 SearchPage.layout = Layouts.default;
+SearchPage.isProtected = true;
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   return {
     props: {
       ...(await serverSideTranslations(context.locale, [
@@ -80,7 +80,6 @@ export async function getServerSideProps(context) {
         'navigation',
         'shows',
       ])),
-      session: await getSession(context),
     },
   };
 }

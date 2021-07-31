@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getSession, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { useDatabase, useModal } from '@/context';
-import { Input, ProtectedRoute } from '@/components';
+import { Input } from '@/components';
 import { LANDING } from '@/routes';
 
 import styles from './SettingsPage.module.scss';
@@ -65,7 +65,6 @@ export default function SettingsPage() {
 
   return (
     <div className={`page`}>
-      <ProtectedRoute />
       <h1 className="page__title">{t('auth:settings')}</h1>
       <Formik
         validationSchema={validationSchema}
@@ -104,7 +103,9 @@ export default function SettingsPage() {
   );
 }
 
-export async function getServerSideProps(context) {
+SettingsPage.isProtected = true;
+
+export async function getStaticProps(context) {
   return {
     props: {
       ...(await serverSideTranslations(context.locale, [
@@ -112,7 +113,6 @@ export async function getServerSideProps(context) {
         'navigation',
         'common',
       ])),
-      session: await getSession(context),
     },
   };
 }

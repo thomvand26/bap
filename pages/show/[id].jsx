@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getSession, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import ReactPlayer from 'react-player';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -76,8 +76,9 @@ export default function ShowPage(params) {
 }
 
 ShowPage.layout = Layouts.room;
+ShowPage.isProtected = true;
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   return {
     props: {
       ...(await serverSideTranslations(context.locale, [
@@ -85,7 +86,6 @@ export async function getServerSideProps(context) {
         'common',
         'chat',
       ])),
-      session: await getSession(context),
     },
   };
 }

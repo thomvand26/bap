@@ -1,4 +1,4 @@
-import { getSession, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -96,7 +96,7 @@ export default function HomePage(props) {
 
 HomePage.layout = Layouts.default;
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   return {
     props: {
       ...(await serverSideTranslations(context.locale, [
@@ -105,7 +105,6 @@ export async function getServerSideProps(context) {
         'navigation',
         'shows',
       ])),
-      session: await getSession(context),
     },
   };
 }

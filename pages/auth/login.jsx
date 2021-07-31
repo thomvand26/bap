@@ -50,7 +50,7 @@ const validationSchema = ({ emailRequired, passRequired }, locale, onValid) =>
       },
     });
 
-export default function LoginPage({ providers, csrfToken }) {
+export default function LoginPage({ csrfToken }) {
   const router = useRouter();
   const [session, loading] = useSession();
   const { t } = useTranslation(['login-page', 'auth']);
