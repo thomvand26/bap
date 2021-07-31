@@ -78,7 +78,7 @@ export default function ShowPage(params) {
 ShowPage.layout = Layouts.room;
 ShowPage.isProtected = true;
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   return {
     props: {
       ...(await serverSideTranslations(context.locale, [
