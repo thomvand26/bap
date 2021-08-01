@@ -59,7 +59,9 @@ export const ChatroomSettings = () => {
   return showChatroomSettings ? (
     <div className={styles?.container}>
       <div className={styles?.top}>
-        <h3>{chatroomName}</h3>
+        <h3>
+          {currentChatroom?.isGeneral ? t('chat:general-chat') : chatroomName}
+        </h3>
         <button
           type="button"
           className={`button--icon button--lightest ${styles.closeButton}`}
