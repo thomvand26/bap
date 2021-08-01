@@ -70,6 +70,7 @@ export default function LoginPage({ csrfToken }) {
               emailRequired: t('auth:error-email-required'),
               passRequired: t('auth:error-password-required'),
             },
+            router.locale,
             () => router.push(LANDING)
           )
         }
