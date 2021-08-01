@@ -1,5 +1,5 @@
 import React from 'react';
-import { csrfToken, getSession, signIn } from 'next-auth/client';
+import { csrfToken, getSession, signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
