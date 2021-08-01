@@ -1,7 +1,17 @@
+.form {
+  max-width: 100%;
+}
+
 .fieldset {
   margin: 0 auto;
   width: $input-width;
   max-width: 100%;
+}
+
+.moreInfo {
+  display: block;
+  text-align: center;
+  margin-top: $length-xxl;
 }
 
 .submitButton {

@@ -5,8 +5,12 @@ import { Form, Formik } from 'formik';
 import { Input } from '@/components';
 
 import styles from './CookieForm.module.scss';
+import Link from 'next/link';
+import { COOKIES_PRIVACY } from '@/routes';
+import { useRouter } from 'next/router';
 
-export const CookieForm = ({ className }) => {
+export const CookieForm = ({ className, withMoreInfoLink }) => {
+  const router = useRouter();
   const { t } = useTranslation(['cookies']);
   const [cookieValues, setCookieValues] = useState();
 
@@ -20,6 +24,7 @@ export const CookieForm = ({ className }) => {
   const handleSubmit = (data) => {
     sessionStorage.setItem('cookieValues', JSON.stringify(data));
     setCookieValues(data);
+    if (withMoreInfoLink) router.reload();
   };
 
   return (
@@ -37,7 +42,7 @@ export const CookieForm = ({ className }) => {
       }}
       onSubmit={handleSubmit}
     >
-      <Form className={`${className || ''}`}>
+      <Form className={`${className || ''} ${styles.form}`}>
         <fieldset className={styles.fieldset}>
           <Input
             type="toggle"
@@ -51,6 +56,13 @@ export const CookieForm = ({ className }) => {
             label={t('cookies:youtube-toggle')}
             noPaddingBottom
           />
+          {withMoreInfoLink && (
+            <Link href={COOKIES_PRIVACY}>
+              <a className={styles.moreInfo}>
+                {t('cookies:cookie-modal-more-info')}
+              </a>
+            </Link>
+          )}
           <button type="submit" className={styles.submitButton}>
             {t('cookies:form-save')}
           </button>

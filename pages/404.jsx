@@ -32,6 +32,7 @@ export async function getStaticProps(context) {
         'auth',
         'navigation',
         'shows',
+        'cookies',
       ])),
     },
   };

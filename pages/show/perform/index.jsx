@@ -62,6 +62,7 @@ export async function getStaticProps(context) {
         'common',
         'artist-dashboard',
         'chat',
+        'cookies',
       ])),
     },
   };

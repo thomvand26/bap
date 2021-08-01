@@ -85,6 +85,7 @@ export async function getServerSideProps(context) {
         'show-page',
         'common',
         'chat',
+        'cookies',
       ])),
     },
   };

@@ -132,6 +132,7 @@ export async function getServerSideProps(context) {
         'register-page',
         'auth',
         'navigation',
+        'cookies',
       ])),
       session: await getSession(context),
       csrfToken: await csrfToken(context),

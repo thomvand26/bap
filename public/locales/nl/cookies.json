@@ -1,5 +1,8 @@
 {
   "strictly-necessary-toggle": "Strikt noodzakelijke cookies",
   "youtube-toggle": "Cookies van YouTube",
-  "form-save": "Sla mijn voorkeur op"
+  "form-save": "Sla mijn voorkeur op",
+  "cookie-modal-heading": "Cookies",
+  "cookie-modal-intro": "RoomStage gebruikt cookies om na te gaan of u ingelogd bent, en livestreams via YouTube te kunnen tonen.",
+  "cookie-modal-more-info": "Meer info"
 }

@@ -12,6 +12,7 @@ export const GlobalModal = () => {
   }, [modalData]);
 
   const handleContainerClick = (event) => {
+    if (modalData?.keepOpen) return;
     if (event.currentTarget !== event.target) return;
     setModalData(null);
   };
@@ -25,6 +26,7 @@ export const GlobalModal = () => {
         {modalData?.heading && (
           <h2 className={styles.heading}>{modalData.heading}</h2>
         )}
+        {modalData?.intro && <p className={styles.intro}>{modalData.intro}</p>}
         {!!modalData?.actions?.length && (
           <div className={styles.actionList}>
             {modalData.actions.map((action, i) => (
@@ -40,6 +42,7 @@ export const GlobalModal = () => {
             ))}
           </div>
         )}
+        {modalData?.children && <modalData.children />}
       </div>
     </div>
   ) : (
