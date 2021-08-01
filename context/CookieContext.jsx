@@ -8,10 +8,14 @@ export const CookieProvider = ({ children }) => {
 
   useEffect(() => {
     const storedCookieValues = JSON.parse(
-      sessionStorage.getItem('cookieValues')
+      localStorage.getItem('cookieValues')
     );
     setCookieValues(storedCookieValues);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cookieValues', JSON.stringify(cookieValues));
+  }, [cookieValues])
 
   const exports = {
     cookieValues,

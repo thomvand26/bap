@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Form, Formik } from 'formik';
 
@@ -14,7 +14,6 @@ export const CookieForm = ({ className, withMoreInfoLink }) => {
   const { cookieValues, setCookieValues } = useCookies();
 
   const handleSubmit = (data) => {
-    sessionStorage.setItem('cookieValues', JSON.stringify(data));
     setCookieValues(data);
   };
 
