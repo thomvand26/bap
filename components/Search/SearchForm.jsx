@@ -14,6 +14,7 @@ import { Input } from '@/components';
 import { Searchbar } from './Searchbar';
 
 import styles from './SearchForm.module.scss';
+import { useSession } from 'next-auth/client';
 
 const validationSchema = Yup.object().shape({
   search: Yup.string().nullable(true),
@@ -30,6 +31,7 @@ export const SearchForm = ({
 }) => {
   const router = useRouter();
   const { getShows } = useDatabase();
+  const [session] = useSession();
   const { t } = useTranslation(['shows']);
 
   const [loading, setLoading] = useState(true);
@@ -60,6 +62,7 @@ export const SearchForm = ({
 
     // Format the rest of the query
     let query = {
+      ...(artistDashboard ? {owner: session?.user?._id} : {}),
       ...(data?.search
         ? { title: { $regex: data.search, $options: 'i' } }
         : {}),
