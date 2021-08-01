@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { csrfToken, getSession, signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
