@@ -16,6 +16,19 @@
   padding: 0 $length-l;
 }
 
+.storageInfo {
+  text-align: center;
+  font-size: $font-size-s;
+  width: $input-width;
+  max-width: 100%;
+  color: $color-secondary-darkest;
+  margin-top: $length-xl;
+
+  & a {
+    font-weight: bold;
+  }
+}
+
 .submitButton {
   margin-top: $spacing-m;
 }
@@ -26,7 +39,6 @@
   margin-top: $length-xxl;
 
   & a {
-    margin-left: $length-xxs;
     font-size: $font-size-s;
   }
 }

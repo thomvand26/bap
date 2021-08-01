@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Input } from '@/components';
 import { Layouts } from '@/layouts';
-import { LOGIN } from '@/routes';
+import { COOKIES_PRIVACY, LOGIN } from '@/routes';
 
 import styles from './AuthPage.module.scss';
 
@@ -108,6 +108,10 @@ export default function RegisterPage({ csrfToken }) {
             noPaddingBottom
           />
           <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
+          <div className={styles.storageInfo}>
+            {t('auth:allow-storage')}{' '}
+            <Link href={COOKIES_PRIVACY}>{t('auth:more-info')}</Link>
+          </div>
           <button type="submit" className={styles.submitButton}>
             {t('auth:create-account')}
           </button>
