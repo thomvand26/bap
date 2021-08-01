@@ -14,7 +14,7 @@ import { Input, AddButton } from '@/components';
 import styles from './PollSettingsForm.module.scss';
 
 export const PollSettingsForm = ({ saving, setSaving }) => {
-  const { currentPoll, setCurrentPoll, createPoll, updatePoll, deletePoll } =
+  const { currentPoll, setCurrentPoll, setCurrentPolls, createPoll, updatePoll, deletePoll } =
     useShow();
   const { t } = useTranslation(['artist-dashboard', 'common']);
 
