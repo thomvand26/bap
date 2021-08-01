@@ -4,5 +4,7 @@
   "form-save": "Sla mijn voorkeur op",
   "cookie-modal-heading": "Cookies",
   "cookie-modal-intro": "RoomStage gebruikt cookies om na te gaan of u ingelogd bent, en livestreams via YouTube te kunnen tonen.",
-  "cookie-modal-more-info": "Meer info"
+  "cookie-modal-more-info": "Meer info",
+  "youtube-cookies-needed": "Cookies van YouTube moeten aanvaard worden om deze livestream af te spelen",
+  "youtube-cookies-allow": "Cookies van YouTube aanvaarden"
 }

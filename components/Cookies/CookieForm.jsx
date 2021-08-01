@@ -1,30 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'next-i18next';
 import { Form, Formik } from 'formik';
 
+import { useCookies } from '@/context';
 import { Input } from '@/components';
+import { COOKIES_PRIVACY } from '@/routes';
 
 import styles from './CookieForm.module.scss';
 import Link from 'next/link';
-import { COOKIES_PRIVACY } from '@/routes';
-import { useRouter } from 'next/router';
 
 export const CookieForm = ({ className, withMoreInfoLink }) => {
-  const router = useRouter();
   const { t } = useTranslation(['cookies']);
-  const [cookieValues, setCookieValues] = useState();
-
-  useEffect(() => {
-    const storedCookieValues = JSON.parse(
-      sessionStorage.getItem('cookieValues')
-    );
-    setCookieValues(storedCookieValues);
-  }, []);
+  const { cookieValues, setCookieValues } = useCookies();
 
   const handleSubmit = (data) => {
     sessionStorage.setItem('cookieValues', JSON.stringify(data));
     setCookieValues(data);
-    if (withMoreInfoLink) router.reload();
   };
 
   return (

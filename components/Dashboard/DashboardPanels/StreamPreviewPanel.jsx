@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useTranslation } from 'next-i18next';
 
-import { useShow } from '@/context';
+import { useShow, useCookies } from '@/context';
 import { PollWindow } from '@/components';
 import { DashboardPanel } from './DashboardPanel';
 
@@ -12,6 +12,7 @@ export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
   const { currentShow } = useShow();
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
   const { t } = useTranslation(['artist-dashboard']);
+  const { cookieValues, setCookieValues } = useCookies();
 
   useEffect(() => {
     setUrlValid(currentShow?.streamURL);
@@ -25,14 +26,29 @@ export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
         }`}
       >
         {urlValid ? (
-          <ReactPlayer
-            url={currentShow?.streamURL}
-            width="100%"
-            height="100%"
-            onError={() => {
-              setUrlValid(false);
-            }}
-          />
+          cookieValues?.youtube === true ? (
+            <ReactPlayer
+              url={currentShow?.streamURL}
+              width="100%"
+              height="100%"
+              onError={() => {
+                setUrlValid(false);
+              }}
+            />
+          ) : (
+            <div className="centeredPlaceholder centeredPlaceholder--withButton centeredPlaceholder--withPadding">
+              {t('cookies:youtube-cookies-needed')}
+              <button
+                type="button"
+                className="button--primary"
+                onClick={() =>
+                  setCookieValues((prev) => ({ ...prev, youtube: true }))
+                }
+              >
+                {t('cookies:youtube-cookies-allow')}
+              </button>
+            </div>
+          )
         ) : (
           <div className="centeredPlaceholder">
             {t('artist-dashboard:invalid-stream-url')}

@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react';
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { COOKIES_PRIVACY, LANDING } from '@/routes';
-import { useModal } from '@/context';
-import { CookieForm } from '@/components';
+import { useModal, useCookies } from '@/context';
+import { CookieForm, LoadingSpinner } from '@/components';
 import { DefaultLayout } from './DefaultLayout';
 import { NoFooterLayout } from './NoFooterLayout';
 import { ShowLayout } from './ShowLayout';
 
-import { LoadingSpinner } from '@/components';
-
 import styles from './LayoutWrapper.module.scss';
-import { useTranslation } from 'next-i18next';
 
 export const Layouts = {
   default: DefaultLayout,
@@ -24,24 +22,21 @@ export const LayoutWrapper = ({ children, ...props }) => {
   const [session, loading] = useSession();
   const router = useRouter();
   const { setModalData } = useModal();
+  const { cookieValues } = useCookies();
   const { t } = useTranslation(['cookies']);
 
   const Layout = children.type.layout;
   const isProtected = children.type.isProtected;
 
-  const checkCookies = (url) => {
+  const checkCookies = (url, cookieValues) => {
     if (typeof window === 'undefined') return;
 
-    if (url === COOKIES_PRIVACY) {
+    if (url === COOKIES_PRIVACY || cookieValues) {
       setModalData(null);
       return;
     }
 
-    const storedCookieValues = JSON.parse(
-      sessionStorage.getItem('cookieValues')
-    );
-
-    if (!storedCookieValues) {
+    if (!cookieValues) {
       setModalData({
         heading: t('cookies:cookie-modal-heading'),
         intro: t('cookies:cookie-modal-intro'),
@@ -52,8 +47,8 @@ export const LayoutWrapper = ({ children, ...props }) => {
   };
 
   useEffect(() => {
-    checkCookies(router.asPath);
-  }, [router?.asPath]);
+    checkCookies(router.asPath, cookieValues);
+  }, [router?.asPath, cookieValues]);
 
   useEffect(() => {
     if (!isProtected) return;

@@ -5,9 +5,9 @@ import ReactPlayer from 'react-player';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
-import { Chat, LoadingSpinner, PollWindow } from '@/components';
+import { useShow, useCookies } from '@/context';
 import { Layouts } from '@/layouts';
-import { useShow } from '@/context';
+import { Chat, LoadingSpinner, PollWindow } from '@/components';
 
 import styles from './ShowPage.module.scss';
 
@@ -18,6 +18,7 @@ export default function ShowPage(params) {
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
   const [session, loadingSession] = useSession();
   const { t } = useTranslation(['show-page']);
+  const { cookieValues, setCookieValues } = useCookies();
 
   useEffect(() => {
     if (!id || loadingSession) return;
@@ -46,23 +47,38 @@ export default function ShowPage(params) {
     <div className={`scrollbars--dark ${styles.page}`}>
       <div className={styles.showStream}>
         {urlValid ? (
-          <ReactPlayer
-            url={currentShow?.streamURL}
-            width="100%"
-            height="100%"
-            onError={() => {
-              setUrlValid(false);
-            }}
-            controls={true}
-            playing={true}
-            config={{
-              youtube: {
-                playerVars: {
-                  autoplay: true,
+          cookieValues?.youtube === true ? (
+            <ReactPlayer
+              url={currentShow?.streamURL}
+              width="100%"
+              height="100%"
+              onError={() => {
+                setUrlValid(false);
+              }}
+              controls={true}
+              playing={true}
+              config={{
+                youtube: {
+                  playerVars: {
+                    autoplay: true,
+                  },
                 },
-              },
-            }}
-          />
+              }}
+            />
+          ) : (
+            <div className="centeredPlaceholder centeredPlaceholder--withButton centeredPlaceholder--withPadding">
+              {t('cookies:youtube-cookies-needed')}
+              <button
+                type="button"
+                className="button--primary"
+                onClick={() =>
+                  setCookieValues((prev) => ({ ...prev, youtube: true }))
+                }
+              >
+                {t('cookies:youtube-cookies-allow')}
+              </button>
+            </div>
+          )
         ) : (
           <div className="centeredPlaceholder">
             {t('show-page:stream-unavailable')}

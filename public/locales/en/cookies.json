@@ -4,5 +4,7 @@
   "form-save": "Save my preference",
   "cookie-modal-heading": "Cookies",
   "cookie-modal-intro": "RoomStage uses cookies to check if you are logged in and to show livestreams via YouTube.",
-  "cookie-modal-more-info": "More info"
+  "cookie-modal-more-info": "More info",
+  "youtube-cookies-needed": "Cookies from YouTube need to be allowed to play this livestream",
+  "youtube-cookies-allow": "Allow cookies from YouTube"
 }
