@@ -1,6 +1,7 @@
 export const LANDING = '/';
 export const HOME = '/home';
 export const ABOUT = '/about';
+export const COOKIES_PRIVACY = '/cookies-privacy';
 
 export const LOGIN = '/auth/login';
 export const REGISTER = '/auth/register';
@@ -29,5 +30,3 @@ export const API_SONG_REQUEST = '/api/song-request';
 
 export const API_POLL = '/api/poll';
 export const API_POLLS = '/api/polls';
-
-// TODO: socket events zoals routes

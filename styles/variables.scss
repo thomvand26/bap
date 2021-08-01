@@ -102,6 +102,11 @@ $breakpoint-xxl: 1400px;
   pointer-events: none;
 }
 
+@mixin disable--light {
+  opacity: $opacity-disabled-light;
+  pointer-events: none;
+}
+
 @mixin disabled {
   &:disabled {
     @include disable;

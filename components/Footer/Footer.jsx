@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
-import { ABOUT, LANDING, SEARCH } from '@/routes';
+import { ABOUT, COOKIES_PRIVACY, LANDING, SEARCH } from '@/routes';
 import { Logo } from '../Logo/Logo';
 
 import styles from './Footer.module.scss';
@@ -28,8 +28,8 @@ export const Footer = () => {
           <li className={router.pathname === ABOUT ? 'active' : ''}>
             <Link href={ABOUT}>{t('navigation:about')}</Link>
           </li>
-          <li className={router.pathname === LANDING ? 'active' : ''}>
-            <Link href={LANDING}>{t('navigation:cookies-privacy')}</Link>
+          <li className={router.pathname === COOKIES_PRIVACY ? 'active' : ''}>
+            <Link href={COOKIES_PRIVACY}>{t('navigation:cookies-privacy')}</Link>
           </li>
         </ul>
       </div>

@@ -10,6 +10,7 @@ export const InputToggle = ({
   label,
   info,
   variant,
+  disabled,
   ...props
 }) => {
   const [checked, setChecked] = useState(
@@ -40,11 +41,11 @@ export const InputToggle = ({
     <div
       className={`${styles.toggleContainer} ${
         styles[`toggleContainer--${variant}`]
-      }`}
+      } ${disabled ? styles[`toggleContainer--disabled`] : ''}`}
     >
       <label
         htmlFor={id}
-        className={`${styles.label} ${
+        className={`${styles.label} ${styles['label--noMarginBottom']} ${
           hasFocused ? styles['label--touched'] : ''
         }`}
       >

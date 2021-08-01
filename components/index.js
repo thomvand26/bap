@@ -1,5 +1,6 @@
 export * from './AddButton';
 export * from './Chat';
+export * from './Cookies';
 export * from './Dashboard';
 export * from './Footer';
 export * from './GlobalModal';

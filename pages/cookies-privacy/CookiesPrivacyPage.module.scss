@@ -1,0 +1,28 @@
+.page {
+  & h2 {
+    font-size: $font-size-xl;
+    margin-bottom: $length-xl;
+    margin-top: $spacing-xxs;
+  }
+
+  & p {
+    &:not(:last-child) {
+      margin-bottom: $length-xl;
+    }
+  }
+
+  & ul {
+    list-style: inside;
+    margin-bottom: $length-xl;
+
+    & li {
+      &:not(:last-child) {
+        margin-bottom: $length-s;
+      }
+    }
+  }
+}
+
+.cookieForm {
+  margin-top: $spacing-m;
+}
