@@ -5,6 +5,7 @@ import { DashboardPanel } from './DashboardPanel';
 import { ChatPanel } from './ChatPanel';
 import { SongRequestsPanel } from './SongRequestsPanel';
 import { PollPanel } from './PollPanel';
+import { SharePanel } from './SharePanel';
 
 import styles from './PerformanceViewManagerPanel.module.scss';
 
@@ -39,12 +40,12 @@ export const PerformanceViewManagerPanel = ({ isPerformance, ...props }) => {
             {t('artist-dashboard:polls')}
           </button>
         </li>
-        <li>
+        <li className={panelContentId === 'share' ? 'active' : ''}>
           <button
             className={`button--unstyled`}
-            onClick={() => setPanelContentId()}
+            onClick={() => setPanelContentId('share')}
           >
-            {t('artist-dashboard:actions')}
+            {t('artist-dashboard:share')}
           </button>
         </li>
       </ul>
@@ -52,6 +53,7 @@ export const PerformanceViewManagerPanel = ({ isPerformance, ...props }) => {
         {panelContentId === 'chat' && <ChatPanel name={null} />}
         {panelContentId === 'song-request' && <SongRequestsPanel name={null} />}
         {panelContentId === 'polls' && <PollPanel name={null} />}
+        {panelContentId === 'share' && <SharePanel name={null} />}
       </div>
     </DashboardPanel>
   );

@@ -85,7 +85,7 @@ export const GoodbyeEmail = ({ locale }) => {
               }}
             >
               <a
-                href={`${process?.env?.BASE_URL}/auth/register`}
+                href={`${process?.env?.NEXT_PUBLIC_BASE_URL}/auth/register`}
                 style={{
                   color: '#202020',
                   textDecoration: 'none',

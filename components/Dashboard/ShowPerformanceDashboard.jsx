@@ -10,6 +10,7 @@ import {
   SongRequestsPanel,
   PollPanel,
   PerformanceViewManagerPanel,
+  SharePanel,
 } from './DashboardPanels';
 
 export const ShowPerformanceDashboard = () => {
@@ -25,7 +26,7 @@ export const ShowPerformanceDashboard = () => {
           <SongRequestsPanel toggle colspan={1} rowspan={3} />
           <ChatPanel toggle colspan={1} rowspan={3} />
           <PollPanel toggle colspan={2} rowspan={2} />
-          <DashboardPanel area colspan={2} rowspan={1} />
+          <SharePanel area colspan={2} rowspan={1} />
         </>
       )}
     </Dashboard>

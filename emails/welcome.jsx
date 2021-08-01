@@ -72,7 +72,7 @@ export const WelcomeEmail = ({ user, locale }) => {
               }}
             >
               <a
-                href={process?.env?.BASE_URL}
+                href={process?.env?.NEXT_PUBLIC_BASE_URL}
                 style={{
                   color: '#202020',
                   textDecoration: 'none',
