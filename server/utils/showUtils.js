@@ -1,4 +1,4 @@
-import { Show } from '../../models';
+import { Show, ChatMessage, Chatroom, Poll, SongRequest } from '../../models';
 import { leaveChatroomsBySocketId, leaveChatroomsByUserInShow } from './';
 
 export const defaultShowPopulation = [
@@ -179,3 +179,52 @@ export const leaveShow = async ({
 
   return updatedShow;
 };
+
+export const deleteShow = async ({ showId, session, io }) => {
+  let response;
+
+  // Delete the show (if requested by the owner)
+  response = await Show.findOne({
+    _id: showId,
+    owner: session?.user?._id,
+  }).populate(defaultShowPopulation);
+
+  if (!response) throw new Error('Invalid show!');
+
+  await Show.findOneAndDelete({
+    _id: showId,
+    owner: session?.user?._id,
+  });
+
+  // Remove all users from socket rooms
+  const socketRoomsToLeave = (await Chatroom.find({ show: showId })).map(
+    (chatroom) => chatroom?._id
+  );
+
+  socketRoomsToLeave.forEach((socketRoom) => {
+    io.sockets.in(`${socketRoom}`).sockets.forEach((socket) => {
+      socket.leave(`${socketRoom}`);
+    });
+  });
+
+  // Kick user (remove from showUpdate + send kicked emit) --> based on connectedUsers
+  response.connectedUsers?.forEach?.((user) => {
+    const socket = io.sockets.sockets.get(`${user?.socketId}`);
+    socket?.emit('kicked', {
+      type: 'show',
+      data: { _id: showId },
+    });
+    socket?.leave(`${showId}`);
+  });
+
+  // Delete all Chatrooms, ChatMessages, SongRequests and Polls linked to this show
+  if (response._id) {
+    await Promise.all([
+      Chatroom.deleteMany({ show: showId }),
+      ChatMessage.deleteMany({ show: showId }),
+      SongRequest.deleteMany({ show: showId }),
+      Poll.deleteMany({ show: showId }),
+    ]);
+  }
+};
+

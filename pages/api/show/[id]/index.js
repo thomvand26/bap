@@ -1,6 +1,6 @@
 import { getSession } from 'next-auth/client';
 
-import { defaultShowPopulation, emitShowsUpdate } from '@/server';
+import { defaultShowPopulation, deleteShow, emitShowsUpdate } from '@/server';
 import { withDB } from 'middleware';
 import { Show, Chatroom, ChatMessage, SongRequest, Poll } from 'models';
 
@@ -44,49 +44,7 @@ const show = async (req, res) => {
       case 'DELETE':
         if (!session) throw new Error('Not logged in!');
 
-        // Delete the show (if requested by the owner)
-        responseData = await Show.findOne({
-          _id: id,
-          owner: session?.user?._id,
-        }).populate(defaultShowPopulation);
-
-        if (!responseData) throw new Error('Invalid show!');
-
-        await Show.findOneAndDelete({
-          _id: id,
-          owner: session?.user?._id,
-        });
-
-        // Remove all users from socket rooms
-        const socketRoomsToLeave = (await Chatroom.find({ show: id })).map(
-          (chatroom) => chatroom?._id
-        );
-
-        socketRoomsToLeave.forEach((socketRoom) => {
-          io.sockets.in(`${socketRoom}`).sockets.forEach((socket) => {
-            socket.leave(`${socketRoom}`);
-          });
-        });
-
-        // Kick user (remove from showUpdate + send kicked emit) --> based on connectedUsers
-        responseData.connectedUsers?.forEach?.((user) => {
-          const socket = io.sockets.sockets.get(`${user?.socketId}`);
-          socket?.emit('kicked', {
-            type: 'show',
-            data: { _id: id },
-          });
-          socket?.leave(`${id}`);
-        });
-
-        // Delete all Chatrooms, ChatMessages, SongRequests and Polls linked to this show
-        if (responseData._id) {
-          await Promise.all([
-            Chatroom.deleteMany({ show: id }),
-            ChatMessage.deleteMany({ show: id }),
-            SongRequest.deleteMany({ show: id }),
-            Poll.deleteMany({ show: id }),
-          ]);
-        }
+        deleteShow({ showId: id, session, io });
 
         responseData = { _id: id };
 
