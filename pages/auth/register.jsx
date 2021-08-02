@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { Input } from '@/components';
 import { Layouts } from '@/layouts';
-import { COOKIES_PRIVACY, LOGIN } from '@/routes';
+import { COOKIES_PRIVACY, LANDING, LOGIN } from '@/routes';
 
 import styles from './AuthPage.module.scss';
 
