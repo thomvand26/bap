@@ -228,3 +228,10 @@ export const deleteShow = async ({ showId, session, io }) => {
   }
 };
 
+export const deleteShows = async ({ shows, session, io }) => {
+  return await Promise.all(
+    shows.map(
+      async (show) => await deleteShow({ showId: show?._id, session, io })
+    )
+  );
+};
