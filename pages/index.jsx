@@ -43,7 +43,7 @@ export default function HomePage(props) {
         endDate: {
           $gte: new Date(),
         },
-        visible: true,
+        public: true,
       });
 
       upsertDocumentInArrayState({
@@ -60,7 +60,7 @@ export default function HomePage(props) {
     setGroupedShows(
       filterShowsPlayingNow({
         shows: fetchedShows,
-        onlyVisible: true,
+        onlyPublic: true,
       })
     );
   }, [fetchedShows]);

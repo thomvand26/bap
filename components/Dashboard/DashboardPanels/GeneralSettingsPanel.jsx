@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
     .required('Required'),
   startDate: Yup.string().required('Required'),
   endDate: Yup.string().required('Required'),
-  visible: Yup.boolean(),
+  public: Yup.boolean(),
   streamURL: Yup.string(),
   maxSongRequestsPerUser: Yup.number(),
 });
@@ -79,7 +79,7 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
           title: currentShow?.title || '',
           startDate: currentShow?.startDate || moment(),
           endDate: currentShow?.endDate || moment().add(2, 'h'),
-          visible: currentShow?.visible,
+          public: currentShow?.public,
           streamURL: currentShow?.streamURL || '',
           maxSongRequestsPerUser: currentShow?.maxSongRequestsPerUser || 1,
         }}
@@ -140,11 +140,11 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
                   info={t('artist-dashboard:max-song-requests-info')}
                 />
                 <Input
-                  name="visible"
-                  label={t('artist-dashboard:visible')}
+                  name="public"
+                  label={t('artist-dashboard:public')}
                   type="toggle"
                   variant="light"
-                  info={t('artist-dashboard:visible-info')}
+                  info={t('artist-dashboard:public-info')}
                 />
               </div>
             </div>

@@ -19,10 +19,12 @@ export default function EditShowPage() {
   const router = useRouter();
   const [session, loadingSession] = useSession();
   const [isNewShow, setIsNewShow] = useState();
+  const [fetching, setFetching] = useState();
   const { t } = useTranslation(['artist-dashboard']);
 
   useEffect(() => {
     if (!router.isReady) return;
+    if (fetching) return;
     setLoadingShow(true);
     setIsNewShow(false);
 
@@ -46,7 +48,9 @@ export default function EditShowPage() {
       setCurrentShow(null);
 
       // Get the show
+      setFetching(true);
       const show = await getShow(showId);
+      setFetching(false);
       console.log(show);
 
       // If the show doesn't exist yet, go to the create page
@@ -60,7 +64,7 @@ export default function EditShowPage() {
       // Set the currentShow
       setCurrentShow(show);
     })();
-  }, [router.isReady, router.query, session, loadingSession]);
+  }, [router.isReady, router.query, session, loadingSession, currentShow]);
 
   return (
     <div className={styles.page}>

@@ -36,15 +36,15 @@ export const isShowIsCurrentlyPlaying = (show) => {
   );
 };
 
-export const filterShowsPlayingNow = ({ shows, onlyVisible }) => {
+export const filterShowsPlayingNow = ({ shows, onlyPublic }) => {
   let currentlyPlayingShows = [];
   let upcomingShows = [];
 
   shows?.forEach?.((show) => {
     const isCurrentlyPlaying = isShowIsCurrentlyPlaying(show);
-    const isVisible = show?.visible;
+    const isPublic = show?.public;
 
-    if (onlyVisible && !isVisible) return;
+    if (onlyPublic && !isPublic) return;
 
     (isCurrentlyPlaying ? currentlyPlayingShows : upcomingShows).push(show);
   });

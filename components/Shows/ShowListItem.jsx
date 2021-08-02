@@ -110,7 +110,7 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
     setLoading(true);
     await saveShow({
       _id: show._id,
-      visible: !show.visible,
+      public: !show.public,
     });
     setLoading(false);
   };
@@ -171,7 +171,7 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
                     onClick={handleHideClick}
                     disabled={loading}
                   >
-                    {show?.visible ? (
+                    {show?.public ? (
                       <MdVisibility size="1.7rem" />
                     ) : (
                       <MdVisibilityOff size="1.7rem" />

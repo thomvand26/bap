@@ -71,7 +71,7 @@ export const SearchForm = ({
         : data?.currentlyPlaying === false
         ? { startDate: { $gt: new Date() } }
         : {}),
-      visible: true,
+        ...(!artistDashboard ? {public: true} : {}),
     };
 
     // Join the query
@@ -83,7 +83,7 @@ export const SearchForm = ({
     const { currentlyPlayingShows: currentlyPlaying, upcomingShows: upcoming } =
       filterShowsPlayingNow({
         shows: response,
-        onlyVisible: !artistDashboard,
+        onlyPublic: !artistDashboard,
       });
 
     onSearch({
