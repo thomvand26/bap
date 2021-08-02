@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 import { FaTrash, FaUser } from 'react-icons/fa';
@@ -9,16 +9,17 @@ import {
   MdVisibilityOff,
 } from 'react-icons/md';
 import { useTranslation } from 'next-i18next';
+import * as CalendarLink from 'calendar-link';
 
-import { useShow } from '@/context';
+import { useShow, useModal } from '@/context';
 import { LoadingSpinner } from '@/components';
-import { EDIT_SHOW } from '@/routes';
+import { EDIT_SHOW, SHOW } from '@/routes';
 import {
   convertToUniqueParticipantsArray,
   isShowIsCurrentlyPlaying,
   useWindowSize,
 } from '@/utils';
-import { breakpoints } from '@/config';
+import { appConfig, breakpoints } from '@/config';
 
 import styles from './ShowListItem.module.scss';
 
@@ -31,7 +32,24 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
   const [loading, setLoading] = useState(false);
   const isPlaying = isShowIsCurrentlyPlaying(show);
   const { width } = useWindowSize();
+  const { setModalData } = useModal();
   const { t } = useTranslation(['shows']);
+
+  const [calendarLinks, setCalendarLinks] = useState({});
+
+  useEffect(() => {
+    const calendarEvent = {
+      title: `${appConfig.appName} - ${show?.title}`,
+      description: `${appConfig.appName} show: <a href="${appConfig.baseUrl}${SHOW}/${show?._id}" >${show?.title}</a>`,
+      start: show?.startDate,
+      end: show?.endDate,
+    };
+
+    setCalendarLinks({
+      google: CalendarLink?.google(calendarEvent),
+      office365: CalendarLink?.office365(calendarEvent),
+    });
+  }, [show]);
 
   const Date = () => {
     return isPlaying && variant !== 'artistDashboard' ? (
@@ -89,8 +107,28 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
   };
 
   const handleAddCalendarClick = () => {
-    // TODO
-    console.log('Add to calendar');
+    setModalData({
+      heading: t('shows:add-to-calendar'),
+      children: () => (
+        <div className={styles.calendarModal}>
+          <ul>
+            <li>
+              <a href={calendarLinks.google} target="_blank">
+                Google
+              </a>
+            </li>
+            <li>
+              <a href={calendarLinks.office365} target="_blank">
+                Office365
+              </a>
+            </li>
+          </ul>
+          <button type="button" onClick={() => setModalData(null)}>
+            {t('shows:add-to-calendar-close')}
+          </button>
+        </div>
+      ),
+    });
   };
 
   const handleDeleteClick = async () => {

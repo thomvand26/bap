@@ -72,6 +72,23 @@
   }
 }
 
+.calendarModal {
+  text-align: center;
+  margin-top: $spacing-xxs;
+
+  & ul {
+    & li {
+      &:not(:last-child) {
+        margin-bottom: $length-xl;
+      }
+    }
+  }
+
+  & button {
+    margin-top: $spacing-xxs;
+  }
+}
+
 @media (max-width: $breakpoint-l) {
   .container {
     flex-direction: column;
