@@ -8,7 +8,7 @@ export const ShowLayout = ({ children }) => {
   return (
     <div className={styles.page}>
       <Head>
-        <title>ROOM {appConfig.appName}</title>
+        <title>{appConfig.appName}</title>
         <link
           rel="apple-touch-icon"
           sizes="180x180"
