@@ -375,13 +375,7 @@ export const ShowProvider = ({ children }) => {
             defaultSongRequestArraySort(response.data.songRequests)
           );
           setLoadingPolls(true);
-          const polls = await getPolls({
-            show: currentShow?._id,
-            visible: true,
-          });
-          if (polls.length) {
-            setPresentedPoll(polls[0]);
-          }
+          setPresentedPoll(response.data.presentedPoll);
           setLoadingPolls(false);
         }
         setLoadingChat(false);

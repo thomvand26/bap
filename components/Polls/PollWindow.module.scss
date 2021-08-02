@@ -76,6 +76,10 @@
   margin-right: $length-xs;
   cursor: pointer;
 
+  &--radio {
+    border-radius: 50%;
+  }
+
   &--checked {
     background-color: $color-primary-light;
   }

@@ -17,7 +17,7 @@ const {
   defaultChatroomPopulation,
   defaultSongRequestPopulation,
 } = require('./utils');
-const { Show, ChatMessage, Chatroom, SongRequest } = require('../models');
+const { Show, ChatMessage, Chatroom, SongRequest, Poll } = require('../models');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -114,6 +114,14 @@ async function start() {
             .lean()
             .exec();
 
+          // Get visible Poll
+          const presentedPoll = await Poll.findOne({
+            show: showId,
+            visible: true,
+          })
+            .lean()
+            .exec();
+
           // Save the showId in the socket
           socket.lastShow = showId;
 
@@ -125,6 +133,7 @@ async function start() {
                 messages: joinResponse?.messages,
                 availableChatrooms,
                 songRequests,
+                presentedPoll,
               },
             });
 

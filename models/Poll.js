@@ -34,6 +34,10 @@ const PollSchema = new Schema(
         'There must be at least 2 and at most 5 options',
       ],
     },
+    allowMultipleChoices: {
+      type: Boolean,
+      default: false,
+    },
     visible: {
       type: Boolean,
       default: false,

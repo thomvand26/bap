@@ -65,13 +65,21 @@ export const PollWindow = () => {
                         >
                           <div
                             className={`${styles.checkbox} ${
+                              !presentedPoll?.allowMultipleChoices
+                                ? styles['checkbox--radio']
+                                : ''
+                            } ${
                               optionIds?.includes?.(option._id)
                                 ? styles['checkbox--checked']
                                 : ''
                             }`}
                           ></div>
                           <Field
-                            type="checkbox"
+                            type={
+                              presentedPoll?.allowMultipleChoices
+                                ? 'checkbox'
+                                : 'radio'
+                            }
                             name={'optionIds'}
                             value={option._id}
                             className={styles.option__input}
