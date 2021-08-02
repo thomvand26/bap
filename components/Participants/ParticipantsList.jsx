@@ -50,7 +50,7 @@ export const ParticipantsList = ({
           .length && 'No participants yet'}
         {(inChatroom ? uniqueParticipantsInChatroom : uniqueParticipants).map(
           (userObject, i) => {
-            const isCurrentUser = userObject._id === session?.user?._id;
+            const isCurrentUser = userObject?._id === session?.user?._id;
 
             return (
               <li
@@ -58,7 +58,7 @@ export const ParticipantsList = ({
                 className={styles.userObject}
               >
                 <div>
-                  {userObject.username}{' '}
+                  {userObject?.username}{' '}
                   {isCurrentUser ? <span>{t('chat:you-indicator')}</span> : ''}
                 </div>
                 <div
@@ -76,7 +76,7 @@ export const ParticipantsList = ({
                       type="button"
                       className={`button button--icon button--danger button--hover-light ${styles.actionButton}`}
                       disabled={isCurrentUser}
-                      onClick={() => kickUser({ userId: userObject._id })}
+                      onClick={() => kickUser({ userId: userObject?._id })}
                     >
                       <MdExitToApp size="1.6rem" />
                     </button>
@@ -86,9 +86,9 @@ export const ParticipantsList = ({
                       disabled={isCurrentUser}
                       onClick={() =>
                         setShowInviteMenu((prev) => {
-                          return showInviteMenu.includes(userObject._id)
+                          return showInviteMenu.includes(userObject?._id)
                             ? prev
-                            : [...prev, userObject._id];
+                            : [...prev, userObject?._id];
                         })
                       }
                     >
@@ -101,7 +101,7 @@ export const ParticipantsList = ({
                       disabled={isCurrentUser}
                       onClick={() =>
                         kickFromChatroom({
-                          userId: userObject._id,
+                          userId: userObject?._id,
                           chatroomId: ownChatroom._id,
                         })
                       }
@@ -114,7 +114,7 @@ export const ParticipantsList = ({
                   {!inDashboard && ownChatroom && !inChatroom && (
                     <div
                       className={`${styles.inviteMenu} ${
-                        showInviteMenu.includes(userObject._id)
+                        showInviteMenu.includes(userObject?._id)
                           ? styles['inviteMenu--show']
                           : ''
                       }`}
@@ -125,7 +125,7 @@ export const ParticipantsList = ({
                         className={`button--icon button--lighter`}
                         onClick={() => {
                           setShowInviteMenu((prev) =>
-                            prev.filter((userId) => userId !== userObject._id)
+                            prev.filter((userId) => userId !== userObject?._id)
                           );
                         }}
                       >

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSession } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -36,7 +36,10 @@ export default function SettingsPage() {
 
   const confirmDelete = async () => {
     // Delete account
-    await deleteAccount(router.locale);
+    deleteAccount(router.locale);
+
+    // Logout
+    signOut();
 
     // Close modal
     setModalData(null);

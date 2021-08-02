@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 import { Show, ChatMessage, Chatroom, Poll, SongRequest } from '../../models';
 import { leaveChatroomsBySocketId, leaveChatroomsByUserInShow } from './';
 
@@ -129,7 +131,7 @@ export const leaveShow = async ({
     {
       $pull: {
         connectedUsers: userIdToDelete
-          ? { user: userIdToDelete }
+          ? { user: Types.ObjectId(userIdToDelete) }
           : {
               socketId,
             },
