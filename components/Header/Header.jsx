@@ -32,7 +32,7 @@ export const Header = () => {
     <header className={styles.header}>
       <div
         className={`${styles.inner} ${
-          !session ? styles['inner--visitor'] : ''
+          !session?.user?._id ? styles['inner--visitor'] : ''
         }`}
       >
         <div className={styles.homeLink}>
@@ -59,7 +59,7 @@ export const Header = () => {
           }}
         >
           <div className={`${styles.offScreen__inner}`}>
-            {!session ? (
+            {!session?.user?._id ? (
               <>
                 <ul className={`${styles.col} ${styles.centerNav}`}>
                   <li className={router.pathname === LANDING ? 'active' : ''}>
