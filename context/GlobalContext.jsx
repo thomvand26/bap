@@ -18,11 +18,11 @@ export const GlobalProvider = ({ children, pageProps }) => {
         <CookieProvider>
           <DatabaseProvider>
             <SocketProvider>
-                <ShowProvider>
-                  <ModalProvider>
-                    {children}
-                  </ModalProvider>
-                </ShowProvider>
+              <ShowProvider>
+                <ModalProvider>
+                  {children}
+                </ModalProvider>
+              </ShowProvider>
             </SocketProvider>
           </DatabaseProvider>
         </CookieProvider>

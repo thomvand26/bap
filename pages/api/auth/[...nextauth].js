@@ -6,10 +6,6 @@ import { User } from 'models/User';
 
 export default NextAuth({
   providers: [
-    Providers.GitHub({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
     Providers.Credentials({
       id: 'email-password',
       name: 'email & password',
