@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { MdArrowDropDown } from 'react-icons/md';
 
 import styles from './Dropdown.module.scss';
@@ -18,11 +19,6 @@ export const LangSwitcher = ({ className }) => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router]);
-
-  const handleLocaleChange = (locale) => {
-    const { pathname, query, asPath } = router;
-    router.push({ pathname, query }, asPath, { locale });
-  };
 
   return (
     <div
@@ -52,20 +48,14 @@ export const LangSwitcher = ({ className }) => {
         }`}
       >
         <li className={router.locale === 'nl' ? 'active' : ''}>
-          <button
-            className="button--unstyled"
-            onClick={() => handleLocaleChange('nl')}
-          >
+          <Link href={router.asPath} locale="nl">
             NL
-          </button>
+          </Link>
         </li>
         <li className={router.locale === 'en' ? 'active' : ''}>
-          <button
-            className="button--unstyled"
-            onClick={() => handleLocaleChange('en')}
-          >
+          <Link href={router.asPath} locale="en">
             EN
-          </button>
+          </Link>
         </li>
       </ul>
     </div>
