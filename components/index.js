@@ -7,6 +7,7 @@ export * from './GlobalModal';
 export * from './Header';
 export * from './Info';
 export * from './Inputs';
+export * from './Landing';
 export * from './LoadingSpinner';
 export * from './Logo';
 export * from './Participants';
