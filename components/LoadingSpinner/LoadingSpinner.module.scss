@@ -1,5 +1,6 @@
 .container {
   --loading-spinner-size: #{$spacing-m};
+  --loading-spinner-color: #{$color-secondary-darker};
 
   display: flex;
   flex-direction: column;
@@ -14,6 +15,10 @@
 
   &--small {
     --loading-spinner-size: #{$length-xxl};
+  }
+
+  &--light {
+    --loading-spinner-color: #{$color-white};
   }
 }
 
@@ -33,7 +38,7 @@
 }
 
 .message {
-  color: $color-secondary-darker;
+  color: var(--loading-spinner-color);
   font-weight: bold;
   text-align: center;
 }

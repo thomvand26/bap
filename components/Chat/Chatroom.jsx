@@ -70,7 +70,7 @@ export const Chatroom = ({ inDashboard }) => {
             !inDashboard ? styles['loadingContainer--dark'] : ''
           }`}
         >
-          <LoadingSpinner />
+          <LoadingSpinner light={!inDashboard} />
         </div>
       )}
       {!inDashboard && (

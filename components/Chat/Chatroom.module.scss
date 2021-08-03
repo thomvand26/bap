@@ -126,7 +126,7 @@
   }
 }
 
-.settingsButton {
+button.settingsButton {
   position: sticky;
   top: 0;
   left: 100%;
@@ -135,6 +135,7 @@
   background-color: $color-secondary-darkest;
   z-index: 2;
   opacity: 0.6;
+  fill: transparent;
 
   &:hover {
     opacity: 1;

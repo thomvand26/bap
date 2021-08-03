@@ -172,7 +172,7 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
                   info={t('artist-dashboard:show-results-info')}
                 />
                 <div className={styles.buttonGroup}>
-                  <button type="submit" className="focus-inset">
+                  <button type="submit" className="button--mini focus-inset">
                     {t('common:save')}
                   </button>
                   <button
@@ -181,7 +181,7 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
                       setFieldValue('visible', !currentPoll.visible);
                       submitForm();
                     }}
-                    className="focus-inset"
+                    className="button--mini focus-inset"
                   >
                     {currentPoll.visible
                       ? t('artist-dashboard:hide-poll')
@@ -189,7 +189,7 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
                   </button>
                   <button
                     type="button"
-                    className="button--ghost button--danger focus-inset"
+                    className="button--ghost button--danger button--mini focus-inset"
                     onClick={handleDelete}
                     disabled={!currentPoll?._id}
                   >

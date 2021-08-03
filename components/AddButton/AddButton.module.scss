@@ -1,11 +1,10 @@
-.button {
-  --button-color: #{$color-primary-light};
+button.button {
   min-height: fit-content;
 
   &:hover,
   &:focus {
     background-color: var(--button-color);
-    fill: $color-secondary-darkest;
+    fill: $color-primary-light;
     filter: opacity(1);
   }
 }

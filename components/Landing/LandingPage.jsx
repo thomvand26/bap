@@ -22,7 +22,7 @@ export const LandingPage = () => {
           <h1 className={styles.pageTitle}>{t('landing-page:page-title')}</h1>
           <Link href={REGISTER}>
             <a
-              className={`button button--fit button--noMinHeight button--ghost ${styles.registerButton}`}
+              className={`button ${styles.registerButton}`}
             >
               {t('auth:register')}
             </a>
@@ -45,7 +45,7 @@ export const LandingPage = () => {
           <h2 className={styles.ctaTitle}>{t('landing-page:cta-title')}</h2>
           <Link href={REGISTER}>
             <a
-              className={`button button--fit button--noMinHeight button--ghost ${styles.registerButton}`}
+              className={`button ${styles.registerButton}`}
             >
               {t('auth:register')}
             </a>

@@ -18,14 +18,16 @@
   display: flex;
   justify-content: center;
   padding: 0 $length-xl;
-  margin: $length-l 0 $spacing-xxs;
+  margin: $length-l 0 $length-xl;
   color: $color-secondary-darkest;
   font-weight: bold;
+  flex-wrap: wrap;
 
   & > * {
     display: flex;
     align-items: flex-end;
     cursor: pointer;
+    margin-bottom: $length-m;
 
     &:not(:last-child) {
       margin-right: $length-l;

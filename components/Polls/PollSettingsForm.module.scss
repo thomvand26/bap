@@ -73,13 +73,17 @@
 
 .buttonGroup {
   display: flex;
+  flex-wrap: wrap;
   align-items: stretch;
   margin-top: $length-xl;
+  height: $input-min-height;
+  margin-bottom: $length-l;
 
-  & > * {
+  & > button {
     flex: 1;
     width: 100%;
     min-height: 0;
+    height: 100%;
 
     &:not(:last-child) {
       margin-right: $length-s;
@@ -93,15 +97,6 @@
     margin-top: 0;
     padding-top: $length-l;
     border-left: none;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      height: 2px;
-      top: 0;
-      left: $length-s;
-      right: $length-s;
-      background-color: $color-secondary-lighter;
-    }
+    border-top: 2px solid $color-secondary-lighter;
   }
 }
