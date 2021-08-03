@@ -22,9 +22,6 @@ export const Footer = () => {
           <div className={styles.about}>{t('navigation:info')}</div>
         </div>
         <ul className={styles.navigation}>
-          <li className={router.pathname === SEARCH ? 'active' : ''}>
-            <Link href={SEARCH}>{t('navigation:shows')}</Link>
-          </li>
           <li className={router.pathname === ABOUT ? 'active' : ''}>
             <Link href={ABOUT}>{t('navigation:about')}</Link>
           </li>
