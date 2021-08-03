@@ -68,12 +68,6 @@ export const Header = () => {
                   <li className={router.pathname === ABOUT ? 'active' : ''}>
                     <Link href={ABOUT}>{t('navigation:about')}</Link>
                   </li>
-                  <li className={router.pathname === LANDING ? 'active' : ''}>
-                    <Link href={LANDING}>{t('navigation:features')}</Link>
-                  </li>
-                  <li className={router.pathname === LANDING ? 'active' : ''}>
-                    <Link href={LANDING}>{t('navigation:shows')}</Link>
-                  </li>
                 </ul>
                 <div className={`${styles.col} ${styles.right}`}>
                   <LangSwitcher className={styles.langSwitcher} />
