@@ -3,5 +3,9 @@
     &:not(:last-child) {
       margin-bottom: $length-xl;
     }
+
+    &:last-child {
+      margin-top: $spacing-m;
+    }
   }
 }

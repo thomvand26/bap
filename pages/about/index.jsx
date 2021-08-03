@@ -14,6 +14,11 @@ export default function AboutPage() {
       <div className="container__content container__content--fullText">
         <h1 className="page__title">{t('about-page:page-title')}</h1>
         <p>{t('about-page:p1')}</p>
+        <p>{t('about-page:p2')}</p>
+        <p>{t('about-page:p3')}</p>
+        <p>{t('about-page:p4')}</p>
+        <p>{t('about-page:p5')}</p>
+        <p>{t('about-page:p6')}</p>
         <p>
           {t('about-page:email')}
           {': '}
