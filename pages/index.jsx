@@ -1,12 +1,10 @@
 import { useSession } from 'next-auth/client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { ShowList } from '@/components';
+import { ShowList, LandingPage } from '@/components';
 import { Layouts } from '@/layouts';
-import { LOGIN } from '@/routes';
 import { useDatabase, useShow } from '@/context';
 import { upsertDocumentInArrayState, filterShowsPlayingNow } from '@/utils';
 
@@ -16,15 +14,9 @@ export default function HomePage(props) {
   const [session, loading] = useSession();
   const { getShows } = useDatabase();
   const { setCurrentShow, fetchedShows, setFetchedShows } = useShow();
-  const router = useRouter();
   const { t } = useTranslation(['home-page', 'shows']);
   const [isFetching, setIsFetching] = useState();
   const [groupedShows, setGroupedShows] = useState();
-
-  useEffect(() => {
-    if (session === undefined) return;
-    if (!session || !session?.user?._id) router.push(LOGIN);
-  }, [session]);
 
   useEffect(() => {
     if (loading) return;
@@ -65,7 +57,7 @@ export default function HomePage(props) {
     );
   }, [fetchedShows]);
 
-  return (
+  return session?.user?._id ? (
     <div className="page container">
       <div className={`container__content ${styles.top}`}>
         <h1 className={styles.top__title}>{t('home-page:page-title')}</h1>
@@ -91,6 +83,8 @@ export default function HomePage(props) {
         />
       </section>
     </div>
+  ) : (
+    <LandingPage />
   );
 }
 
@@ -101,6 +95,7 @@ export async function getStaticProps(context) {
     props: {
       ...(await serverSideTranslations(context.locale, [
         'home-page',
+        'landing-page',
         'auth',
         'navigation',
         'shows',

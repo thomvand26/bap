@@ -1,0 +1,64 @@
+.page {
+  & h2 {
+    margin-bottom: $length-xl;
+  }
+
+  & .registerButton {
+    color: $color-secondary-darkest;
+    margin: 0 auto;
+  }
+}
+
+.content {
+  & > * {
+    &:not(:last-child) {
+      margin-bottom: $spacing-xl;
+    }
+  }
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+  max-width: 75vw;
+  color: $color-primary;
+  margin: 0 auto $spacing-xxs;
+
+  & > * {
+    max-height: $spacing-m;
+  }
+}
+
+.pageTitle {
+  text-align: center;
+  font-size: $font-size-xl;
+  margin-bottom: $spacing-m;
+}
+
+.intro {
+  text-align: center;
+  font-size: $font-size-xl;
+}
+
+.ctaTitle {
+  text-align: center;
+  font-size: $font-size-xl;
+  margin-bottom: $spacing-xxs;
+}
+
+@media (max-width: $breakpoint-l) {
+  .intro {
+    font-size: $font-size-l;
+  }
+}
+
+@media (max-width: $breakpoint-m) {
+  .content {
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: $spacing-m;
+      }
+    }
+  }
+}
