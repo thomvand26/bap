@@ -8,7 +8,7 @@ import {
   getTotalPollVotes,
   upsertDocumentInArrayState,
 } from '@/utils';
-import { useShow } from '@/context';
+import { useShow, useModal } from '@/context';
 import { Input, AddButton } from '@/components';
 
 import styles from './PollSettingsForm.module.scss';
@@ -17,6 +17,7 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
   const { currentPoll, setCurrentPoll, setCurrentPolls, createPoll, updatePoll, deletePoll } =
     useShow();
   const { t } = useTranslation(['artist-dashboard', 'common']);
+  const { setModalData } = useModal();
 
   const handleSubmit = async (data) => {
     setSaving(true);
@@ -40,7 +41,8 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
     setSaving(false);
   };
 
-  const handleDelete = async () => {
+  const confirmDelete = async () => {
+    setModalData(null);
     setSaving(true);
     const response = await deletePoll(currentPoll?._id);
     if (!response?._id) return;
@@ -49,6 +51,24 @@ export const PollSettingsForm = ({ saving, setSaving }) => {
       prev.filter((poll) => poll._id !== response?._id)
     );
     setSaving(false);
+  };
+
+  const handleDelete = async () => {
+    // Show warning modal
+    setModalData({
+      heading: t('artist-dashboard:delete-poll-warning-title'),
+      actions: [
+        {
+          type: 'danger',
+          text: t('artist-dashboard:delete-poll-warning-confirm'),
+          onClick: confirmDelete,
+        },
+        {
+          text: t('artist-dashboard:delete-poll-warning-cancel'),
+          onClick: () => setModalData(null),
+        },
+      ],
+    });
   };
 
   return (

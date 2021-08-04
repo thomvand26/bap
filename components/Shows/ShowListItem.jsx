@@ -131,9 +131,8 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
     });
   };
 
-  const handleDeleteClick = async () => {
-    if (!show) return;
-
+  const confirmDelete = async () => {
+    setModalData(null);
     try {
       setLoading(true);
       await deleteShow(show);
@@ -141,6 +140,26 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
       console.log(error);
     }
     setLoading(false);
+  };
+
+  const handleDeleteClick = async () => {
+    if (!show) return;
+
+    // Show warning modal
+    setModalData({
+      heading: t('shows:delete-show-warning-title'),
+      actions: [
+        {
+          type: 'danger',
+          text: t('shows:delete-show-warning-confirm'),
+          onClick: confirmDelete,
+        },
+        {
+          text: t('shows:delete-show-warning-cancel'),
+          onClick: () => setModalData(null),
+        },
+      ],
+    });
   };
 
   const handleHideClick = async () => {

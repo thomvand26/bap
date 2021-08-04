@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 
 import { DashboardPanel } from './DashboardPanel';
 import { Input, LoadingSpinner } from '@/components';
-import { useShow } from '@/context';
+import { useShow, useModal } from '@/context';
 import { ARTIST_DASHBOARD, EDIT_SHOW } from '@/routes';
 
 import styles from './DashboardPanel.module.scss';
@@ -28,7 +28,8 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
   const { currentShow, setCurrentShow, saveShow, deleteShow, loadingShow } =
     useShow();
   const router = useRouter();
-  const { t } = useTranslation(['artist-dashboard', 'common']);
+  const { t } = useTranslation(['artist-dashboard', 'common', 'shows']);
+  const { setModalData } = useModal();
 
   const [saving, setSaving] = useState(false);
   const [enableReinitialize, setEnableReinitialize] = useState(true);
@@ -57,17 +58,36 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
     }
   };
 
+  const confirmDelete = async () => {
+    setModalData(null);
+    setSaving(true);
+    await deleteShow(currentShow);
+    setSaving(false);
+
+    router.push(ARTIST_DASHBOARD);
+  };
+
   const handleDelete = async () => {
     if (!currentShow?._id) {
       console.log('no show, cannot delete null');
       return;
     }
 
-    setSaving(true);
-    await deleteShow(currentShow);
-    setSaving(false);
-
-    router.push(ARTIST_DASHBOARD);
+    // Show warning modal
+    setModalData({
+      heading: t('shows:delete-show-warning-title'),
+      actions: [
+        {
+          type: 'danger',
+          text: t('shows:delete-show-warning-confirm'),
+          onClick: confirmDelete,
+        },
+        {
+          text: t('shows:delete-show-warning-cancel'),
+          onClick: () => setModalData(null),
+        },
+      ],
+    });
   };
 
   return (

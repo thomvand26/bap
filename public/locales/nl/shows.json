@@ -10,5 +10,8 @@
   "search-shows": "Zoek shows",
   "date": "Datum",
   "no-shows-found": "Geen shows gevonden",
-  "new-show": "Nieuwe show"
+  "new-show": "Nieuwe show",
+  "delete-show-warning-title": "Ben je zeker dat je deze show wilt verwijderen?",
+  "delete-show-warning-confirm": "Ja, verwijder show",
+  "delete-show-warning-cancel": "Nee, ga terug"
 }

@@ -3,14 +3,17 @@ import { useSession } from 'next-auth/client';
 import { MdMoreVert, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { ImArrowUp } from 'react-icons/im';
 import { FaTimes, FaTrash } from 'react-icons/fa';
+import { useTranslation } from 'next-i18next';
 
-import { useShow } from '@/context';
+import { useShow, useModal } from '@/context';
 
 import styles from './SongRequests.module.scss';
 
 export const SongRequestListItem = ({ songRequest, inDashboard }) => {
   const [session] = useSession();
   const { voteSongRequest, hideSongRequest, deleteSongRequest } = useShow();
+  const {t} = useTranslation(['artist-dashboard']);
+  const { setModalData } = useModal();
 
   const [hasVoted, setHasVoted] = useState();
   const [loading, setLoading] = useState();
@@ -37,7 +40,8 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
     setLoading(false);
   };
 
-  const handleDelete = async () => {
+  const confirmDelete = async () => {
+    setModalData(null);
     setLoading(true);
 
     await deleteSongRequest({
@@ -45,6 +49,25 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
     });
 
     setLoading(false);
+  };
+
+
+  const handleDelete = async () => {
+    // Show warning modal
+    setModalData({
+      heading: t('artist-dashboard:delete-song-request-warning-title'),
+      actions: [
+        {
+          type: 'danger',
+          text: t('artist-dashboard:delete-song-request-warning-confirm'),
+          onClick: confirmDelete,
+        },
+        {
+          text: t('artist-dashboard:delete-song-request-warning-cancel'),
+          onClick: () => setModalData(null),
+        },
+      ],
+    });
   };
 
   const handleVote = async () => {

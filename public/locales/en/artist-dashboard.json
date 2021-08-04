@@ -32,5 +32,11 @@
   "start-poll": "Start",
   "hide-poll": "Hide",
   "share": "Share",
-  "share-title": "Share this show!"
+  "share-title": "Share this show!",
+  "delete-poll-warning-title": "Are you sure you want to delete this poll?",
+  "delete-poll-warning-confirm": "Yes, delete it",
+  "delete-poll-warning-cancel": "No, go back",
+  "delete-song-request-warning-title": "Are you sure you want to delete this song request?",
+  "delete-song-request-warning-confirm": "Yes, delete it",
+  "delete-song-request-warning-cancel": "No, go back"
 }

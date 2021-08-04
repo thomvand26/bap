@@ -32,5 +32,11 @@
   "start-poll": "Start",
   "hide-poll": "Verberg",
   "share": "Delen",
-  "share-title": "Deel deze show!"
+  "share-title": "Deel deze show!",
+  "delete-poll-warning-title": "Ben je zeker dat je deze poll wilt verwijderen?",
+  "delete-poll-warning-confirm": "Ja, verwijder poll",
+  "delete-poll-warning-cancel": "Nee, ga terug",
+  "delete-song-request-warning-title": "Ben je zeker dat je dit verzoeknummer wilt verwijderen?",
+  "delete-song-request-warning-confirm": "Ja, verwijder verzoeknummer",
+  "delete-song-request-warning-cancel": "Nee, ga terug"
 }
