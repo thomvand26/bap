@@ -131,6 +131,10 @@ fieldset {
   &--withPadding {
     padding: $length-xxl;
   }
+
+  &--noFullHight {
+    height: unset;
+  }
 }
 
 .focus-inset {

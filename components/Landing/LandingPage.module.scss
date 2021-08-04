@@ -1,4 +1,6 @@
-.page {
+div.page {
+  padding-top: $spacing-xl;
+
   & h2 {
     margin-bottom: $length-xl;
   }
