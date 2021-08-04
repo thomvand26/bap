@@ -28,7 +28,12 @@ export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
         {urlValid ? (
           cookieValues?.youtube === true ? (
             <ReactPlayer
-              url={currentShow?.streamURL}
+              url={
+                currentShow?.streamURL?.includes?.('youtube.') ||
+                currentShow?.streamURL?.includes?.('youtu.be')
+                  ? currentShow.streamURL
+                  : null
+              }
               width="100%"
               height="100%"
               onError={() => {
