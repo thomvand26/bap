@@ -24,7 +24,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { t } = useTranslation(['auth', 'common']);
 
-  const [updating, setUpdating] = useState(false);
+  const [updating, setUpdating] = useState();
 
   const handleSubmit = async (data) => {
     if (updating) return;
@@ -77,29 +77,29 @@ export default function SettingsPage() {
         }}
         onSubmit={handleSubmit}
       >
-        <Form className={styles.form}>
-          <Input
-            type="text"
-            name="username"
-            label={t('auth:username')}
-            defaultWidth
-          />
-
-          <button
-            type="submit"
-            className={styles.saveButton}
-            disabled={updating}
-          >
-            {t('common:save')}
-          </button>
-
-          <button
-            type="button"
-            className={`button--text button--danger ${styles.deleteButton}`}
-            onClick={handleDelete}
-          >
-            {t('auth:delete-account')}
-          </button>
+        <Form>
+          <fieldset className={styles.fieldset} disabled={updating}>
+            <Input
+              type="text"
+              name="username"
+              label={t('auth:username')}
+              defaultWidth
+            />
+            <button
+              type="submit"
+              className={styles.saveButton}
+              disabled={updating}
+            >
+              {t('common:save')}
+            </button>
+            <button
+              type="button"
+              className={`button--text button--danger ${styles.deleteButton}`}
+              onClick={handleDelete}
+            >
+              {t('auth:delete-account')}
+            </button>
+          </fieldset>
         </Form>
       </Formik>
     </div>

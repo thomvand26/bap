@@ -22,9 +22,8 @@
   margin-right: -$length-xs;
 }
 
-.form {
+.fieldset {
   display: flex;
-  align-items: flex-end;
 }
 
 .inputContainer {
@@ -45,7 +44,7 @@
   padding: 0 $length-xl;
   width: fit-content;
   color: $color-secondary-darkest;
-  margin-top: $length-l;
+  margin-top: 2.85rem;
 }
 
 .participantsList {

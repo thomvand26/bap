@@ -34,7 +34,7 @@ export const SearchForm = ({
   const [session] = useSession();
   const { t } = useTranslation(['shows']);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -49,6 +49,7 @@ export const SearchForm = ({
   }, [router.isReady]);
 
   async function searchShows(data) {
+    if (loading) return;
     setLoading(true);
     setLoadingShows?.(true);
 
@@ -62,7 +63,7 @@ export const SearchForm = ({
 
     // Format the rest of the query
     let query = {
-      ...(artistDashboard ? {owner: session?.user?._id} : {}),
+      ...(artistDashboard ? { owner: session?.user?._id } : {}),
       ...(data?.search
         ? { title: { $regex: data.search, $options: 'i' } }
         : {}),
@@ -71,7 +72,7 @@ export const SearchForm = ({
         : data?.currentlyPlaying === false
         ? { startDate: { $gt: new Date() } }
         : {}),
-        ...(!artistDashboard ? {public: true} : {}),
+      ...(!artistDashboard ? { public: true } : {}),
     };
 
     // Join the query
@@ -113,31 +114,33 @@ export const SearchForm = ({
       }}
       onSubmit={handleSubmit}
     >
-      <Form className={`${styles.form}`}>
-        <Searchbar
-          className={`${styles.searchGroup} ${
-            artistDashboard ? styles['searchGroup--artistDashboard'] : ''
-          }`}
-          artistDashboard={artistDashboard}
-          variant={variant}
-        />
-        {!artistDashboard && (
-          <div className={`${styles.filterGroup}`}>
-            <Input
-              name="currentlyPlaying"
-              label={t('shows:currently-playing')}
-              type="select"
-              variant={variant}
-              options={[
-                { label: t('shows:all'), value: null },
-                { label: t('shows:currently-playing'), value: true },
-                { label: t('shows:upcoming-shows'), value: false },
-              ]}
-              submitOnChange
-              noPaddingBottom
-            />
-          </div>
-        )}
+      <Form>
+        <fieldset className={styles.fieldset} disabled={loading}>
+          <Searchbar
+            className={`${styles.searchGroup} ${
+              artistDashboard ? styles['searchGroup--artistDashboard'] : ''
+            }`}
+            artistDashboard={artistDashboard}
+            variant={variant}
+          />
+          {!artistDashboard && (
+            <div className={`${styles.filterGroup}`}>
+              <Input
+                name="currentlyPlaying"
+                label={t('shows:currently-playing')}
+                type="select"
+                variant={variant}
+                options={[
+                  { label: t('shows:all'), value: null },
+                  { label: t('shows:currently-playing'), value: true },
+                  { label: t('shows:upcoming-shows'), value: false },
+                ]}
+                submitOnChange
+                noPaddingBottom
+              />
+            </div>
+          )}
+        </fieldset>
       </Form>
     </Formik>
   );

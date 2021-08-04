@@ -545,14 +545,10 @@ export const ShowProvider = ({ children }) => {
   const createSongRequest = async ({ song, inDashboard }) => {
     if (!socket || !currentShow?._id) return;
 
-    if (!inDashboard) setLoadingChat(true);
-
     const response = await axios.post(`${API_SONG_REQUEST}/`, {
       showId: currentShow?._id,
       song,
     });
-
-    if (!inDashboard) setLoadingChat(false);
 
     return response;
   };

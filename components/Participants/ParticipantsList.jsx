@@ -23,8 +23,16 @@ export const ParticipantsList = ({
     kickFromChatroom,
     ownChatroom,
   } = useShow();
-  const [showInviteMenu, setShowInviteMenu] = useState([]);
   const { t } = useTranslation(['chat']);
+
+  const [showInviteMenu, setShowInviteMenu] = useState([]);
+  const [loading, setLoading] = useState();
+
+  const handleKick = async (userId) => {
+    setLoading(true);
+    await kickUser({ userId });
+    setLoading(false);
+  };
 
   return true ? (
     <div
@@ -75,8 +83,8 @@ export const ParticipantsList = ({
                     <button
                       type="button"
                       className={`button button--icon button--danger button--hover-light ${styles.actionButton}`}
-                      disabled={isCurrentUser}
-                      onClick={() => kickUser({ userId: userObject?._id })}
+                      disabled={isCurrentUser || loading}
+                      onClick={() => handleKick(userObject?._id)}
                     >
                       <MdExitToApp size="1.6rem" />
                     </button>

@@ -14,6 +14,7 @@ export const ChatModal = () => {
   const { t } = useTranslation(['chat']);
 
   const [currentChatModalData, setCurrentChatModalData] = useState();
+  const [loading, setLoading] = useState();
 
   useEffect(() => {
     setCurrentChatModalData(chatModalQueue[0]);
@@ -26,21 +27,27 @@ export const ChatModal = () => {
   };
 
   const declineInvite = async () => {
+    if (loading) return;
+    setLoading(true);
     await inviteToChatroom({
       chatroomId: currentChatModalData?.chatroomId,
       userId: session?.user?._id,
       cancel: true,
     });
     removeCurrentFromQueue();
+    setLoading(false);
   };
 
   const acceptInvite = async () => {
+    if (loading) return;
+    setLoading(true);
     await joinChatroom(currentChatModalData?.chatroomId);
+    setLoading(false);
   };
 
   return currentChatModalData ? (
     currentChatModalData?.type === 'invite' && (
-      <div className={styles.container}>
+      <fieldset className={styles.container} disabled={loading}>
         <button
           type="button"
           className={`button--icon button--lightest ${styles.closeButton}`}
@@ -69,7 +76,7 @@ export const ChatModal = () => {
             {t('chat:decline-room')}
           </button>
         </div>
-      </div>
+      </fieldset>
     )
   ) : (
     <></>

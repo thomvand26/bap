@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { csrfToken, getSession, signIn, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -16,6 +16,8 @@ import styles from './AuthPage.module.scss';
 const validationSchema = (
   { emailRequired, usernameRequired, passRequired },
   locale,
+  submitting,
+  setSubmitting,
   onValid
 ) =>
   Yup.object()
@@ -27,11 +29,16 @@ const validationSchema = (
     .test({
       name: 'auth-check',
       test: async (values, testContext) => {
+        if (submitting) return;
+        setSubmitting?.(true);
         const hasUndefined = !!Object.values(values).filter(
           (value) => value === undefined
         ).length;
 
-        if (hasUndefined) return;
+        if (hasUndefined) {
+          setSubmitting?.(false);
+          return;
+        }
 
         const response = await signIn('email-password', {
           redirect: false,
@@ -40,6 +47,7 @@ const validationSchema = (
         });
 
         if (!response?.error && onValid instanceof Function) {
+          setSubmitting?.(false);
           onValid();
           return;
         }
@@ -47,6 +55,8 @@ const validationSchema = (
         const responseObject = Object.fromEntries(
           new URLSearchParams(response.error)
         );
+
+        setSubmitting?.(false);
 
         return testContext.createError({
           message: responseObject.message,
@@ -59,6 +69,7 @@ export default function RegisterPage({ csrfToken }) {
   const router = useRouter();
   const [session, loading] = useSession();
   const { t } = useTranslation(['register-page', 'auth']);
+  const [submitting, setSubmitting] = useState();
 
   useEffect(() => {
     if (session?.user?._id) router.push(LANDING);
@@ -80,6 +91,8 @@ export default function RegisterPage({ csrfToken }) {
               passRequired: t('auth:error-password-required'),
             },
             router.locale,
+            submitting,
+            setSubmitting,
             () => router.push('/')
           )
         }
@@ -87,40 +100,42 @@ export default function RegisterPage({ csrfToken }) {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        <Form className={styles.form}>
-          <Input
-            name="email"
-            label={t('auth:email')}
-            type="email"
-            defaultWidth
-          />
-          <Input
-            name="username"
-            label={t('auth:username')}
-            type="username"
-            defaultWidth
-          />
-          <Input
-            name="password"
-            label={t('auth:password')}
-            type="password"
-            defaultWidth
-            noPaddingBottom
-          />
-          <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
-          <div className={styles.storageInfo}>
-            {t('auth:allow-storage')}{' '}
-            <Link href={COOKIES_PRIVACY}>{t('auth:more-info')}</Link>
-          </div>
-          <button type="submit" className={styles.submitButton}>
-            {t('auth:create-account')}
-          </button>
-          <span className={styles.authSwitch}>
-            {t('register-page:already-account')}
-            <Link href={LOGIN}>
-              <a className="button button--text">{t('auth:login')}</a>
-            </Link>
-          </span>
+        <Form>
+          <fieldset className={styles.fieldset} disabled={submitting}>
+            <Input
+              name="email"
+              label={t('auth:email')}
+              type="email"
+              defaultWidth
+            />
+            <Input
+              name="username"
+              label={t('auth:username')}
+              type="username"
+              defaultWidth
+            />
+            <Input
+              name="password"
+              label={t('auth:password')}
+              type="password"
+              defaultWidth
+              noPaddingBottom
+            />
+            <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
+            <div className={styles.storageInfo}>
+              {t('auth:allow-storage')}{' '}
+              <Link href={COOKIES_PRIVACY}>{t('auth:more-info')}</Link>
+            </div>
+            <button type="submit" className={styles.submitButton}>
+              {t('auth:create-account')}
+            </button>
+            <span className={styles.authSwitch}>
+              {t('register-page:already-account')}
+              <Link href={LOGIN}>
+                <a className="button button--text">{t('auth:login')}</a>
+              </Link>
+            </span>
+          </fieldset>
         </Form>
       </Formik>
     </div>

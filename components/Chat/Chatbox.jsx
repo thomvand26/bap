@@ -33,6 +33,7 @@ export const Chatbox = ({
 
   const [allowSongRequests, setAllowSongRequests] = useState(true);
   const [reachedLimit, setReachedLimit] = useState(false);
+  const [submitting, setSubmitting] = useState();
 
   useEffect(() => {
     setAllowSongRequests(currentShow?.maxSongRequestsPerUser > 0);
@@ -48,17 +49,20 @@ export const Chatbox = ({
     setReachedSongRequestLimit?.(hasReachedLimit);
   }, [currentSongRequests, currentShow?.maxSongRequestsPerUser]);
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = async (values, actions) => {
     if (loadingChat) return;
+    if (submitting) return;
+    setSubmitting(true);
 
     if (values?.message?.length) {
       if (showSongRequestChatbox || forSongRequest) {
-        createSongRequest({ song: values.message, inDashboard });
-        document.activeElement.blur();
+        await createSongRequest({ song: values.message, inDashboard });
       } else {
         sendChat(values.message);
       }
     }
+
+    setSubmitting(false);
 
     actions.resetForm();
   };
@@ -72,77 +76,82 @@ export const Chatbox = ({
       }}
       onSubmit={handleSubmit}
     >
-      <Form
-        className={`${styles.form} ${
-          inDashboard ? styles['form--inDashboard'] : ''
-        } ${forSongRequest ? styles['form--songRequest'] : ''}`}
-      >
-        {showSongRequestChatbox && allowSongRequests && (
-          <div className={styles.songRequestHeading}>
-            <h2 className={`h3`}>{t('chat:request-a-song-title')}</h2>
-            <button
-              type="button"
-              className={`button--icon button--lightest button--noMinHeight ${styles.songRequestCloseButton}`}
-              onClick={() => setShowSongRequestChatbox?.(false)}
-            >
-              <FaTimes />
-            </button>
-          </div>
-        )}
-        <div className={`${styles.input}`}>
-          <Input
-            name="message"
-            id={forSongRequest ? 'songRequest' : 'message'}
-            type="text"
-            autoComplete="off"
-            placeholder={
-              !inDashboard
-                ? showSongRequestChatbox
-                  ? t('chat:song-request-placeholder')
-                  : t('chat:chat-placeholder')
-                : ''
-            }
-            variant={
-              inDashboard
-                ? 'light'
-                : showSongRequestChatbox && allowSongRequests
-                ? 'darkest'
-                : 'dark'
-            }
-            label={
-              forSongRequest ? t('artist-dashboard:send-own-song-requests') : ''
-            }
-            info={
-              forSongRequest && !allowSongRequests
-                ? t('artist-dashboard:send-own-song-requests-info')
-                : ''
-            }
-            noPadding
-          />
-        </div>
-        <div className={styles.actions}>
-          {!inDashboard && (
-            <div className={styles.actions__left}>
-              {allowSongRequests && (
-                <button
-                  type="button"
-                  className={`button--text ${styles.requestButton}`}
-                  onClick={() => setShowSongRequestChatbox?.((prev) => !prev)}
-                  disabled={reachedLimit}
-                >
-                  {showSongRequestChatbox
-                    ? t('chat:go-back-to-chat')
-                    : reachedLimit
-                    ? t('chat:request-a-song-reached-limit')
-                    : t('chat:request-a-song')}
-                </button>
-              )}
+      <Form>
+        <fieldset
+          className={`${styles.fieldset} ${
+            inDashboard ? styles['fieldset--inDashboard'] : ''
+          } ${forSongRequest ? styles['fieldset--songRequest'] : ''}`}
+          disabled={loadingChat || submitting}
+        >
+          {showSongRequestChatbox && allowSongRequests && (
+            <div className={styles.songRequestHeading}>
+              <h2 className={`h3`}>{t('chat:request-a-song-title')}</h2>
+              <button
+                type="button"
+                className={`button--icon button--lightest button--noMinHeight ${styles.songRequestCloseButton}`}
+                onClick={() => setShowSongRequestChatbox?.(false)}
+              >
+                <FaTimes />
+              </button>
             </div>
           )}
-          <button type="submit" className={styles.sendButton}>
-            {t('chat:send')}
-          </button>
-        </div>
+          <div className={`${styles.input}`}>
+            <Input
+              name="message"
+              id={forSongRequest ? 'songRequest' : 'message'}
+              type="text"
+              autoComplete="off"
+              placeholder={
+                !inDashboard
+                  ? showSongRequestChatbox
+                    ? t('chat:song-request-placeholder')
+                    : t('chat:chat-placeholder')
+                  : ''
+              }
+              variant={
+                inDashboard
+                  ? 'light'
+                  : showSongRequestChatbox && allowSongRequests
+                  ? 'darkest'
+                  : 'dark'
+              }
+              label={
+                forSongRequest
+                  ? t('artist-dashboard:send-own-song-requests')
+                  : ''
+              }
+              info={
+                forSongRequest && !allowSongRequests
+                  ? t('artist-dashboard:send-own-song-requests-info')
+                  : ''
+              }
+              noPadding
+            />
+          </div>
+          <div className={styles.actions}>
+            {!inDashboard && (
+              <div className={styles.actions__left}>
+                {allowSongRequests && (
+                  <button
+                    type="button"
+                    className={`button--text ${styles.requestButton}`}
+                    onClick={() => setShowSongRequestChatbox?.((prev) => !prev)}
+                    disabled={reachedLimit}
+                  >
+                    {showSongRequestChatbox
+                      ? t('chat:go-back-to-chat')
+                      : reachedLimit
+                      ? t('chat:request-a-song-reached-limit')
+                      : t('chat:request-a-song')}
+                  </button>
+                )}
+              </div>
+            )}
+            <button type="submit" className={styles.sendButton}>
+              {t('chat:send')}
+            </button>
+          </div>
+        </fieldset>
       </Form>
     </Formik>
   );

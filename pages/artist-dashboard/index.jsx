@@ -12,7 +12,7 @@ import styles from './ArtistDashboardPage.module.scss';
 
 export default function ArtistDashboardPage() {
   const { setCurrentShow, ownShows, setOwnShows } = useShow();
-  const [loadingShows, setLoadingShows] = useState(true);
+  const [loadingShows, setLoadingShows] = useState();
   const { t } = useTranslation(['artist-dashboard-page', 'shows']);
 
   const onSearch = ({ currentlyPlayingShows, upcomingShows }) => {
@@ -34,7 +34,7 @@ export default function ArtistDashboardPage() {
         <SearchForm
           searchShows={(data) => console.log(data)}
           artistDashboard
-          setLoadingShow={setLoadingShows}
+          setLoadingShows={setLoadingShows}
           onSearch={onSearch}
         />
         <ShowList

@@ -13,8 +13,8 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
   const { voteSongRequest, hideSongRequest, deleteSongRequest } = useShow();
 
   const [hasVoted, setHasVoted] = useState();
-  const [loading, setLoading] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  const [loading, setLoading] = useState();
+  const [showMenu, setShowMenu] = useState();
 
   useEffect(() => {
     setHasVoted(
@@ -95,6 +95,7 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
                 styles.voteButton
               } ${hasVoted ? styles['voteButton--voted'] : ''}`}
               onClick={handleVote}
+              disabled={loading}
             >
               <ImArrowUp className={styles.voteButton__arrow} />
             </button>
@@ -104,6 +105,7 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
               <button
                 className={`button--icon button--noMinHeight`}
                 onClick={handleHide}
+                disabled={loading}
               >
                 {songRequest?.visible ? (
                   <MdVisibility size="1.7rem" />
@@ -115,6 +117,7 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
               <button
                 className={`button--icon button--danger button--noMinHeight`}
                 onClick={handleDelete}
+                disabled={loading}
               >
                 <FaTrash size="1.2rem" />
               </button>

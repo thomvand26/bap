@@ -113,6 +113,12 @@ $breakpoint-xxl: 1400px;
   }
 }
 
+@mixin disabled--light {
+  &:disabled {
+    @include disable--light;
+  }
+}
+
 @mixin scrollbar--light {
   --scrollbar-track-color: #{$color-white};
   --scrollbar-thumb-color-inactive: #{$color-secondary-lighter};

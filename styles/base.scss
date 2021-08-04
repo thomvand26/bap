@@ -59,6 +59,7 @@ a,
 button,
 .button {
   @include focus;
+  @include disabled--light;
 
   &:hover {
     filter: opacity(0.8);

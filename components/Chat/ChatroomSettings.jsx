@@ -29,7 +29,8 @@ export const ChatroomSettings = () => {
   const [session] = useSession();
   const { t } = useTranslation(['chat']);
 
-  const [chatroomName, setChatroomName] = useState('My chatroom');
+  const [chatroomName, setChatroomName] = useState(t('chat:default-room-name'));
+  const [saving, setSaving] = useState();
 
   useEffect(() => {
     setChatroomName((prev) => currentChatroom?.name || prev);
@@ -37,23 +38,30 @@ export const ChatroomSettings = () => {
 
   const handleSubmit = async (data) => {
     if (loadingChat) return;
+    if (saving) return;
+    setSaving(true);
     if (showChatroomSettings === 'create') {
       await createChatroom(data);
     } else {
       await updateChatroom(data);
     }
+    setSaving(false);
   };
 
   const handleDelete = () => {
     if (loadingChat) return;
-    console.log('handleDelete');
+    if (saving) return;
+    setSaving(true);
     deleteChatroom({ chatroomId: currentChatroom?._id });
+    setSaving(false);
   };
 
   const handleLeave = () => {
     if (loadingChat) return;
-    console.log('handleLeave');
+    if (saving) return;
+    setSaving(true);
     leaveChatroom(currentChatroom?._id);
+    setSaving(false);
   };
 
   return showChatroomSettings ? (
@@ -83,21 +91,25 @@ export const ChatroomSettings = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <Form className={styles.form}>
-            <div className={styles.inputContainer}>
-              <Input
-                name="name"
-                label={t('chat:room-name')}
-                type="text"
-                autoComplete="off"
-                variant="darkest"
-                noPadding
-                onChange={(event) => setChatroomName(event.target.value.trim())}
-              />
-            </div>
-            <button type="submit" className={styles.saveButton}>
-              {t('chat:save-room-name')}
-            </button>
+          <Form>
+            <fieldset className={styles.fieldset} disabled={loadingChat || saving}>
+              <div className={styles.inputContainer}>
+                <Input
+                  name="name"
+                  label={t('chat:room-name')}
+                  type="text"
+                  autoComplete="off"
+                  variant="darkest"
+                  noPadding
+                  onChange={(event) =>
+                    setChatroomName(event.target.value.trim())
+                  }
+                />
+              </div>
+              <button type="submit" className={styles.saveButton}>
+                {t('chat:save-room-name')}
+              </button>
+            </fieldset>
           </Form>
         </Formik>
       )}
@@ -131,6 +143,7 @@ export const ChatroomSettings = () => {
               ? handleDelete()
               : handleLeave();
           }}
+          disabled={loadingChat || saving}
         >
           {currentChatroom?.owner?._id === session?.user?._id
             ? t('chat:delete-room')

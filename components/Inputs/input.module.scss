@@ -270,3 +270,9 @@
     min-height: 0;
   }
 }
+
+*:disabled {
+  & .toggleContainer {
+    @include disable--light;
+  }
+}

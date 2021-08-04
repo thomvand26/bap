@@ -10,7 +10,7 @@ import styles from './SearchPage.module.scss';
 export default function SearchPage() {
   const [upcomingShows, setUpcomingShows] = useState([]);
   const [currentlyPlayingShows, setCurrentlyPlayingShows] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState();
   const { t } = useTranslation(['search-page', 'shows']);
 
   const onSearch = (shows) => {
@@ -27,7 +27,7 @@ export default function SearchPage() {
             <SearchForm
               variant="light"
               onSearch={onSearch}
-              setLoadingShow={setLoading}
+              setLoadingShows={setLoading}
             />
           </div>
         </section>
