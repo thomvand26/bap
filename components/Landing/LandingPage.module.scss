@@ -1,6 +1,10 @@
 div.page {
   padding-top: $spacing-xl;
 
+  & * {
+    text-align: center;
+  }
+
   & h2 {
     margin-bottom: $length-xl;
   }
@@ -32,18 +36,15 @@ div.page {
 }
 
 .pageTitle {
-  text-align: center;
   font-size: $font-size-xl;
   margin-bottom: $spacing-m;
 }
 
 .intro {
-  text-align: center;
   font-size: $font-size-xl;
 }
 
 .ctaTitle {
-  text-align: center;
   font-size: $font-size-xl;
   margin-bottom: $spacing-xxs;
 }
