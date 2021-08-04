@@ -24,6 +24,7 @@ export default function EditShowPage() {
 
   useEffect(() => {
     if (!router.isReady) return;
+    if (!session?.user?._id) return;
     if (fetching) return;
     setLoadingShow(true);
     setIsNewShow(false);
@@ -37,10 +38,11 @@ export default function EditShowPage() {
     }
 
     (async () => {
-      if (!session) return;
-
-      // Use current show if it's the requested show
-      if (currentShow?._id === showId) {
+      // Use current show if it's the requested show and user is owner
+      if (
+        currentShow?._id === showId &&
+        currentShow?.owner?._id !== session.user._id
+      ) {
         setLoadingShow(false);
         return;
       }
@@ -53,8 +55,8 @@ export default function EditShowPage() {
       setFetching(false);
       console.log(show);
 
-      // If the show doesn't exist yet, go to the create page
-      if (session.user._id !== show?.owner?._id) {
+      // If the show doesn't exist yet, or user is not the owner go to the create page
+      if (show?.owner?._id !== session.user._id) {
         router.push(CREATE_SHOW);
         return;
       }
