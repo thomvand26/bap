@@ -142,6 +142,7 @@ async function start() {
           // Emit invites
           const invitedToChatrooms = await Chatroom.find({
             invitedUsers: userId,
+            show: showId,
           }).populate({ path: 'owner' });
 
           invitedToChatrooms?.forEach?.((chatroom) => {
