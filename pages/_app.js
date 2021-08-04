@@ -5,14 +5,18 @@ import { LayoutWrapper } from '../layouts';
 
 import '../styles/app.scss';
 
+const MyFullApp = appWithTranslation(({ Component, pageProps }) => (
+  <LayoutWrapper>
+    <Component {...pageProps} />
+  </LayoutWrapper>
+));
+
 const MyApp = ({ Component, pageProps }) => {
   return (
     <GlobalProvider pageProps={pageProps}>
-      <LayoutWrapper>
-        <Component {...pageProps} />
-      </LayoutWrapper>
+      <MyFullApp Component={Component} pageProps={pageProps} />
     </GlobalProvider>
   );
 };
 
-export default appWithTranslation(MyApp);
+export default MyApp;
