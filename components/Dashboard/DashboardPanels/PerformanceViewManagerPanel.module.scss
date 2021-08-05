@@ -27,11 +27,7 @@
     display: flex;
     align-items: flex-end;
     cursor: pointer;
-    margin-bottom: $length-m;
-
-    &:not(:last-child) {
-      margin-right: $length-l;
-    }
+    margin: 0 $length-s $length-m;
 
     &:global(.active) {
       position: relative;

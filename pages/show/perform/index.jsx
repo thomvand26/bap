@@ -26,6 +26,7 @@ export default function PerformShowPage() {
     const { showId } = router.query;
 
     if (!showId) {
+      router.push(CREATE_SHOW);
       setLoadingShow(false);
       return;
     }

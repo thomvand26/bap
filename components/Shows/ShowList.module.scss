@@ -74,6 +74,8 @@
   }
 
   .listHeader {
+    margin-bottom: $length-xl;
+
     &--home {
       font-size: $font-size-l;
       color: $color-secondary-dark;
@@ -84,5 +86,9 @@
     &--inDashboard {
       display: none;
     }
+  }
+
+  .browseAllLink {
+    margin-top: $length-xl;
   }
 }

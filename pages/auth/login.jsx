@@ -95,7 +95,7 @@ export default function LoginPage({ csrfToken }) {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        <Form>
+        <Form className={styles.form}>
           <fieldset className={styles.fieldset} disabled={submitting}>
             <Input
               name="email"

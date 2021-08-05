@@ -13,3 +13,9 @@
 .info {
   margin-bottom: $spacing-m;
 }
+
+@media (max-width: $breakpoint-l) {
+  .page404 {
+    padding: $spacing-m $length-l 0;
+  }
+}

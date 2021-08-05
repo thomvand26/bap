@@ -121,5 +121,9 @@ button,
     min-height: 0;
   }
 
+  &--disabled {
+    @include disable;
+  }
+
   @include disabled;
 }

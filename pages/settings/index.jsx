@@ -77,7 +77,7 @@ export default function SettingsPage() {
         }}
         onSubmit={handleSubmit}
       >
-        <Form>
+        <Form className={styles.form}>
           <fieldset className={styles.fieldset} disabled={updating}>
             <Input
               type="text"

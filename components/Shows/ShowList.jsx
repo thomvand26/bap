@@ -38,7 +38,7 @@ export const ShowList = ({
             isOnHome ? (
               <h2
                 key={`listHeader-${i}`}
-                className={`h1 ${styles['listHeader--home']}`}
+                className={`h1 ${styles.listHeader} ${styles['listHeader--home']}`}
               >
                 {header}
               </h2>
@@ -59,14 +59,14 @@ export const ShowList = ({
           cards ? styles['showList--cards'] : ''
         }`}
       >
-        {(shows?.length
+        {(loading
+          ? Array(3).fill(null)
+          : shows?.length
           ? shows.sort?.(
               (showA, showB) =>
                 new Date(showA?.startDate).getTime() -
                 new Date(showB?.startDate).getTime()
             )
-          : loading
-          ? Array(3).fill(null)
           : []
         )?.map?.((show, i) => (
           <ShowListItem

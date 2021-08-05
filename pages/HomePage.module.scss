@@ -17,6 +17,11 @@
 }
 
 @media (max-width: $breakpoint-l) {
+  .top {
+    &:not(:last-child) {
+      margin-bottom: $spacing-m;
+    }
+  }
   .section {
     &:not(:last-child) {
       margin-bottom: $spacing-m;

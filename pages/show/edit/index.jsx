@@ -73,7 +73,11 @@ export default function EditShowPage() {
       <div className={styles.top}>
         <h1 className={styles.title}>{currentShow?.title}</h1>
         <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>
-          <a className={`button button--fit`}>
+          <a
+            className={`button button--fit ${
+              !router?.query?.showId ? 'button--disabled' : ''
+            }`}
+          >
             {t('artist-dashboard:go-to-performance')}
           </a>
         </Link>

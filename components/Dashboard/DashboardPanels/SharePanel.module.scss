@@ -19,6 +19,7 @@
   position: relative;
   max-width: 100%;
   overflow-x: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   background-color: $color-white;
   border-radius: $border-radius;

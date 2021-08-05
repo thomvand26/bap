@@ -168,8 +168,11 @@ fieldset {
   }
 
   .centeredPlaceholder {
+    font-size: $font-size-s;
+
     &--withButton {
       & button {
+        font-size: $font-size-s;
         margin-top: $length-m;
       }
     }

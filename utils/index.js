@@ -9,11 +9,14 @@ export const upsertDocumentInArrayState = ({
 
   array?.forEach?.((newDocument) => {
     setFunction((prev) => {
-      const foundDocument = prev?.find?.(
+      if (!Array.isArray(prev)) {
+        return prev ? [prev] : [];
+      }
+      const foundDocument = prev.find(
         (prevDocument) => prevDocument?._id === newDocument?._id
       );
       return foundDocument
-        ? prev?.map?.((prevDocument) =>
+        ? prev.map((prevDocument) =>
             prevDocument?._id === newDocument?._id ? newDocument : prevDocument
           )
         : [...prev, newDocument];

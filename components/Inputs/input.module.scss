@@ -138,14 +138,13 @@
       background-color: $color-secondary-lighter;
 
       transition: none $transition-duration $transition-easing;
-      transition-property: margin, background-color;
+      transition-property: transform, background-color;
     }
 
     &--checked {
       & .checkbox {
         &__handle {
-          margin-right: 0;
-          margin-left: $length-xxl;
+          transform: translate($length-xxl, 0);
           background-color: $color-primary-light;
         }
       }

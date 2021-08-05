@@ -32,6 +32,7 @@ div.page {
 
   & > * {
     max-height: $spacing-m;
+    width: 100%;
   }
 }
 
@@ -56,6 +57,10 @@ div.page {
 }
 
 @media (max-width: $breakpoint-m) {
+  div.page {
+    padding-top: $spacing-m;
+  }
+
   .content {
     & > * {
       &:not(:last-child) {

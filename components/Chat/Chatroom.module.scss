@@ -127,10 +127,10 @@
 }
 
 button.settingsButton {
+  --button-color: transparent;
   position: sticky;
   top: 0;
-  left: 100%;
-  --button-color: transparent;
+  margin-left: auto;
   color: $color-secondary-dark;
   background-color: $color-secondary-darkest;
   z-index: 2;

@@ -375,14 +375,14 @@ export const ShowProvider = ({ children }) => {
       ...data.show.generalChatroom,
       messages: data.messages,
     });
-    setAvailableChatrooms(response.data.availableChatrooms);
+    setAvailableChatrooms(data.availableChatrooms);
     setOwnChatroom(
       data.availableChatrooms.find(
         (chatroom) => chatroom?.owner?._id === userId && !chatroom?.isGeneral
       )
     );
     setCurrentSongRequests(defaultSongRequestArraySort(data.songRequests));
-    setPresentedPoll(response.data.presentedPoll);
+    setPresentedPoll(data.presentedPoll);
     setLoadingChat(false);
     setLoadingPolls(false);
 
