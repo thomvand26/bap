@@ -1,4 +1,5 @@
 import { appWithTranslation } from 'next-i18next';
+import { Provider as NextAuthProvider } from 'next-auth/client';
 
 import { GlobalProvider } from '../context';
 import { LayoutWrapper } from '../layouts';
@@ -6,16 +7,18 @@ import { LayoutWrapper } from '../layouts';
 import '../styles/app.scss';
 
 const MyFullApp = appWithTranslation(({ Component, pageProps }) => (
-  <LayoutWrapper>
-    <Component {...pageProps} />
-  </LayoutWrapper>
+  <GlobalProvider pageProps={pageProps}>
+    <LayoutWrapper>
+      <Component {...pageProps} />
+    </LayoutWrapper>
+  </GlobalProvider>
 ));
 
 const MyApp = ({ Component, pageProps }) => {
   return (
-    <GlobalProvider pageProps={pageProps}>
+    <NextAuthProvider session={pageProps.session}>
       <MyFullApp Component={Component} pageProps={pageProps} />
-    </GlobalProvider>
+    </NextAuthProvider>
   );
 };
 
