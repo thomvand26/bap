@@ -23,6 +23,7 @@ export const ShowList = ({
   onDuplicate,
   onDelete,
   withBrowseAllButton,
+  noShowsPlaceholder,
 }) => {
   const { t } = useTranslation(['shows']);
 
@@ -78,6 +79,9 @@ export const ShowList = ({
             cards={cards}
           />
         ))}
+        {!loading && !shows?.length && (
+          <div className="centeredPlaceholder">{noShowsPlaceholder}</div>
+        )}
       </div>
 
       {withBrowseAllButton && (

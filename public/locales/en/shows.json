@@ -10,6 +10,8 @@
   "search-shows": "Search shows",
   "date": "Date",
   "no-shows-found": "No shows found",
+  "no-shows-found-currently-playing": "No shows are currently playing",
+  "no-shows-found-upcoming": "There are no upcoming shows",
   "new-show": "New show",
   "delete-show-warning-title": "Are you sure you want to delete this show?",
   "delete-show-warning-confirm": "Yes, delete it",

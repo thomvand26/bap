@@ -49,6 +49,7 @@ export default function ArtistDashboardPage() {
           ]}
           loading={loadingShows}
           inDashboard
+          noShowsPlaceholder={t('artist-dashboard-page:no-shows-found')}
         />
       </div>
     </div>

@@ -38,5 +38,6 @@
   "delete-poll-warning-cancel": "Nee, ga terug",
   "delete-song-request-warning-title": "Ben je zeker dat je dit verzoeknummer wilt verwijderen?",
   "delete-song-request-warning-confirm": "Ja, verwijder verzoeknummer",
-  "delete-song-request-warning-cancel": "Nee, ga terug"
+  "delete-song-request-warning-cancel": "Nee, ga terug",
+  "no-shows-found": "Geen shows gevonden"
 }

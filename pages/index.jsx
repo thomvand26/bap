@@ -71,6 +71,7 @@ export default function HomePage(props) {
           loading={isFetching}
           isOnHome
           withBrowseAllButton
+          noShowsPlaceholder={t('shows:no-shows-found-currently-playing')}
         />
       </section>
       <section className={`container__content ${styles.section}`}>
@@ -80,6 +81,7 @@ export default function HomePage(props) {
           isOnHome
           withBrowseAllButton
           variant="upcoming"
+          noShowsPlaceholder={t('shows:no-shows-found-upcoming')}
         />
       </section>
     </div>

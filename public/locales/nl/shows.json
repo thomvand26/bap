@@ -10,6 +10,8 @@
   "search-shows": "Zoek shows",
   "date": "Datum",
   "no-shows-found": "Geen shows gevonden",
+  "no-shows-found-currently-playing": "Er zijn momenteel geen shows bezig",
+  "no-shows-found-upcoming": "Er zijn momenteel geen geplande shows",
   "new-show": "Nieuwe show",
   "delete-show-warning-title": "Ben je zeker dat je deze show wilt verwijderen?",
   "delete-show-warning-confirm": "Ja, verwijder show",
