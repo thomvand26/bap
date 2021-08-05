@@ -152,6 +152,7 @@ export async function getServerSideProps(context) {
         'auth',
         'navigation',
         'cookies',
+        'common',
       ])),
       session: await getSession(context),
       csrfToken: await csrfToken(context),

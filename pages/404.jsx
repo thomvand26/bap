@@ -33,6 +33,7 @@ export async function getStaticProps(context) {
         'navigation',
         'shows',
         'cookies',
+        'common',
       ])),
     },
   };

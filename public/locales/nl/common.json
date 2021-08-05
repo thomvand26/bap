@@ -2,5 +2,6 @@
   "save": "Opslaan",
   "delete": "Verwijder",
   "poll-save-warning": "Door op te slaan ga je ermee akkoord dat jouw antwoord opgeslagen en gedeeld wordt.",
-  "loading": "Laden"
+  "loading": "Laden",
+  "meta-description": "RoomStage is een platform gemaakt als bachelorproef. Het doel van dit platform is om online muziekoptredens aangenamer te maken en meer interactiemogelijkheden te bieden tussen artiesten en kijkers."
 }

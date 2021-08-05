@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useTranslation } from 'next-i18next';
 
 import { Header } from '@/components';
 import { appConfig } from '@/config';
@@ -6,6 +7,8 @@ import { appConfig } from '@/config';
 import styles from './NoFooter.module.scss';
 
 export const NoFooterLayout = ({ children }) => {
+  const { t } = useTranslation(['common']);
+
   return (
     <div className={styles.page}>
       <Head>
@@ -40,6 +43,7 @@ export const NoFooterLayout = ({ children }) => {
           content="/favicon/browserconfig.xml"
         />
         <meta name="theme-color" content="#ff7700" />
+        <meta name="description" content={t('common:meta-description')} />
       </Head>
 
       <Header />

@@ -1,10 +1,13 @@
 import Head from 'next/head';
+import { useTranslation } from 'next-i18next';
 
 import { appConfig } from '@/config';
 
 import styles from './ShowLayout.module.scss';
 
 export const ShowLayout = ({ children }) => {
+  const { t } = useTranslation(['common']);
+
   return (
     <div className={styles.page}>
       <Head>
@@ -39,6 +42,7 @@ export const ShowLayout = ({ children }) => {
           content="/favicon/browserconfig.xml"
         />
         <meta name="theme-color" content="#ff7700" />
+        <meta name="description" content={t('common:meta-description')} />
       </Head>
 
       <main className={styles.main}>{children}</main>

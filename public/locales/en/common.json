@@ -2,5 +2,6 @@
   "save": "Save",
   "delete": "Delete",
   "poll-save-warning": "By saving you agree that your anwser will be saved and shared.",
-  "loading": "Loading"
+  "loading": "Loading",
+  "meta-description": "RoomStage is a platform created as a bachelor's thesis. The goal of this platform is to make online music performances more enjoyable and provide more ways to interact between artists and viewers."
 }
