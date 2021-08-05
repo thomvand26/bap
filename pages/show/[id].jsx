@@ -25,16 +25,13 @@ export default function ShowPage(params) {
 
     setLoadingShow(true);
 
-    joinShow(id, (response) => {
-      if (response?.type === 'error') {
-        console.log('error');
+    (async () => {
+      const response = await joinShow({ showId: id });
+      if (!response || response?.type === 'error') {
         router.push('/404');
-      } else {
-        console.log('success');
       }
-
       setLoadingShow(false);
-    });
+    })();
   }, [id, loadingSession]);
 
   useEffect(() => {

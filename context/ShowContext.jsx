@@ -345,43 +345,48 @@ export const ShowProvider = ({ children }) => {
     return response;
   };
 
-  const joinShow = (showId, callback) => {
+  const joinShow = async ({ showId, mustBeOwner }) => {
     const userId = session?.user?._id;
 
     if (!socket || !userId) return;
     setLoadingChat(true);
+    setLoadingPolls(true);
 
-    socket.emit(
-      'joinShowRequest',
-      {
-        showId,
-        userId,
-      },
-      async (response) => {
-        if (response?.type === 'success') {
-          setCurrentShow(response.data.show);
-          setCurrentChatroom({
-            ...response.data.show.generalChatroom,
-            messages: response.data.messages,
-          });
-          setAvailableChatrooms(response.data.availableChatrooms);
-          setOwnChatroom(
-            response.data.availableChatrooms.find(
-              (chatroom) =>
-                chatroom?.owner?._id === userId && !chatroom?.isGeneral
-            )
-          );
-          setCurrentSongRequests(
-            defaultSongRequestArraySort(response.data.songRequests)
-          );
-          setLoadingPolls(true);
-          setPresentedPoll(response.data.presentedPoll);
-          setLoadingPolls(false);
-        }
-        setLoadingChat(false);
-        callback?.(response);
-      }
+    let response;
+
+    try {
+      response = await axios.post(`${API_SHOW}/${showId}/join`, {
+        mustBeOwner,
+        socketId: socket.id,
+      });
+    } catch (error) {
+      response = error;
+    }
+
+    if (!response?.data?.success) {
+      setLoadingPolls(false);
+      setLoadingChat(false);
+      return;
+    }
+
+    const data = response.data.data;
+    setCurrentShow(data.show);
+    setCurrentChatroom({
+      ...data.show.generalChatroom,
+      messages: data.messages,
+    });
+    setAvailableChatrooms(response.data.availableChatrooms);
+    setOwnChatroom(
+      data.availableChatrooms.find(
+        (chatroom) => chatroom?.owner?._id === userId && !chatroom?.isGeneral
+      )
     );
+    setCurrentSongRequests(defaultSongRequestArraySort(data.songRequests));
+    setPresentedPoll(response.data.presentedPoll);
+    setLoadingChat(false);
+    setLoadingPolls(false);
+
+    return data;
   };
 
   const createChatroom = async ({ name }) => {

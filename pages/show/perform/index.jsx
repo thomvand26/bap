@@ -3,14 +3,14 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useSession } from 'next-auth/client';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 import { Layouts } from '@/layouts';
 import { useShow } from '@/context';
 import { ShowPerformanceDashboard } from '@/components';
-import { EDIT_SHOW } from '@/routes';
+import { CREATE_SHOW, EDIT_SHOW } from '@/routes';
 
 import styles from './PerformShowPage.module.scss';
-import { useTranslation } from 'next-i18next';
 
 export default function PerformShowPage() {
   const { currentShow, joinShow, loadingShow, setLoadingShow } = useShow();
@@ -20,6 +20,7 @@ export default function PerformShowPage() {
 
   useEffect(() => {
     if (!router.isReady) return;
+    if (!session?.user?._id) return;
     setLoadingShow(true);
 
     const { showId } = router.query;
@@ -29,9 +30,14 @@ export default function PerformShowPage() {
       return;
     }
 
-    joinShow(showId, () => {
+    (async () => {
+      const response = await joinShow({ showId, mustBeOwner: true });
+      if (!response) {
+        router.push(CREATE_SHOW);
+        return;
+      }
       setLoadingShow(false);
-    });
+    })();
   }, [router.isReady, router.query, session]);
 
   return (

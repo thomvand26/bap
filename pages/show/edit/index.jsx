@@ -39,11 +39,12 @@ export default function EditShowPage() {
 
     (async () => {
       // Use current show if it's the requested show and user is owner
-      if (
-        currentShow?._id === showId &&
-        currentShow?.owner?._id !== session.user._id
-      ) {
+      if (`${currentShow?._id}` === `${showId}`) {
         setLoadingShow(false);
+
+        if (`${currentShow?.owner?._id}` !== `${session.user._id}`) {
+          router.push(CREATE_SHOW);
+        }
         return;
       }
 
@@ -53,10 +54,9 @@ export default function EditShowPage() {
       setFetching(true);
       const show = await getShow(showId);
       setFetching(false);
-      console.log(show);
 
       // If the show doesn't exist yet, or user is not the owner go to the create page
-      if (show?.owner?._id !== session.user._id) {
+      if (`${show?.owner?._id}` !== `${session.user._id}`) {
         router.push(CREATE_SHOW);
         return;
       }
