@@ -46,6 +46,7 @@ export const Header = () => {
           type="button"
           className={`button--icon ${styles.menuButton}`}
           onClick={() => setOpenMenu((prev) => !prev)}
+          aria-label={t('navigation:menu-button-aria')}
         >
           {openMenu ? <FaTimes /> : <FaBars />}
         </button>
