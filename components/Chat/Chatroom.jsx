@@ -147,7 +147,9 @@ export const Chatroom = ({ inDashboard }) => {
                   onClick={() => handelChangeChatroom(chatroom._id)}
                   disabled={chatroom?._id === currentChatroom?._id}
                 >
-                  {chatroom.name}
+                  {chatroom?.isGeneral
+                    ? t('chat:general-chat')
+                    : chatroom?.name}
                 </button>
               </li>
             ))}
@@ -167,7 +169,9 @@ export const Chatroom = ({ inDashboard }) => {
         {!inDashboard && <ChatModal />}
 
         {!loadingChat && !loadingShow && !currentChatroom?.messages?.length && (
-          <div className="centeredPlaceholder centeredPlaceholder--withPadding  centeredPlaceholder--noFullHight">{t('chat:no-messages-yet')}</div>
+          <div className="centeredPlaceholder centeredPlaceholder--withPadding  centeredPlaceholder--noFullHight">
+            {t('chat:no-messages-yet')}
+          </div>
         )}
 
         {currentChatroom?.messages?.map?.((messageObject, i) => {

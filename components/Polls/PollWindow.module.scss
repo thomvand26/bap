@@ -4,6 +4,7 @@
   right: 0;
   margin: $length-s;
   max-height: calc(100% - (2 * #{$length-s}));
+  min-width: calc(min(50vw, 12.5rem));
   overflow-y: auto;
   border-radius: $border-radius;
   background-color: $color-white;
@@ -56,7 +57,9 @@
     position: absolute;
     margin-right: $length-xs;
     width: $length-l;
+    min-width: $length-l;
     height: $length-l;
+    min-height: $length-l;
     opacity: 0 !important;
     cursor: pointer;
 
@@ -70,7 +73,9 @@
 
 .checkbox {
   width: $length-l;
+  min-width: $length-l;
   height: $length-l;
+  min-height: $length-l;
   border: $length-xxs solid $color-primary-light;
   border-radius: $border-radius;
   margin-right: $length-xs;

@@ -24,7 +24,9 @@
 
 .shapeshifter {
   width: var(--loading-spinner-size);
+  min-width: var(--loading-spinner-size);
   height: var(--loading-spinner-size);
+  min-height: var(--loading-spinner-size);
   mask-image: url('/loading-spinner/loading-spinner.svg');
   mask-size: cover;
   mask-repeat: no-repeat;
@@ -49,5 +51,12 @@
   }
   100% {
     mask-position: calc(-6 * var(--loading-spinner-size)) 0px;
+  }
+}
+
+@media (max-width: $breakpoint-s) {
+  .container {
+    --loading-spinner-size: #{$length-xxl};
+    font-size: $font-size-s;
   }
 }
