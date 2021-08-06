@@ -21,8 +21,7 @@ export default function ShowPage(params) {
   const { cookieValues, setCookieValues } = useCookies();
 
   useEffect(() => {
-    if (!id || loadingSession) return;
-
+    if (!id || loadingSession || !session?.user?._id) return;
     setLoadingShow(true);
 
     (async () => {
