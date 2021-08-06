@@ -348,7 +348,7 @@ export const ShowProvider = ({ children }) => {
   const joinShow = async ({ showId, mustBeOwner }) => {
     const userId = session?.user?._id;
 
-    if (!socket || !userId) return;
+    if (!socket?.id || !userId) return;
     setLoadingChat(true);
     setLoadingPolls(true);
 
