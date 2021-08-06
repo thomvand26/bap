@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
-import { useShow, useCookies } from '@/context';
+import { useShow, useCookies, useSocket } from '@/context';
 import { Layouts } from '@/layouts';
 import { Chat, LoadingSpinner, PollWindow } from '@/components';
 
@@ -19,9 +19,10 @@ export default function ShowPage(params) {
   const [session, loadingSession] = useSession();
   const { t } = useTranslation(['show-page']);
   const { cookieValues, setCookieValues } = useCookies();
+  const { socket } = useSocket();
 
   useEffect(() => {
-    if (!id || loadingSession || !session?.user?._id) return;
+    if (!id || loadingSession || !session?.user?._id || !socket?.id) return;
     setLoadingShow(true);
 
     (async () => {
@@ -31,7 +32,7 @@ export default function ShowPage(params) {
       }
       setLoadingShow(false);
     })();
-  }, [id, loadingSession]);
+  }, [id, loadingSession, socket]);
 
   useEffect(() => {
     setUrlValid(currentShow?.streamURL);
