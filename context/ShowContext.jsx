@@ -352,8 +352,6 @@ export const ShowProvider = ({ children }) => {
     setLoadingChat(true);
     setLoadingPolls(true);
 
-    console.log(socket.id);
-
     let response;
 
     try {
