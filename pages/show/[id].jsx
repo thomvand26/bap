@@ -24,7 +24,6 @@ export default function ShowPage(params) {
   useEffect(() => {
     console.log(id, loadingSession, session?.user, socket?.id);
     if (!id || loadingSession || !session?.user?._id || !socket?.id) {
-      setLoadingShow(false);
       return;
     }
     setLoadingShow(true);
@@ -36,7 +35,7 @@ export default function ShowPage(params) {
       }
       setLoadingShow(false);
     })();
-  }, [id, loadingSession, socket]);
+  }, [id, loadingSession, socket?.id]);
 
   useEffect(() => {
     setUrlValid(currentShow?.streamURL);
