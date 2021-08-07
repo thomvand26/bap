@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
 import moment from 'moment';
-import { FaBan, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaTimes, FaTrash } from 'react-icons/fa';
 import { MdExitToApp } from 'react-icons/md';
 import { useTranslation } from 'next-i18next';
 
@@ -20,7 +20,7 @@ export const ChatMessage = ({
   const { kickUser, deleteChat, openChatMessage, setOpenChatMessage } =
     useShow();
   const [session] = useSession();
-  const {t} = useTranslation(['chat'])
+  const { t } = useTranslation(['chat']);
 
   return (
     <div
@@ -54,7 +54,10 @@ export const ChatMessage = ({
             className={styles.chatMessage__user}
             onClick={() => setOpenChatMessage(null)}
           >
-            {owner?.username}{` ${owner?._id === session?.user?._id ? t('chat:you-indicator') : ''}`}
+            {owner?.username}
+            {` ${
+              owner?._id === session?.user?._id ? t('chat:you-indicator') : ''
+            }`}
           </strong>
           <button
             type="button"
@@ -66,13 +69,6 @@ export const ChatMessage = ({
           <div className={styles.chatMessage__actions}>
             {inDashboard ? (
               <>
-                <button
-                  type="button"
-                  className={`button button--icon button--danger button--hover-light`}
-                  disabled={owner?._id === session?.user?._id}
-                >
-                  <FaBan size="1.2rem" />
-                </button>
                 <button
                   type="button"
                   className={`button button--icon button--danger button--hover-light`}
@@ -90,17 +86,7 @@ export const ChatMessage = ({
                 </button>
               </>
             ) : (
-              <>
-                <ChatroomInviteButton user={owner} />
-
-                <button
-                  type="button"
-                  className={`button button--icon button--danger button--hover-light`}
-                  disabled={owner?._id === session?.user?._id}
-                >
-                  <FaBan size="1.2rem" />
-                </button>
-              </>
+              <ChatroomInviteButton user={owner} />
             )}
           </div>
         </div>

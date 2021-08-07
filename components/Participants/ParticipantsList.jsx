@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/client';
-import { FaBan, FaTimes, FaUserPlus } from 'react-icons/fa';
+import { FaTimes, FaUserPlus } from 'react-icons/fa';
 import { MdExitToApp } from 'react-icons/md';
 import { useTranslation } from 'next-i18next';
 
@@ -72,13 +72,6 @@ export const ParticipantsList = ({
                 <div
                   className={`${styles.actionButtons} ${styles.actionButtons}`}
                 >
-                  <button
-                    type="button"
-                    className={`button button--icon button--danger button--hover-light ${styles.actionButton} ${styles['actionButton--ban']}`}
-                    disabled={isCurrentUser}
-                  >
-                    <FaBan size="1.2rem" />
-                  </button>
                   {inDashboard ? (
                     <button
                       type="button"
