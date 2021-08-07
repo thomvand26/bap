@@ -15,7 +15,7 @@ import styles from './PerformShowPage.module.scss';
 export default function PerformShowPage() {
   const { currentShow, joinShow, loadingShow, setLoadingShow } = useShow();
   const router = useRouter();
-  const [session] = useSession();
+  const [session, loadingSession] = useSession();
   const { t } = useTranslation(['artist-dashboard']);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function PerformShowPage() {
       }
       setLoadingShow(false);
     })();
-  }, [router.isReady, router.query, session]);
+  }, [router.isReady, router.query, loadingSession]);
 
   return (
     <div className={styles.page}>

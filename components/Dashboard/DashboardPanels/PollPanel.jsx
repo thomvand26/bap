@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MdVisibility } from 'react-icons/md';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 import { useShow } from '@/context';
 import { AddButton, LoadingSpinner, PollSettingsForm } from '@/components';
@@ -39,24 +40,31 @@ export const PollPanel = (props) => {
     loadingPolls,
     setLoadingPolls,
   } = useShow();
-  const [saving, setSaving] = useState();
   const hasInitializedPolls = useRef();
   const { t } = useTranslation(['artist-dashboard']);
+  const router = useRouter();
+
+  const [saving, setSaving] = useState();
+  const [loading, setLoading] = useState();
 
   const initializePolls = async () => {
+    if (loading) return;
     setLoadingPolls(true);
-    const polls = await getPolls({ show: currentShow?._id });
+    setLoading(true);
+    const polls = await getPolls({ show: router.query?.showId });
     setCurrentPolls(polls);
     setLoadingPolls(false);
+    setLoading(false);
   };
 
   useEffect(() => {
-    if (!currentShow) return;
+    if (!router.isReady) return;
+    if (!router.query?.showId) return;
     if (currentPolls?.length) return;
     if (hasInitializedPolls?.current) return;
     initializePolls();
     hasInitializedPolls.current = true;
-  }, [currentShow, currentPolls]);
+  }, [router.isReady, currentPolls]);
 
   return (
     <DashboardPanel
@@ -64,7 +72,7 @@ export const PollPanel = (props) => {
       contentClassName={styles.panelContainer}
       {...props}
     >
-      {loadingShow || loadingPolls ? (
+      {loadingShow || loadingPolls || loading ? (
         <LoadingSpinner />
       ) : (
         <>
