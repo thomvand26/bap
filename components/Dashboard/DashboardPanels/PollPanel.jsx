@@ -100,7 +100,7 @@ export const PollPanel = (props) => {
                 </li>
               ))
             ) : (
-              <div className={`${styles.placeholder}`}>
+              <div className={`centeredPlaceholder centeredPlaceholder--noFullHeight ${styles.placeholder}`}>
                 {t('artist-dashboard:no-polls-yet')}
               </div>
             )}

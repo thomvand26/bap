@@ -40,7 +40,13 @@ export const SongRequestList = ({ inDashboard }) => {
       {!loadingShow &&
         !(inDashboard ? currentSongRequests : visibleCurrentSongRequests)
           ?.length && (
-          <div className="centeredPlaceholder">
+          <div
+            className={`centeredPlaceholder ${
+              inDashboard
+                ? 'centeredPlaceholder--withPadding centeredPlaceholder--noFullHeight'
+                : ''
+            }`}
+          >
             {t('chat:no-song-requests-yet')}
           </div>
         )}
