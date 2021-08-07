@@ -12,17 +12,24 @@ import { ARTIST_DASHBOARD, EDIT_SHOW } from '@/routes';
 
 import styles from './DashboardPanel.module.scss';
 
-const validationSchema = Yup.object().shape({
-  title: Yup.string()
-    .min(3, 'Too short!')
-    .max(50, 'Too long!')
-    .required('Required'),
-  startDate: Yup.string().required('Required'),
-  endDate: Yup.string().required('Required'),
-  public: Yup.boolean(),
-  streamURL: Yup.string(),
-  maxSongRequestsPerUser: Yup.number(),
-});
+const validationSchema = ({
+  titleShort,
+  titleLong,
+  titleRequired,
+  startDateRequired,
+  endDateRequired,
+}) =>
+  Yup.object().shape({
+    title: Yup.string()
+      .min(3, titleShort)
+      .max(50, titleLong)
+      .required(titleRequired),
+    startDate: Yup.string().required(startDateRequired),
+    endDate: Yup.string().required(endDateRequired),
+    public: Yup.boolean(),
+    streamURL: Yup.string(),
+    maxSongRequestsPerUser: Yup.number(),
+  });
 
 export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
   const { currentShow, setCurrentShow, saveShow, deleteShow, loadingShow } =
@@ -93,7 +100,15 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
   return (
     <DashboardPanel name={t('artist-dashboard:general-settings')} {...props}>
       <Formik
-        validationSchema={validationSchema}
+        validationSchema={() =>
+          validationSchema({
+            titleShort: t('artist-dashboard:error-title-short'),
+            titleLong: t('artist-dashboard:error-title-long'),
+            titleRequired: t('artist-dashboard:error-title-required'),
+            startDateRequired: t('artist-dashboard:error-start-date-required'),
+            endDateRequired: t('artist-dashboard:error-end-date-required'),
+          })
+        }
         enableReinitialize={enableReinitialize}
         initialValues={{
           title: currentShow?.title || '',

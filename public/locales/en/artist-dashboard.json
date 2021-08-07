@@ -39,5 +39,10 @@
   "delete-song-request-warning-title": "Are you sure you want to delete this song request?",
   "delete-song-request-warning-confirm": "Yes, delete it",
   "delete-song-request-warning-cancel": "No, go back",
-  "no-shows-found": "No shows found"
+  "no-shows-found": "No shows found",
+  "error-title-short": "Show title is too short.",
+  "error-title-long": "Show title is too long.",
+  "error-title-required": "Show title is required.",
+  "error-start-date-required": "Start date is required.",
+  "error-end-date-required": "End date is required."
 }
