@@ -145,6 +145,7 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
                   type="text"
                   autoComplete="off"
                   variant="light"
+                  placeholder={t('artist-dashboard:show-title-placeholder')}
                 />
                 <Input
                   name="startDate"
@@ -193,6 +194,8 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
                 type="text"
                 autoComplete="off"
                 variant="light"
+                info={t('artist-dashboard:stream-url-info')}
+                placeholder="https://youtu.be/abcde123456"
               />
             </div>
             <div className={styles.panel__buttonGroup}>

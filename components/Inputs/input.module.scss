@@ -38,6 +38,7 @@
 
     &::placeholder {
       font-weight: bold;
+      opacity: $opacity-placeholder;
     }
 
     &:focus {
