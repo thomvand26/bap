@@ -22,7 +22,11 @@ export default function ShowPage(params) {
   const { socket } = useSocket();
 
   useEffect(() => {
-    if (!id || loadingSession || !session?.user?._id || !socket?.id) return;
+    console.log(id, loadingSession, session?.user, socket?.id);
+    if (!id || loadingSession || !session?.user?._id || !socket?.id) {
+      setLoadingShow(false);
+      return;
+    }
     setLoadingShow(true);
 
     (async () => {
@@ -37,7 +41,6 @@ export default function ShowPage(params) {
   useEffect(() => {
     setUrlValid(currentShow?.streamURL);
   }, [currentShow?.streamURL]);
-  console.log(loadingShow);
 
   return loadingShow ? (
     <LoadingSpinner />
