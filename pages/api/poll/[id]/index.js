@@ -52,16 +52,17 @@ const poll = async (req, res) => {
 
     // Send socket update
     if (
-      // If is visible
-      !(emitType === 'update' && !responseData?.visible) ||
-      // Or has changed from visible to invisible
-      (populatedPoll.visible && !responseData?.visible)
-    )
+      // If is visible (before update)
+      populatedPoll.visible ||
+      // Or has changed from invisible to visible
+      (!populatedPoll.visible && responseData?.visible)
+    ) {
       sendPollSocketUpdate({
         io,
         type: emitType,
         updatedPoll: responseData,
       });
+    }
 
     res.status(200).json({ success: true, data: responseData });
   } catch (error) {
