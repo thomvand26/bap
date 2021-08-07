@@ -42,7 +42,7 @@ export default function EditShowPage() {
       if (`${currentShow?._id}` === `${showId}`) {
         setLoadingShow(false);
 
-        if (`${currentShow?.owner?._id}` !== `${session.user._id}`) {
+        if (`${(currentShow?.owner?._id || currentShow?.owner)}` !== `${session.user._id}`) {
           router.push(CREATE_SHOW);
         }
         return;
