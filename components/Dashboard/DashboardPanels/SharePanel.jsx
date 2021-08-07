@@ -5,6 +5,7 @@ import { FiClipboard } from 'react-icons/fi';
 import { appConfig } from '@/config';
 import { SHOW } from '@/routes';
 import { useShow } from '@/context';
+import { LoadingSpinner } from '@/components';
 import { DashboardPanel } from './DashboardPanel';
 
 import styles from './SharePanel.module.scss';
@@ -32,19 +33,23 @@ export const SharePanel = (props) => {
 
   return (
     <DashboardPanel {...props}>
-      <div className={styles.container}>
-        <h2 className={styles.title}>{t('artist-dashboard:share-title')}</h2>
-        <div className={styles.link} onClick={handleLinkClick} ref={linkRef}>
-          {shareUrl}
-          <button
-            type="button"
-            className={`button--icon ${styles.clipboardButton}`}
-            onClick={handleClipboardClick}
-          >
-            <FiClipboard size="1.5rem" />
-          </button>
+      {!currentShow?._id ? (
+        <LoadingSpinner />
+      ) : (
+        <div className={styles.container}>
+          <h2 className={styles.title}>{t('artist-dashboard:share-title')}</h2>
+          <div className={styles.link} onClick={handleLinkClick} ref={linkRef}>
+            {shareUrl}
+            <button
+              type="button"
+              className={`button--icon ${styles.clipboardButton}`}
+              onClick={handleClipboardClick}
+            >
+              <FiClipboard size="1.5rem" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </DashboardPanel>
   );
 };
