@@ -15,18 +15,19 @@ export default function ShowPage(params) {
   const router = useRouter();
   const { id } = router.query;
   const { joinShow, currentShow, loadingShow, setLoadingShow } = useShow();
-  const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
   const [session, loadingSession] = useSession();
   const { t } = useTranslation(['show-page']);
   const { cookieValues, setCookieValues } = useCookies();
   const { socket } = useSocket();
 
+  const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
+  const [loading, setLoading] = useState();
+
   useEffect(() => {
-    console.log(id, loadingSession, session?.user, socket?.id);
-    if (!id || loadingSession || !session?.user?._id || !socket?.id) {
+    if (!id || loadingSession || !session?.user?._id || !socket?.id || loading)
       return;
-    }
     setLoadingShow(true);
+    setLoading(true);
 
     (async () => {
       const response = await joinShow({ showId: id });
@@ -34,6 +35,7 @@ export default function ShowPage(params) {
         router.push('/404');
       }
       setLoadingShow(false);
+      setLoading(false);
     })();
   }, [id, loadingSession, socket?.id]);
 
