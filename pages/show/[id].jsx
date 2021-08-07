@@ -37,6 +37,7 @@ export default function ShowPage(params) {
   useEffect(() => {
     setUrlValid(currentShow?.streamURL);
   }, [currentShow?.streamURL]);
+  console.log(loadingShow);
 
   return loadingShow ? (
     <LoadingSpinner />
