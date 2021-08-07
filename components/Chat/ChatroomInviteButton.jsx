@@ -65,24 +65,24 @@ export const ChatroomInviteButton = ({ user }) => {
     setHandlingAction(false);
   };
 
-  return (
-    ownChatroom && (
-      <button
-        type="button"
-        className={`button--mini ${
-          isMember || isInvited ? 'button--ghost' : ''
-        } ${styles.inviteButton} ${
-          isMember || isInvited ? styles['inviteButton--ghost'] : ''
-        } `}
-        disabled={(user?._id || user) === session?.user?._id || handlingAction}
-        onClick={() => handleUserAction({ isMember, isInvited })}
-      >
-        {isMember
-          ? `${t('chat:kick-from')} ${ownChatroom?.name}`
-          : isInvited
-          ? t('chat:cancel-invite')
-          : `${t('chat:invite-to')} ${ownChatroom?.name}`}
-      </button>
-    )
+  return ownChatroom ? (
+    <button
+      type="button"
+      className={`button--mini ${
+        isMember || isInvited ? 'button--ghost' : ''
+      } ${styles.inviteButton} ${
+        isMember || isInvited ? styles['inviteButton--ghost'] : ''
+      } `}
+      disabled={(user?._id || user) === session?.user?._id || handlingAction}
+      onClick={() => handleUserAction({ isMember, isInvited })}
+    >
+      {isMember
+        ? `${t('chat:kick-from')} ${ownChatroom?.name}`
+        : isInvited
+        ? t('chat:cancel-invite')
+        : `${t('chat:invite-to')} ${ownChatroom?.name}`}
+    </button>
+  ) : (
+    <div className={styles.noOwnRoom}>{t('chat:create-room-to-invite')}</div>
   );
 };
