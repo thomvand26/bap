@@ -8,7 +8,11 @@ import { DashboardPanel } from './DashboardPanel';
 
 import styles from './StreamPreviewPanel.module.scss';
 
-export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
+export const StreamPreviewPanel = ({
+  isPerformance,
+  noPollWindow,
+  ...props
+}) => {
   const { currentShow } = useShow();
   const [urlValid, setUrlValid] = useState(currentShow?.streamURL);
   const { t } = useTranslation(['artist-dashboard']);
@@ -59,7 +63,7 @@ export const StreamPreviewPanel = ({ isPerformance, ...props }) => {
             {t('artist-dashboard:invalid-stream-url')}
           </div>
         )}
-        <PollWindow />
+        {!noPollWindow && <PollWindow />}
       </div>
     </DashboardPanel>
   );

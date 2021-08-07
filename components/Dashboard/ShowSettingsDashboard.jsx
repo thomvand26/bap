@@ -6,7 +6,7 @@ import { StreamPreviewPanel, GeneralSettingsPannel } from './DashboardPanels/';
 export const ShowSettingsDashboard = ({ isNewShow }) => {
   return (
     <Dashboard>
-      <StreamPreviewPanel colspan={2} rowspan={4} />
+      <StreamPreviewPanel colspan={2} rowspan={4} noPollWindow />
       <GeneralSettingsPannel isNewShow={isNewShow} colspan={2} rowspan={4} />
     </Dashboard>
   );
