@@ -61,6 +61,17 @@
   }
 }
 
+.date {
+  margin-bottom: $length-s;
+  font-weight: bold;
+  color: $color-secondary-dark;
+  text-align: center;
+
+  &__hour {
+    font-weight: normal;
+  }
+}
+
 .watching {
   display: flex;
   align-items: flex-start;
@@ -130,17 +141,6 @@
     flex-direction: column;
     align-items: center;
     margin-right: $length-xs;
-  }
-
-  .date {
-    margin-bottom: $length-s;
-    font-weight: bold;
-    color: $color-secondary-dark;
-    text-align: center;
-
-    &__hour {
-      font-weight: normal;
-    }
   }
 
   .mobileButton {

@@ -64,11 +64,16 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
         </span>
       </>
     ) : (
-      `${moment(show?.startDate).format(
-        'DD-MM-YYYY'
-      )}\u00A0\u00A0|\u00A0\u00A0${moment(show?.startDate).format(
-        'HH:mm'
-      )} - ${moment(show?.endDate).format('HH:mm')}`
+      <>
+        <span>
+          {moment(show?.startDate).format('DD-MM-YYYY')}
+          {'\u00A0\u00A0\u00A0\u00A0'}
+        </span>
+        <span className={styles.date__hour}>
+          {moment(show?.startDate).format('HH:mm')} -{' '}
+          {moment(show?.endDate).format('HH:mm')}
+        </span>
+      </>
     );
   };
 
