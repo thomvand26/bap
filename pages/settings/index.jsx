@@ -12,10 +12,56 @@ import { LANDING } from '@/routes';
 
 import styles from './SettingsPage.module.scss';
 
-const validationSchema = () =>
-  Yup.object().shape({
-    username: Yup.string().required('Username is required.'),
-  });
+const validationSchema = ({
+  updating,
+  setUpdating,
+  router,
+  updateUser,
+  usernameRequired,
+  usernameExists,
+}) =>
+  Yup.object()
+    .shape({
+      username: Yup.string().required(usernameRequired),
+    })
+    .test({
+      name: 'availability-check',
+      test: async (values, testContext) => {
+        if (updating) return;
+        setUpdating(true);
+        const hasUndefined = !!Object.values(values).filter(
+          (value) => value === undefined
+        ).length;
+
+        if (hasUndefined) {
+          setUpdating(false);
+          return;
+        }
+
+        const response = await updateUser(values);
+
+        if (!response?.error) {
+          router.reload(window.location.pathname);
+          setUpdating(false);
+          return;
+        }
+
+        const responseObject =
+          response.error === 'username_exists'
+            ? {
+                message: usernameExists,
+                field: 'username',
+              }
+            : {};
+
+        setUpdating(false);
+
+        return testContext.createError({
+          message: responseObject.message,
+          path: responseObject.field,
+        });
+      },
+    });
 
 export default function SettingsPage() {
   const [session] = useSession();
@@ -25,14 +71,6 @@ export default function SettingsPage() {
   const { t } = useTranslation(['auth', 'common']);
 
   const [updating, setUpdating] = useState();
-
-  const handleSubmit = async (data) => {
-    if (updating) return;
-    setUpdating(true);
-    await updateUser(data);
-    router.reload(window.location.pathname);
-    setUpdating(false);
-  };
 
   const confirmDelete = async () => {
     // Delete account
@@ -70,12 +108,22 @@ export default function SettingsPage() {
     <div className={`page`}>
       <h1 className="page__title">{t('auth:settings')}</h1>
       <Formik
-        validationSchema={validationSchema}
+        validationSchema={() =>
+          validationSchema({
+            updating,
+            setUpdating,
+            router,
+            updateUser,
+            usernameRequired: t('auth:error-username-required'),
+            usernameExists: t('auth:error-username-exists'),
+          })
+        }
         enableReinitialize={true}
         initialValues={{
           username: session?.user?.username || '',
         }}
-        onSubmit={handleSubmit}
+        validateOnChange={false}
+        validateOnBlur={false}
       >
         <Form className={styles.form}>
           <fieldset className={styles.fieldset} disabled={updating}>

@@ -77,7 +77,7 @@ export const register = async ({ email, password, username, locale }) => {
             message:
               locale === 'en'
                 ? 'This username is already in use.'
-                : 'Deze gebruikersnaam is al in gebruik',
+                : 'Deze gebruikersnaam is al in gebruik.',
             field: 'username',
           },
         };

@@ -41,6 +41,7 @@ export const DatabaseProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.log(error);
+      return error?.response?.data;
     }
   };
 
