@@ -1,3 +1,13 @@
+.childContainer {
+  @include focus(
+    $color-primary-light,
+    var(--input-focus-background-color, $color-white),
+    $border-radius-s,
+    true,
+    null
+  );
+}
+
 .tooltip {
   background-color: $color-white;
   border-radius: $border-radius;

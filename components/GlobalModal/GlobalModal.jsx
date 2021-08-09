@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import FocusTrap from 'focus-trap-react';
 
 import { useModal } from '@/context';
 
@@ -22,28 +23,34 @@ export const GlobalModal = () => {
       className={`container ${styles.container}`}
       onClick={handleContainerClick}
     >
-      <div className={`container__content ${styles.content}`}>
-        {modalData?.heading && (
-          <h2 className={styles.heading}>{modalData.heading}</h2>
-        )}
-        {modalData?.intro && <p className={styles.intro}>{modalData.intro}</p>}
-        {!!modalData?.actions?.length && (
-          <div className={styles.actionList}>
-            {modalData.actions.map((action, i) => (
-              <button
-                key={i}
-                className={`${
-                  action.type == 'danger' ? 'button--ghost button--danger' : ''
-                }`}
-                onClick={action.onClick}
-              >
-                {action.text}
-              </button>
-            ))}
-          </div>
-        )}
-        {modalData?.children && <modalData.children />}
-      </div>
+      <FocusTrap>
+        <div className={`container__content ${styles.content}`}>
+          {modalData?.heading && (
+            <h2 className={styles.heading}>{modalData.heading}</h2>
+          )}
+          {modalData?.intro && (
+            <p className={styles.intro}>{modalData.intro}</p>
+          )}
+          {!!modalData?.actions?.length && (
+            <div className={styles.actionList}>
+              {modalData.actions.map((action, i) => (
+                <button
+                  key={i}
+                  className={`${
+                    action.type == 'danger'
+                      ? 'button--ghost button--danger'
+                      : ''
+                  }`}
+                  onClick={action.onClick}
+                >
+                  {action.text}
+                </button>
+              ))}
+            </div>
+          )}
+          {modalData?.children && <modalData.children />}
+        </div>
+      </FocusTrap>
     </div>
   ) : (
     <></>

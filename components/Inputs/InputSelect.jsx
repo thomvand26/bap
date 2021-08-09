@@ -64,7 +64,7 @@ export const InputSelect = ({
       </label>
       <button
         type="button"
-        className={`button--unstyled withFocus ${styles.input} ${
+        className={`button--unstyled ${styles.input} ${
           open ? styles['input--open'] : ''
         }`}
         onClick={() => setOpen((prev) => !prev)}

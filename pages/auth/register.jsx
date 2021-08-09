@@ -132,7 +132,7 @@ export default function RegisterPage({ csrfToken }) {
             <span className={styles.authSwitch}>
               {t('register-page:already-account')}
               <Link href={LOGIN}>
-                <a className="button button--text">{t('auth:login')}</a>
+                <a className="button--text">{t('auth:login')}</a>
               </Link>
             </span>
           </fieldset>

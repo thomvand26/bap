@@ -3,15 +3,22 @@
   height: fit-content;
 }
 
-.toggleButton {
+button.toggleButton {
   --button-color: transparent;
+  --button-radius: #{$border-radius};
+
   color: $color-secondary-darkest;
   height: fit-content;
   padding: $length-xs $length-l;
   border-radius: $border-radius;
 
-  &:focus {
+  &:focus,
+  &:focus-visible {
     box-shadow: 0 0 0 $focus-border-width $color-primary-light;
+
+    &:not(:focus-visible) {
+      box-shadow: 0 0 0 $focus-border-width $color-primary-light;
+    }
   }
 
   & > span {
@@ -34,7 +41,7 @@
   right: 0;
   top: calc(100% + #{$focus-border-width});
   display: none;
-  padding: 0 $length-s;
+  // padding: 0 $length-s;
   background-color: $color-secondary-lightest;
   border-radius: $border-radius;
   z-index: 10;
@@ -58,7 +65,18 @@
 
     &:not(:last-child) {
       & > * {
-        border-bottom: 2px solid $color-secondary-lighter;
+        position: relative;
+
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          height: 2px;
+          left: $length-s;
+          right: $length-s;
+          background-color: $color-secondary-lighter;
+          z-index: -1;
+        }
       }
     }
   }
@@ -66,11 +84,20 @@
   & a,
   & button {
     display: block;
-    padding: $length-s 0;
+    padding: $length-s;
     width: 100%;
     text-align: left;
     color: $color-secondary-darker;
     cursor: pointer;
+
+    @include focus(
+      var(--button-focus-color, $color-primary-light),
+      var(--button-background-color, $color-white),
+      $border-radius-l,
+      true,
+      true,
+      true
+    );
   }
 }
 

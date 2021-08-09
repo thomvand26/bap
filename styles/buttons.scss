@@ -2,16 +2,29 @@ a {
   color: inherit;
   text-decoration: none;
   font-weight: bold;
+
+  @include focus(
+    var(--button-focus-color, $color-primary-light),
+    var(--button-background-color, $color-white),
+    var(--button-radius, $border-radius-s)
+  );
+  @include disabled--light;
+
+  &:hover {
+    filter: opacity(0.8);
+  }
 }
 
 button,
 .button {
+  --button-radius: #{$border-radius-l};
+
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--button-color);
   border: none;
-  border-radius: $border-radius-l;
+  border-radius: var(--button-radius);
   padding: $length-m;
   font-size: $font-size-m;
   font-weight: bold;
@@ -21,6 +34,18 @@ button,
   cursor: pointer;
   color: inherit;
   text-align: center;
+
+  @include focus(
+    var(--button-focus-color, $color-primary-light),
+    var(--button-background-color, $color-white),
+    var(--button-radius),
+    true
+  );
+  @include disabled--light;
+
+  &:hover {
+    filter: opacity(0.8);
+  }
 
   &--unstyled {
     background-color: inherit;
@@ -37,6 +62,7 @@ button,
 
   &--danger {
     --button-color: #{$color-danger} !important;
+    --button-focus-color: #{$color-danger};
   }
 
   &--lightest {
@@ -64,13 +90,14 @@ button,
   }
 
   &--mini {
+    --button-radius: #{$border-radius};
+
     padding: $length-xs $length-xs $length-xxs * 1.5;
     min-height: 0;
     height: fit-content;
     min-width: 0;
     width: fit-content;
     font-size: $font-size-s;
-    border-radius: $border-radius;
   }
 
   &--fit {
@@ -79,6 +106,8 @@ button,
   }
 
   &--text {
+    --button-radius: #{$border-radius};
+
     padding: 0 $length-xxs;
     min-height: fit-content;
     background-color: transparent;
@@ -93,6 +122,14 @@ button,
     background-color: rgba($color: $color-secondary-darkest, $alpha: 0);
     padding: 0.5rem;
     fill: var(--button-color);
+
+    @include focus(
+      var(--button-focus-color, $color-primary-light),
+      var(--button-background-color, $color-white),
+      var(--button-radius),
+      true,
+      null
+    );
 
     & > svg {
       fill: inherit;
@@ -111,8 +148,7 @@ button,
   }
 
   &--hover-light {
-    &:hover,
-    &:focus {
+    &:hover {
       background-color: rgba($color: $color-secondary-dark, $alpha: 0.2);
     }
   }

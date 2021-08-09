@@ -23,11 +23,20 @@
   }
 }
 
-.closeButton {
+button.closeButton {
   margin-left: auto;
   min-height: 0;
   margin-bottom: $length-xs;
   margin-right: -$length-xs;
+
+  @include focus(
+    var(--button-focus-color, $color-primary-light),
+    var(--button-background-color, $color-white),
+    var(--button-radius),
+    true,
+    null,
+    true
+  );
 }
 
 .userList {
@@ -57,14 +66,19 @@
   height: 100%;
 }
 
-.actionButton {
+button.actionButton {
   padding: $length-xxs;
   min-height: 0;
   height: 100%;
 
-  &--ban {
-    padding: $length-xxs $length-xs;
-  }
+  @include focus(
+    var(--button-focus-color, $color-primary-light),
+    var(--button-background-color, $color-white),
+    var(--button-radius),
+    true,
+    null,
+    true
+  );
 }
 
 .inviteMenu {

@@ -42,6 +42,10 @@
   align-items: baseline;
   margin-left: auto;
   background-color: var(--participants-button-secondary-color);
+
+  &:disabled {
+    opacity: 1;
+  }
 }
 
 .icon {
@@ -114,8 +118,4 @@
   padding: $length-xxs;
   min-height: 0;
   height: 100%;
-
-  &--ban {
-    padding: $length-xxs $length-xs;
-  }
 }

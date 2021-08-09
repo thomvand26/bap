@@ -91,10 +91,42 @@ $breakpoint-l: 992px;
 $breakpoint-xl: 1200px;
 $breakpoint-xxl: 1400px;
 
-@mixin focus {
-  &:focus {
+@mixin focus(
+  $focus-border-color: $color-primary-light,
+  $focus-background-color: currentColor,
+  $focus-border-radius: null,
+  $remove-mouse-focus: true,
+  $with-offset: true,
+  $inset: null
+) {
+  &:focus,
+  &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 $focus-border-width $color-primary;
+    box-shadow: 0 0 0 $focus-border-width $focus-border-color;
+
+    @if $inset {
+      box-shadow: 0 0 0 $focus-border-width $focus-border-color inset;
+    }
+
+    @if $with-offset {
+      box-shadow: 0 0 0 $focus-border-width $focus-background-color,
+        0 0 0 $focus-border-width * 2 $focus-border-color;
+
+      @if $inset {
+        box-shadow: 0 0 0 $focus-border-width $focus-background-color inset,
+          0 0 0 $focus-border-width * 2 $focus-border-color inset;
+      }
+    }
+
+    @if $focus-border-radius {
+      border-radius: $focus-border-radius;
+    }
+
+    &:not(:focus-visible) {
+      @if $remove-mouse-focus {
+        box-shadow: none;
+      }
+    }
   }
 }
 

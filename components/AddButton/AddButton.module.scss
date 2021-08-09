@@ -1,8 +1,13 @@
 button.button {
   min-height: fit-content;
 
-  &:hover,
-  &:focus {
+  @include focus(
+    var(--button-focus-color, $color-primary-light),
+    var(--button-background-color, $color-white),
+    var(--button-radius),
+  );
+
+  &:hover {
     background-color: var(--button-color);
     fill: $color-primary-light;
     filter: opacity(1);

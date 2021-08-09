@@ -11,6 +11,7 @@ export const DashboardPanel = ({
   children,
   className,
   contentClassName,
+  withForm,
 }) => {
   return (
     <div
@@ -26,7 +27,11 @@ export const DashboardPanel = ({
           {name}
         </div>
       )}
-      <div className={`${styles.panel__content} ${contentClassName || ''}`}>
+      <div
+        className={`${styles.panel__content} ${
+          withForm ? styles[`panel__content--withForm`] : ''
+        } ${contentClassName || ''}`}
+      >
         {children}
       </div>
     </div>

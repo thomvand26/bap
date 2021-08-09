@@ -15,26 +15,40 @@
   padding-right: $length-s;
   overflow-y: auto;
 
-  &__item {
-    width: 100%;
-    padding: $length-s;
-    color: $color-secondary-darkest;
-    background-color: $color-white;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: $border-radius;
-    margin-bottom: $length-s;
-
-    &--active {
-      background-color: $color-primary-light;
-      cursor: default;
-    }
-  }
-
   &__visibleIcon {
     vertical-align: text-bottom;
     margin-left: $length-xs;
+  }
+}
+
+button.pollList__itemButton {
+  --button-background-color: #{$color-white};
+
+  width: 100%;
+  padding: $length-s;
+  color: $color-secondary-darkest;
+  background-color: $color-white;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: $border-radius;
+  margin-bottom: $length-s;
+
+  @include focus(
+    var(--button-focus-color, $color-primary-light),
+    var(--button-background-color, $color-white),
+    var(--button-radius),
+    true,
+    true,
+    true
+  );
+
+  &--active {
+    --button-focus-color: #{$color-white};
+    --button-background-color: #{$color-primary-light};
+
+    background-color: $color-primary-light;
+    cursor: default;
   }
 }
 

@@ -1,4 +1,7 @@
 .fieldset {
+  --button-background-color: #{$color-secondary-darkest};
+  --input-focus-background-color: #{$color-secondary-darkest};
+
   display: flex;
   flex-direction: column;
   margin-top: $length-l;
@@ -57,6 +60,7 @@
   font-size: $font-size-s;
   text-align: left;
   height: $input-min-height;
+  line-height: 1.2;
 }
 
 .settingsButton {

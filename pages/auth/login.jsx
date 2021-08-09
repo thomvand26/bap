@@ -117,7 +117,7 @@ export default function LoginPage({ csrfToken }) {
             <span className={styles.authSwitch}>
               {t('login-page:no-account-yet')}
               <Link href={REGISTER}>
-                <a className="button button--text">{t('auth:register')}</a>
+                <a className="button--text">{t('auth:register')}</a>
               </Link>
             </span>
           </fieldset>

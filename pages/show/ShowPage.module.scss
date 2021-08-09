@@ -16,6 +16,8 @@
 }
 
 .showStream {
+  --button-background-color: #{$color-secondary-darkest};
+
   flex: 1;
   position: relative;
   background-color: $color-secondary-darkest;

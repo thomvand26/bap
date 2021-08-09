@@ -1,4 +1,7 @@
 .container {
+  --button-background-color: #{$color-secondary-darker};
+  --input-focus-background-color: #{$color-secondary-darker};
+
   position: absolute;
   top: 0;
   left: 0;
@@ -45,6 +48,10 @@
   width: fit-content;
   color: $color-secondary-darkest;
   margin-top: 2.85rem;
+
+  &:focus {
+    z-index: 1;
+  }
 }
 
 .participantsList {
@@ -59,6 +66,8 @@
 }
 
 .deleteButton {
+  --button-focus-color: #{$color-danger};
+
   margin-top: $length-xxl;
   color: $color-danger;
 }

@@ -79,28 +79,33 @@ export const PollPanel = (props) => {
           <ul className={styles.pollList}>
             {currentPolls?.length ? (
               currentPolls.map((poll, i) => (
-                <li
-                  key={i}
-                  className={`${styles.pollList__item} ${
-                    currentPoll?._id === poll._id
-                      ? styles['pollList__item--active']
-                      : ''
-                  }`}
-                  onClick={() => setCurrentPoll(poll)}
-                >
-                  {poll.pollTitle}
-                  {poll.visible ? (
-                    <MdVisibility
-                      size="1rem"
-                      className={styles.pollList__visibleIcon}
-                    />
-                  ) : (
-                    ''
-                  )}
+                <li key={i}>
+                  <button
+                    className={`button--unstyled ${
+                      styles.pollList__itemButton
+                    } ${
+                      currentPoll?._id === poll._id
+                        ? styles['pollList__itemButton--active']
+                        : ''
+                    }`}
+                    onClick={() => setCurrentPoll(poll)}
+                  >
+                    {poll.pollTitle}
+                    {poll.visible ? (
+                      <MdVisibility
+                        size="1rem"
+                        className={styles.pollList__visibleIcon}
+                      />
+                    ) : (
+                      ''
+                    )}
+                  </button>
                 </li>
               ))
             ) : (
-              <div className={`centeredPlaceholder centeredPlaceholder--noFullHeight ${styles.placeholder}`}>
+              <div
+                className={`centeredPlaceholder centeredPlaceholder--noFullHeight ${styles.placeholder}`}
+              >
                 {t('artist-dashboard:no-polls-yet')}
               </div>
             )}

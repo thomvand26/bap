@@ -98,7 +98,11 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
   };
 
   return (
-    <DashboardPanel name={t('artist-dashboard:general-settings')} {...props}>
+    <DashboardPanel
+      name={t('artist-dashboard:general-settings')}
+      withForm
+      {...props}
+    >
       <Formik
         validationSchema={() =>
           validationSchema({

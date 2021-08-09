@@ -26,6 +26,8 @@
 }
 
 .chatHeader {
+  --button-background-color: #{$color-secondary-darker};
+
   position: relative;
   display: flex;
   align-items: center;
@@ -35,6 +37,8 @@
   padding: $length-l;
 
   &__titleButton {
+    --button-radius: #{$border-radius};
+
     padding: 0;
   }
 
@@ -128,6 +132,7 @@
 
 button.settingsButton {
   --button-color: transparent;
+
   position: sticky;
   top: 0;
   margin-left: auto;

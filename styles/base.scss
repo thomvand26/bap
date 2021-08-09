@@ -12,6 +12,7 @@
   box-sizing: border-box;
   font-family: 'Spartan', sans-serif;
   line-height: 1.5;
+  scroll-behavior: smooth;
 }
 
 html,
@@ -51,13 +52,9 @@ ul {
   list-style: none;
 }
 
-button,
 input,
 textarea,
-select,
-a,
-button,
-.button {
+select {
   @include focus;
   @include disabled--light;
 

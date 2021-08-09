@@ -51,6 +51,7 @@
 
   &--hidden {
     --song-request-color-secondary: transparent;
+
     opacity: $opacity-disabled-light;
 
     &:not(:last-child) {
@@ -126,6 +127,8 @@
 }
 
 button.voteButton {
+  --button-radius: #{$border-radius-s};
+
   padding: 0 $length-xs;
   min-height: 0;
   height: 100%;

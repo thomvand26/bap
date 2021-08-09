@@ -24,7 +24,7 @@ export const ChatMessage = ({
 
   return (
     <div
-      className={`${styles.chatMessage} ${
+      className={`${styles.container} ${
         openChatMessage?._id === chatMessageId
           ? styles['chatMessage--open']
           : ''
@@ -34,39 +34,40 @@ export const ChatMessage = ({
       {showTimestamp &&
         createdAt &&
         `${new moment(createdAt).format('HH:mm')} `}
-      <strong
-        className={styles.chatMessage__user}
+      <button
+        className={`button--unstyled ${styles.user}`}
         onClick={() => setOpenChatMessage(messageObject)}
+        disabled={openChatMessage?._id === chatMessageId}
       >
         {owner?.username}:
-      </strong>{' '}
-      <span className={styles.chatMessage__message}> {message}</span>
+      </button>{' '}
+      <span className={styles.message}> {message}</span>
       {openChatMessage?._id === chatMessageId && (
         <div
-          className={`${styles.chatMessage__actionMenu} ${
-            inDashboard ? styles['chatMessage__actionMenu--inDashboard'] : ''
+          className={`${styles.actionMenu} ${
+            inDashboard ? styles['actionMenu--inDashboard'] : ''
           }`}
         >
           {showTimestamp &&
             createdAt &&
             `${new moment(createdAt).format('HH:mm')} `}
-          <strong
-            className={styles.chatMessage__user}
+          <button
+            className={`button--unstyled ${styles.user} ${styles['user--open']}`}
             onClick={() => setOpenChatMessage(null)}
           >
             {owner?.username}
             {` ${
               owner?._id === session?.user?._id ? t('chat:you-indicator') : ''
             }`}
-          </strong>
+          </button>
           <button
             type="button"
-            className={`button--icon ${styles.chatMessage__closeActionsButton}`}
+            className={`button--icon ${styles.closeActionsButton}`}
             onClick={() => setOpenChatMessage(null)}
           >
             <FaTimes />
           </button>
-          <div className={styles.chatMessage__actions}>
+          <div className={styles.actions}>
             {inDashboard ? (
               <>
                 <button

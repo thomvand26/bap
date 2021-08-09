@@ -1,4 +1,6 @@
 .container {
+  --button-background-color: #{$color-secondary-lightest};
+
   height: $footer-height;
   background-color: $color-secondary-lightest;
   color: $color-secondary-darkest;

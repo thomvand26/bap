@@ -22,6 +22,12 @@
 .searchInput {
   border-radius: $border-radius 0 0 $border-radius !important;
   height: $spacing-xxs;
+
+  &:focus,
+  &:focus-visible {
+    border-radius: $border-radius !important;
+    z-index: 1;
+  }
 }
 
 .dateInputContainer {
@@ -31,6 +37,11 @@
 .dateInput {
   border-radius: 0 $border-radius $border-radius 0 !important;
   height: $spacing-xxs;
+
+  &:focus,
+  &:focus-visible {
+    border-radius: $border-radius !important;
+  }
 }
 
 .button {

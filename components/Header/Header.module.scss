@@ -1,4 +1,6 @@
 .header {
+  --button-background-color: #{$color-secondary-lightest};
+
   position: sticky;
   top: 0;
   display: flex;
@@ -147,8 +149,11 @@
       width: 100vw;
       height: 100vh;
       background-color: rgba($color: $color-secondary-darkest, $alpha: 0.7);
-      transition: transform $transition-duration $transition-easing;
+      visibility: hidden;
       transform: translateX(100vw);
+
+      transition: transform $transition-duration $transition-easing,
+        visibility 0s linear $transition-duration;
 
       &__inner {
         display: flex;
@@ -158,7 +163,11 @@
       }
 
       &--open {
+        visibility: visible;
         transform: translateX(0);
+
+        transition: visibility 0s linear,
+          transform $transition-duration $transition-easing 0s;
       }
 
       & .centerNav {

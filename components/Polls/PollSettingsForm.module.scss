@@ -65,9 +65,20 @@
       background-color: $color-primary-light;
     }
   }
+}
 
+button.optionList {
   &__deleteButton {
     align-self: stretch;
+
+    @include focus(
+      var(--button-focus-color, $color-primary-light),
+      var(--button-background-color, $color-white),
+      var(--button-radius),
+      true,
+      null,
+      true
+    );
   }
 }
 
@@ -84,6 +95,12 @@
     width: 100%;
     min-height: 0;
     height: 100%;
+
+    @include focus(
+      var(--button-focus-color, $color-primary-light),
+      var(--button-background-color, $color-white),
+      var(--button-radius)
+    );
 
     &:not(:last-child) {
       margin-right: $length-s;

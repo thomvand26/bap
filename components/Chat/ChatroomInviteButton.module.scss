@@ -1,4 +1,6 @@
 .inviteButton {
+  --button-background-color: #{$color-secondary-darker};
+
   display: inline;
   max-width: 100%;
   height: fit-content;
@@ -7,7 +9,7 @@
   text-overflow: ellipsis;
   margin-right: $length-xs;
   color: $color-secondary-darkest;
-  
+
   &--ghost {
     color: $color-primary-light;
   }

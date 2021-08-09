@@ -117,7 +117,7 @@ export const Chatroom = ({ inDashboard }) => {
                 {t('chat:make-room')}
               </button>
             )}
-            <ParticipantsButton />
+            <ParticipantsButton disabled={showAvailableChatrooms} />
           </div>
           <ChatroomSettings />
         </div>

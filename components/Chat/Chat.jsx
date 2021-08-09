@@ -32,10 +32,11 @@ export const Chat = () => {
           <h1 className={styles.showTitle}>{currentShow.title}</h1>
         )}
         <Link href={LANDING}>
-          <MdExitToApp
+          <a
             className={`button button--icon button--danger button--hover-light ${styles.actionButton}`}
-            size="1.8rem"
-          />
+          >
+            <MdExitToApp size="1.5rem" />
+          </a>
         </Link>
       </div>
       <div
@@ -45,7 +46,7 @@ export const Chat = () => {
       >
         <button
           type="button"
-          className={`button--text focus-inset ${styles.requests__titleButton}`}
+          className={`button--text ${styles.requests__titleButton}`}
           onClick={() => setMinimizeShowRequests((prev) => !prev)}
         >
           <h2 className={`h4 ${styles.requests__title}`}>

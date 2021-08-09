@@ -11,6 +11,8 @@
 }
 
 .topSection {
+  --button-background-color: #{$color-secondary-darkest};
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,8 +29,14 @@
 }
 
 .actionButton {
+  display: flex;
   flex-shrink: 0;
   margin-left: auto;
+
+  & > svg {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
 }
 
 .requests {
@@ -51,19 +59,31 @@
     }
   }
 
-  &__titleButton {
-    padding: 0 $length-m;
-    color: $color-secondary-lightest;
-  }
-
   &__title {
-    padding: $length-m;
-    padding-right: 0;
     color: $color-secondary-lightest;
   }
 
   & > ul {
     width: 100%;
+  }
+}
+
+button.requests {
+  &__titleButton {
+    --button-background-color: #{$color-secondary-darker};
+    --button-radius: #{$border-radius-l};
+
+    padding: 0.85rem $length-m;
+    color: $color-secondary-lightest;
+
+    @include focus(
+      var(--button-focus-color, $color-primary-light),
+      var(--button-background-color, $color-white),
+      var(--button-radius),
+      true,
+      true,
+      true
+    );
   }
 }
 

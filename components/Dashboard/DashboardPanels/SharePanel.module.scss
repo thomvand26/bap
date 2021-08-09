@@ -12,7 +12,7 @@
 .title {
   font-size: $font-size-m;
   color: $color-secondary-darkest;
-  margin-bottom:$length-l;
+  margin-bottom: $length-l;
 }
 
 .link {
@@ -30,11 +30,22 @@
   padding: 1em $spacing-xxs 0 $length-l;
 }
 
-.clipboardButton {
+button.clipboardButton {
+  --button-background-color: #{$color-white};
+
   position: absolute;
   top: 0;
   right: $length-xxs;
-  
+
+  @include focus(
+    var(--button-focus-color, $color-primary-light),
+    var(--button-background-color, $color-white),
+    var(--button-radius),
+    true,
+    true,
+    true
+  );
+
   & > svg {
     stroke: $color-primary-light;
     fill: none !important;

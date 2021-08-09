@@ -12,7 +12,7 @@ import styles from './SongRequests.module.scss';
 export const SongRequestListItem = ({ songRequest, inDashboard }) => {
   const [session] = useSession();
   const { voteSongRequest, hideSongRequest, deleteSongRequest } = useShow();
-  const {t} = useTranslation(['artist-dashboard']);
+  const { t } = useTranslation(['artist-dashboard']);
   const { setModalData } = useModal();
 
   const [hasVoted, setHasVoted] = useState();
@@ -50,7 +50,6 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
 
     setLoading(false);
   };
-
 
   const handleDelete = async () => {
     // Show warning modal
@@ -109,6 +108,7 @@ export const SongRequestListItem = ({ songRequest, inDashboard }) => {
             <button
               className={`button--icon button--noMinHeight focus-inset ${styles.menu__toggleButton}`}
               onClick={() => setShowMenu(true)}
+              disabled={showMenu}
             >
               <MdMoreVert size="1.4rem" />
             </button>

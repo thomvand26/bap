@@ -1,11 +1,10 @@
-.chatMessage {
+.container {
   position: relative;
   flex-shrink: 0;
   position: relative;
   font-size: $font-size-s;
   line-height: $line-height-s;
   padding: 0.5em $length-l / 2;
-  z-index: 1;
 
   &::before {
     content: '';
@@ -20,59 +19,74 @@
 
   &:hover {
     cursor: default;
-
-    // &::before {
-    //   background-color: rgba($color: $color-secondary-darker, $alpha: 0.5);
-    // }
   }
 
   &--open {
     z-index: 6;
-  }
 
-  &__user {
-    cursor: pointer;
-  }
-
-  &__actionMenu {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    padding: 0.5em $length-l / 2;
-    background-color: $color-secondary-darker;
-    z-index: 6;
-    border-radius: $border-radius;
-
-    &--inDashboard {
-      background-color: $color-secondary-lighter;
+    & button.user {
+      &:not(button.user--open) {
+        visibility: hidden;
+      }
     }
   }
+}
 
-  &__actions {
-    display: flex;
-    align-items: center;
-    margin-top: $length-xxs;
-  }
+button.user {
+  --button-radius: #{$border-radius};
+  --button-background-color: #{$color-secondary-darkest};
 
-  &__closeActionsButton {
-    position: absolute;
-    top: 0.25em;
-    right: calc((#{$length-l} / 2) - 0.25em);
-    padding: 0.25em;
-    min-height: 0;
-    fill: currentColor;
-  }
+  cursor: pointer;
+  display: inline;
+  font-weight: bold;
 
-  &__inviteButton {
-    display: inline;
-    max-width: 100%;
-    height: fit-content;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: $color-secondary-darkest;
-    background-color: $color-primary-light;
-    margin-right: $length-s;
+  &--open {
+    --button-background-color: #{$color-secondary-darker};
   }
+}
+
+.actionMenu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 0.5em $length-l / 2;
+  background-color: $color-secondary-darker;
+  z-index: 6;
+  border-radius: $border-radius;
+
+  &--inDashboard {
+    background-color: $color-secondary-lighter;
+
+    & button.user--open {
+      --button-background-color: #{$color-secondary-lighter};
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  margin-top: $length-xxs;
+}
+
+button.closeActionsButton {
+  position: absolute;
+  top: 0.25em;
+  right: calc((#{$length-l} / 2) - 0.25em);
+  padding: 0.25em;
+  min-height: 0;
+  fill: currentColor;
+}
+
+button.inviteButton {
+  display: inline;
+  max-width: 100%;
+  height: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $color-secondary-darkest;
+  background-color: $color-primary-light;
+  margin-right: $length-s;
 }

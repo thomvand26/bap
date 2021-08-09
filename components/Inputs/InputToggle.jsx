@@ -63,6 +63,7 @@ export const InputToggle = ({
             id={id}
             onChange={handleChange}
             checked={!!checked}
+            disabled={disabled}
           />
           <div
             className={`${styles.checkbox} ${

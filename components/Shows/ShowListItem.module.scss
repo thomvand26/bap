@@ -1,4 +1,6 @@
 .container {
+  --button-background-color: #{$color-secondary-lightest};
+
   display: flex;
   align-items: center;
   background-color: $color-secondary-lightest;

@@ -1,4 +1,6 @@
 .container {
+  --button-background-color: #{$color-secondary-darker};
+
   position: sticky;
   display: flex;
   flex-direction: column;
