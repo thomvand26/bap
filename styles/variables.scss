@@ -133,11 +133,13 @@ $breakpoint-xxl: 1400px;
 @mixin disable {
   opacity: $opacity-disabled;
   pointer-events: none;
+  user-select: none;
 }
 
 @mixin disable--light {
   opacity: $opacity-disabled-light;
   pointer-events: none;
+  user-select: none;
 }
 
 @mixin disabled {

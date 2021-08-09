@@ -42,7 +42,10 @@ export default function EditShowPage() {
       if (`${currentShow?._id}` === `${showId}`) {
         setLoadingShow(false);
 
-        if (`${(currentShow?.owner?._id || currentShow?.owner)}` !== `${session.user._id}`) {
+        if (
+          `${currentShow?.owner?._id || currentShow?.owner}` !==
+          `${session.user._id}`
+        ) {
           router.push(CREATE_SHOW);
         }
         return;
@@ -77,6 +80,7 @@ export default function EditShowPage() {
             className={`button button--fit ${
               !router?.query?.showId ? 'button--disabled' : ''
             }`}
+            tabIndex={router?.query?.showId ? 0 : -1}
           >
             {t('artist-dashboard:go-to-performance')}
           </a>
