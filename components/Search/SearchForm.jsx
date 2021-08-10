@@ -76,7 +76,13 @@ export const SearchForm = ({
     };
 
     // Join the query
-    query = { $and: [query, date, { endDate: { $gte: new Date() } }] };
+    query = {
+      $and: [
+        query,
+        date,
+        { ...(!artistDashboard ? { endDate: { $gte: new Date() } } : {}) },
+      ],
+    };
 
     const response = await getShows(query);
 
