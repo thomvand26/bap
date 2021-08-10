@@ -5,6 +5,7 @@
   font-size: $font-size-s;
   line-height: $line-height-s;
   padding: 0.5em $length-l / 2;
+  line-break: anywhere;
 
   &::before {
     content: '';
