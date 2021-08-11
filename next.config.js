@@ -9,7 +9,7 @@ module.exports = withOffline({
     prependData: `@import "variables.scss";`,
   },
   workboxOpts: {
-    swDest: '.next/service-worker.js',
+    swDest: 'dist/sw/service-worker.js',
   },
   i18n,
 });
