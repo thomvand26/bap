@@ -4,6 +4,7 @@ const http = require('http').Server(server);
 const io = require('socket.io')(http);
 const { Types } = require('mongoose');
 const next = require('next');
+const path = require('path');
 
 const {
   connectDB,
@@ -71,10 +72,11 @@ async function start() {
     });
   });
 
-  // server.get('/service-worker.js', (req, res) => {
-  //   console.log(path.join(__dirname, '../../', '.next/', 'service-worker.js'));
-  //   app.serveStatic(req, res, path.join(__dirname, '../../', '.next/', 'service-worker.js'));
-  // });
+  server.get('/service-worker.js', (req, res) => {
+    const filePath = path.resolve(__dirname, '../sw/service-worker.js');
+
+    res.sendFile(filePath);
+  });
 
   server.get('*', (req, res) => {
     req.io = io;

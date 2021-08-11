@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "babel-node server/server.js",
-    "build": "next build && babel server/ -d dist/server && babel models/ -d dist/models && babel emails/ -d dist/emails",
+    "build": "next build && babel server/ -d dist/server && babel models/ -d dist/models && babel emails/ -d dist/emails && babel .next/service-worker.js -d dist/sw",
     "start": "node dist/server/server.js -p $PORT",
     "start:local": "node dist/server/server.js",
     "export": "next export",
@@ -25,6 +25,7 @@
     "next": "10.0.8",
     "next-auth": "^3.14.0",
     "next-i18next": "^8.5.5",
+    "next-offline": "^5.0.5",
     "rc-slider": "^9.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -39,7 +40,6 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "next-offline": "^5.0.5",
     "nodemon": "^2.0.7"
   }
 }
