@@ -8,5 +8,8 @@ module.exports = withOffline({
     includePaths: [path.join(__dirname, 'styles')],
     prependData: `@import "variables.scss";`,
   },
+  workboxOpts: {
+    swDest: '.next/service-worker.js',
+  },
   i18n,
 });
