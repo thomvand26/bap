@@ -9,7 +9,7 @@ module.exports = withOffline({
     prependData: `@import "variables.scss";`,
   },
   workboxOpts: {
-    swDest: 'dist/sw/service-worker.js',
+    swDest: path.resolve(__dirname, '../sw/service-worker.js'),
   },
   i18n,
 });
