@@ -16,6 +16,7 @@ const {
   defaultShowPopulation,
   defaultChatroomPopulation,
   defaultSongRequestPopulation,
+  removeAllSocketConnectionsInModels,
 } = require('./utils');
 const { Show, ChatMessage, Chatroom, SongRequest, Poll } = require('../models');
 
@@ -36,7 +37,8 @@ async function start() {
   await connectDB();
 
   // Remove all socket references in chatrooms & shows
-  // Show.
+  await removeAllSocketConnectionsInModels();
+
   io.on('connection', (socket) => {
     socket.emit('selfUpdate', { socketId: socket.id });
     socket.emit('showsUpdate', {
