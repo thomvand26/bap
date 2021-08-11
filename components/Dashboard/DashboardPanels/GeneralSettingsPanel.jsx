@@ -75,10 +75,7 @@ export const GeneralSettingsPannel = ({ isNewShow, ...props }) => {
   };
 
   const handleDelete = async () => {
-    if (!currentShow?._id) {
-      console.log('no show, cannot delete null');
-      return;
-    }
+    if (!currentShow?._id) return;
 
     // Show warning modal
     setModalData({

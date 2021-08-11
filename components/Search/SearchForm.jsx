@@ -23,7 +23,6 @@ const validationSchema = Yup.object().shape({
 });
 
 export const SearchForm = ({
-  searchShows,
   artistDashboard,
   variant,
   setLoadingShows,

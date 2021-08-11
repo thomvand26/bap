@@ -25,10 +25,6 @@ export const sendSongRequestSocketUpdate = ({
   type,
   updatedSongRequest,
 }) => {
-  // console.log(
-  //   'sending songrequest update to: ',
-  //   updatedSongRequest?.show?._id || updatedSongRequest?.show
-  // );
   io.to(`${updatedSongRequest?.show?._id || updatedSongRequest?.show}`).emit(
     'songRequestUpdate',
     { type, updatedSongRequest }

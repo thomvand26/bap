@@ -5,7 +5,7 @@ export const COOKIES_PRIVACY = '/cookies-privacy';
 
 export const LOGIN = '/auth/login';
 export const REGISTER = '/auth/register';
-export const SETTINGS = '/settings'
+export const SETTINGS = '/settings';
 
 export const SEARCH = '/search';
 
@@ -15,7 +15,6 @@ export const SHOW = '/show';
 export const CREATE_SHOW = '/show/edit';
 export const EDIT_SHOW = '/show/edit';
 export const PERFORM_SHOW = '/show/perform';
-// export const ROOMS = '/rooms';
 
 export const API_USER = '/api/user';
 

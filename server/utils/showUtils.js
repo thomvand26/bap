@@ -82,7 +82,6 @@ export const leaveShow = async ({
   ownerId,
 }) => {
   const showId = fromShowId || socket?.lastShow;
-  console.log(`leave show based on: ${userIdToDelete ? 'userId' : 'socket'}`);
 
   if (!showId) return;
 
@@ -104,17 +103,6 @@ export const leaveShow = async ({
   }
 
   if (!userId) return;
-
-  // // Get all sockets to leave room
-  // let userSocketIds = [socket?.id];
-
-  // if (userIdToDelete) {
-  //   const foundUserSocketIds = await getAllSocketsByUserInShow({
-  //     userId,
-  //     showId,
-  //   });
-  //   userSocketIds = [...userSocketIds, ...foundUserSocketIds];
-  // }
 
   const showFilter = ownerId
     ? {
@@ -143,19 +131,6 @@ export const leaveShow = async ({
     }
   ).populate(defaultShowPopulation);
 
-  // console.log(userSocketIds);
-  // userSocketIds.forEach((userSocketId) => {
-  //   if (!userSocketId) return;
-
-  //   const userSocket = io.sockets.sockets.get(userSocketId);
-
-  //   if (userSocket) {
-  //     resetLastSocketShow(userSocket);
-  //     console.log(`leaving: ${showId}`);
-  //     userSocket.leave(`${showId}`);
-  //   }
-  // });<
-
   if (!updatedShow) {
     return { message: 'no show found', filters: showFilters };
   }
@@ -176,8 +151,6 @@ export const leaveShow = async ({
       removeFromShowUpdates: true,
     });
   }
-
-  console.info(`left show ${showId}`);
 
   return updatedShow;
 };

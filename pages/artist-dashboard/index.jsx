@@ -34,7 +34,6 @@ export default function ArtistDashboardPage() {
           </a>
         </Link>
         <SearchForm
-          searchShows={(data) => console.log(data)}
           artistDashboard
           setLoadingShows={setLoadingShows}
           onSearch={onSearch}

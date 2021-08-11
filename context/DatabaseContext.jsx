@@ -13,9 +13,7 @@ export const DatabaseProvider = ({ children }) => {
         return response?.data?.data;
       }
       return response;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const getShow = async (id, filters) => {
@@ -27,9 +25,7 @@ export const DatabaseProvider = ({ children }) => {
         return response?.data?.data;
       }
       return response;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const updateUser = async (data) => {
@@ -40,21 +36,18 @@ export const DatabaseProvider = ({ children }) => {
       }
       return response;
     } catch (error) {
-      console.log(error);
       return error?.response?.data;
     }
   };
 
   const deleteAccount = async (locale) => {
     try {
-      const response = await axios.post(API_USER, {delete: true, locale});
+      const response = await axios.post(API_USER, { delete: true, locale });
       if (response?.status === 200) {
         return response?.data?.data;
       }
       return response;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const exports = { getShow, getShows, updateUser, deleteAccount };

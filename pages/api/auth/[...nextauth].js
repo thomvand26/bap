@@ -25,7 +25,12 @@ export default NextAuth({
         },
       },
       authorize: async (credentials) => {
-        const { email, password: plainPassword, username, locale } = credentials;
+        const {
+          email,
+          password: plainPassword,
+          username,
+          locale,
+        } = credentials;
 
         const password = await new Promise((resolve, reject) => {
           bcrypt.hash(

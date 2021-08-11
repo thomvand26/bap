@@ -38,7 +38,6 @@ export const ChatroomInviteButton = ({ user }) => {
     switch (true) {
       case isMember:
         // Kick from room
-        console.log('Kick from room');
         await kickFromChatroom({
           userId: user?._id || user,
           chatroomId: ownChatroom._id,
@@ -46,7 +45,6 @@ export const ChatroomInviteButton = ({ user }) => {
         break;
       case isInvited:
         // Cancel invite
-        console.log('Cancel invite');
         await inviteToChatroom({
           chatroomId: ownChatroom._id,
           userId: user?._id || user,

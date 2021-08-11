@@ -12,7 +12,5 @@ export const withDB = (handler) => async (req, res) => {
     useFindAndModify: false,
   });
 
-  console.log('connected', mongoose.connections[0].readyState);
-
   return handler(req, res);
 };

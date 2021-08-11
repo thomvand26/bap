@@ -31,7 +31,6 @@ export const login = async ({ email, password, locale }) => {
 
     return { success: true, user };
   } catch (error) {
-    // console.log(error);
     return {
       success: false,
       error: error || { message: error.message, field: 'email' },
@@ -57,7 +56,6 @@ export const register = async ({ email, password, username, locale }) => {
 
     return { success: true, user };
   } catch (error) {
-    // console.log(error);
     if (error.message.includes('E11000')) {
       if (error.message.includes(' dup key: { email: ')) {
         return {

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 export const connectDB = async () => {
-  console.log('connectDB');
   if (mongoose.connections[0].readyState) {
     return mongoose.connections[0].readyState;
   }
@@ -12,6 +11,6 @@ export const connectDB = async () => {
     useFindAndModify: false,
   });
 
-  console.log('connected to DB', mongoose.connections[0].readyState);
+  console.log('connected to MongoDB');
   return mongoose.connections[0].readyState;
 };

@@ -39,8 +39,6 @@ export const sendToAllMemberSocketsInChatroom = ({
   type,
   io,
 }) => {
-  console.log('sendToAllMemberSocketsInChatroom');
-
   // Get the socketIds
   let memberSocketIds = show?.connectedUsers?.filter((userObject) => {
     const userToCheck = (chatroom || originalChatroom).members.map(
@@ -148,8 +146,6 @@ export const leaveChatroomsBySocketId = async ({
   removeFromShowUpdates,
 }) => {
   if (!socketId) return;
-  console.log('leaveChatroomsBySocketId: ', socketId);
-
   // Get Chatrooms linked to socketId
   const chatrooms = await Chatroom.find({
     'participants.socketId': socketId,
@@ -199,7 +195,6 @@ export const leaveChatroomsBySocketId = async ({
         const socket = io.sockets.sockets.get(userSocketId);
         if (socket) {
           socket.leave(`${chatroom?._id}`);
-          console.log(`leaving socket: ${socket?.lastShow}`);
 
           if (removeFromShowUpdates) {
             socket.emit('kicked', {
@@ -234,8 +229,6 @@ export const leaveChatroomsBySocketId = async ({
 // Leave all previous Chatrooms and socket rooms linked to the user
 // and join new ones
 export const joinChatroom = async ({ chatroomId, userId, socket, io }) => {
-  console.log('chatroomId, userId, socket.id');
-  console.log(chatroomId, userId, socket.id);
   if (!chatroomId || !userId || !socket) return;
 
   // Leave previous chatrooms linked to this socket
@@ -275,8 +268,6 @@ export const joinChatroom = async ({ chatroomId, userId, socket, io }) => {
 
   // Join the general chatroom and the showUpdate room
   socket.join(`${chatroomId}`);
-
-  console.info(`joined following chatroom: ${chatroomId}`);
 
   let userSocketIdsInChatroom = chatroom?.show?.connectedUsers?.filter(
     (userObject) => `${userObject?.user?._id}` === `${userId}`
@@ -396,7 +387,6 @@ export const kickFromChatroom = async ({
 
     if (socket) {
       socket.leave(`${chatroomId}`);
-      console.log(`leaving socket: ${chatroomId}`);
 
       // Join general chatroom
       const socketResponse = await joinChatroom({
@@ -406,7 +396,6 @@ export const kickFromChatroom = async ({
         io,
       });
 
-      console.log(socketResponse);
       socket.emit('kicked', {
         type: 'chatroom',
         data: { originalChatroom, generalChatroom: socketResponse },
@@ -478,7 +467,6 @@ export const deleteChatroom = async ({
 
     if (socket) {
       socket.leave(`${chatroomId}`);
-      console.log(`leaving socket: ${chatroomId}`);
 
       if (!isGeneral) {
         // Join general chatroom

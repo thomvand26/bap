@@ -25,10 +25,7 @@ export default function HomePage(props) {
 
     const userId = session?.user?._id;
 
-    if (!userId) {
-      console.log('no user id, user not logged in?');
-      return;
-    }
+    if (!userId) return;
 
     (async () => {
       const response = await getShows({

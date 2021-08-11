@@ -66,13 +66,11 @@ export const ShowProvider = ({ children }) => {
     };
 
     socket.on('showUpdate', ({ type, show }) => {
-      // console.log('showUpdate', type, show);
       if (!show) return;
       setCurrentShow(show);
     });
 
     socket.on('showsUpdate', ({ type, show }) => {
-      // console.log('showsUpdate', type, show);
       if (!show) return;
 
       switch (type) {
@@ -130,7 +128,6 @@ export const ShowProvider = ({ children }) => {
     });
 
     socket.on('songRequestUpdate', ({ type, updatedSongRequest }) => {
-      console.log('songRequestUpdate', type, updatedSongRequest);
       setCurrentSongRequests((prev) =>
         defaultSongRequestArraySort(
           type === 'create'
@@ -154,7 +151,6 @@ export const ShowProvider = ({ children }) => {
     });
 
     socket.on('pollUpdate', ({ type, updatedPoll }) => {
-      console.log('pollUpdate', type, updatedPoll);
       if (type !== 'delete') {
         setCurrentPolls((prev) =>
           prev.map((poll) =>
@@ -227,8 +223,6 @@ export const ShowProvider = ({ children }) => {
     if (!socket || !session) return;
 
     const handleKicked = ({ type, data }) => {
-      console.log('kicked!', type, data);
-
       if (type === 'show') {
         setCurrentShow(null);
         setAvailableChatrooms([]);
@@ -309,13 +303,10 @@ export const ShowProvider = ({ children }) => {
 
   function leaveCurrentShow(callback) {
     if (!socket) return;
-    console.log('leaving show');
     socket.emit('leaveRequest', callback);
   }
 
   const saveShow = async (data) => {
-    console.log('saving show: ', data);
-
     const response = await axios.post(`${API_SHOW}/${data?._id || ''}`, data);
 
     if (response?.data?.success) {
@@ -330,8 +321,6 @@ export const ShowProvider = ({ children }) => {
   };
 
   const deleteShow = async (data) => {
-    console.log('deleting show: ', data);
-
     const response = await axios.delete(`${API_SHOW}/${data._id}`);
 
     if (response?.data?.success) {
@@ -454,8 +443,6 @@ export const ShowProvider = ({ children }) => {
   const deleteChatroom = async ({ chatroomId }) => {
     if (!chatroomId) return;
 
-    console.log('deleting chatroom: ', chatroomId);
-
     setLoadingChat(true);
 
     const response = await axios.delete(`${API_CHATROOM}/${chatroomId}`);
@@ -471,8 +458,6 @@ export const ShowProvider = ({ children }) => {
     const response = await axios.post(`${API_CHATROOM}/${chatroomId}/join`, {
       socketId: socket.id,
     });
-
-    console.log('join chatroom', response);
 
     if (response?.data?.success) {
       setCurrentChatroom({
@@ -495,8 +480,6 @@ export const ShowProvider = ({ children }) => {
 
     setLoadingChat(false);
 
-    console.log('leave chatroom', response);
-
     return response;
   };
 
@@ -508,14 +491,11 @@ export const ShowProvider = ({ children }) => {
       socketId: socket?.id,
     });
 
-    console.log(`${cancel ? 'cancel from' : 'invite to'} chatroom`, response);
-
     return response;
   };
 
   const kickFromChatroom = async ({ userId, chatroomId }) => {
     if (!userId || !chatroomId) return;
-    console.log('kicking user: ', userId);
 
     const response = await axios.post(`${API_CHATROOM}/${chatroomId}/kick`, {
       userId,
@@ -526,7 +506,6 @@ export const ShowProvider = ({ children }) => {
 
   const sendChat = (message, chat) => {
     if (!socket) return;
-    console.log('emit', socket, currentChatroom, currentShow, message);
     socket.emit(
       'sendChat',
       currentShow?._id,
@@ -660,7 +639,6 @@ export const ShowProvider = ({ children }) => {
 
   const kickUser = async ({ userId, showId }) => {
     if (!(showId || currentShow?._id) || !userId) return;
-    console.log('kicking user: ', userId);
 
     try {
       const response = await axios.post(
@@ -671,13 +649,10 @@ export const ShowProvider = ({ children }) => {
         }
       );
       if (response?.status === 200) {
-        console.log(response?.data);
         // return response?.data?.data;
       }
       return response;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const exports = {

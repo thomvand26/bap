@@ -105,9 +105,7 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
     try {
       setLoading(true);
       await saveShow(duplicateShow);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     setLoading(false);
   };
 
@@ -141,9 +139,7 @@ export const ShowListItem = ({ show, variant = 'default', cards }) => {
     try {
       setLoading(true);
       await deleteShow(show);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     setLoading(false);
   };
 
