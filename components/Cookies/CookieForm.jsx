@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Form, Formik } from 'formik';
 
@@ -12,9 +12,24 @@ import Link from 'next/link';
 export const CookieForm = ({ className, withMoreInfoLink }) => {
   const { t } = useTranslation(['cookies']);
   const { cookieValues, setCookieValues } = useCookies();
+  const [showConfirmation, setShowConfirmation] = useState();
+
+  useEffect(() => {
+    if (!showConfirmation) return;
+
+    const confirmationTimer = setTimeout(
+      () => setShowConfirmation(false),
+      500
+    );
+
+    return () => {
+      clearTimeout(confirmationTimer);
+    };
+  }, [showConfirmation]);
 
   const handleSubmit = (data) => {
     setCookieValues(data);
+    setShowConfirmation(true);
   };
 
   return (
@@ -33,7 +48,7 @@ export const CookieForm = ({ className, withMoreInfoLink }) => {
       onSubmit={handleSubmit}
     >
       <Form className={`${className || ''} ${styles.form}`}>
-        <fieldset className={styles.fieldset}>
+        <fieldset className={styles.fieldset} disabled={showConfirmation}>
           <Input
             type="toggle"
             name={'strictly'}
