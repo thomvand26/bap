@@ -41,7 +41,6 @@
   "delete-song-request-warning-title": "Ben je zeker dat je dit verzoeknummer wilt verwijderen?",
   "delete-song-request-warning-confirm": "Ja, verwijder verzoeknummer",
   "delete-song-request-warning-cancel": "Nee, ga terug",
-  "no-shows-found": "Geen shows gevonden",
   "error-title-short": "Showtitel is te kort.",
   "error-title-long": "Showtitel is te lang.",
   "error-title-required": "Showtitel is vereist.",
