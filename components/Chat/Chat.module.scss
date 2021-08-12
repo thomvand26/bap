@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $length-s $length-l;
+  padding: $length-s $length-s $length-s $length-l;
   white-space: nowrap;
   background-color: $color-secondary-darkest;
   opacity: 1;
@@ -119,7 +119,7 @@ button.requests {
   }
 
   .topSection {
-    padding: $length-xxs $length-l;
+    padding: $length-xxs $length-s $length-xxs $length-l;
   }
 
   .showTitle {
