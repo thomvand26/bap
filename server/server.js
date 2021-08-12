@@ -72,12 +72,6 @@ async function start() {
     });
   });
 
-  server.get('/service-worker.js', (req, res) => {
-    const filePath = path.resolve(__dirname, '../sw/service-worker.js');
-
-    res.sendFile(filePath);
-  });
-
   server.get('*', (req, res) => {
     req.io = io;
     return handle(req, res);
