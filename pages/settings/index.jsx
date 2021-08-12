@@ -5,7 +5,9 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { useDatabase, useModal } from '@/context';
 import { Input } from '@/components';
 import { LANDING } from '@/routes';
@@ -106,6 +108,9 @@ export default function SettingsPage() {
 
   return (
     <div className={`page`}>
+      <Head>
+        <title>{`${appConfig.appName} - ${t('auth:settings')}`}</title>
+      </Head>
       <h1 className="page__title">{t('auth:settings')}</h1>
       <Formik
         validationSchema={() =>

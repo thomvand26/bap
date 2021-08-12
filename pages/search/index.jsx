@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { Layouts } from '@/layouts';
 import { SearchForm, ShowList } from '@/components';
 
@@ -20,6 +22,9 @@ export default function SearchPage() {
 
   return (
     <div>
+      <Head>
+        <title>{`${appConfig.appName} - ${t('search-page:page-title')}`}</title>
+      </Head>
       <div className={`container ${styles.top}`}>
         <h1>{t('search-page:page-title')}</h1>
         <section className={styles.searchSection}>

@@ -4,7 +4,9 @@ import { useRouter } from 'next/router';
 import ReactPlayer from 'react-player';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { useShow, useCookies, useSocket } from '@/context';
 import { Layouts } from '@/layouts';
 import { Chat, LoadingSpinner, PollWindow } from '@/components';
@@ -43,58 +45,67 @@ export default function ShowPage(params) {
     setUrlValid(currentShow?.streamURL);
   }, [currentShow?.streamURL]);
 
-  return loadingShow ? (
-    <LoadingSpinner />
-  ) : (
-    <div className={`scrollbars--dark ${styles.page}`}>
-      <div className={styles.showStream}>
-        {urlValid ? (
-          cookieValues?.youtube === true ? (
-            <ReactPlayer
-              url={
-                currentShow?.streamURL?.includes?.('youtube.') ||
-                currentShow?.streamURL?.includes?.('youtu.be')
-                  ? currentShow.streamURL
-                  : null
-              }
-              width="100%"
-              height="100%"
-              onError={() => {
-                setUrlValid(false);
-              }}
-              controls={true}
-              playing={true}
-              config={{
-                youtube: {
-                  playerVars: {
-                    autoplay: true,
-                  },
-                },
-              }}
-            />
-          ) : (
-            <div className="centeredPlaceholder centeredPlaceholder--withButton centeredPlaceholder--withPadding">
-              {t('cookies:youtube-cookies-needed')}
-              <button
-                type="button"
-                className="button--primary"
-                onClick={() =>
-                  setCookieValues((prev) => ({ ...prev, youtube: true }))
-                }
-              >
-                {t('cookies:youtube-cookies-allow')}
-              </button>
-            </div>
-          )
-        ) : (
-          <div className="centeredPlaceholder">
-            {t('show-page:stream-unavailable')}
+  return (
+    <>
+      <Head>
+        <title>{`${appConfig.appName}${
+          currentShow?.title ? ` - ${currentShow?.title}` : ''
+        }`}</title>
+      </Head>
+      {loadingShow ? (
+        <LoadingSpinner />
+      ) : (
+        <div className={`scrollbars--dark ${styles.page}`}>
+          <div className={styles.showStream}>
+            {urlValid ? (
+              cookieValues?.youtube === true ? (
+                <ReactPlayer
+                  url={
+                    currentShow?.streamURL?.includes?.('youtube.') ||
+                    currentShow?.streamURL?.includes?.('youtu.be')
+                      ? currentShow.streamURL
+                      : null
+                  }
+                  width="100%"
+                  height="100%"
+                  onError={() => {
+                    setUrlValid(false);
+                  }}
+                  controls={true}
+                  playing={true}
+                  config={{
+                    youtube: {
+                      playerVars: {
+                        autoplay: true,
+                      },
+                    },
+                  }}
+                />
+              ) : (
+                <div className="centeredPlaceholder centeredPlaceholder--withButton centeredPlaceholder--withPadding">
+                  {t('cookies:youtube-cookies-needed')}
+                  <button
+                    type="button"
+                    className="button--primary"
+                    onClick={() =>
+                      setCookieValues((prev) => ({ ...prev, youtube: true }))
+                    }
+                  >
+                    {t('cookies:youtube-cookies-allow')}
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className="centeredPlaceholder">
+                {t('show-page:stream-unavailable')}
+              </div>
+            )}
+            <PollWindow />
           </div>
-        )}
-        <PollWindow />
-      </div>
-      <Chat />
-    </div>
+          <Chat />
+        </div>
+      )}
+    </>
   );
 }
 

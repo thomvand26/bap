@@ -6,7 +6,9 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { Layouts } from '@/layouts';
 import { Input } from '@/components';
 import { LANDING, REGISTER } from '@/routes';
@@ -76,6 +78,9 @@ export default function LoginPage({ csrfToken }) {
 
   return (
     <div className="page">
+      <Head>
+        <title>{`${appConfig.appName} - ${t('login-page:page-title')}`}</title>
+      </Head>
       <h1 className="page__title">{t('login-page:page-title')}</h1>
       <h1 className={styles.formTitle}>Login</h1>
       <Formik

@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { Logo } from '@/components';
 
 import styles from './LandingPage.module.scss';
@@ -12,6 +14,11 @@ export const LandingPage = () => {
 
   return (
     <div className={`page container ${styles.page}`}>
+      <Head>
+        <title>{`${appConfig.appName} - ${t(
+          'landing-page:page-title'
+        )}`}</title>
+      </Head>
       <div
         className={`container__content container__content--fullText ${styles.content}`}
       >
@@ -21,9 +28,7 @@ export const LandingPage = () => {
           </div>
           <h1 className={styles.pageTitle}>{t('landing-page:page-title')}</h1>
           <Link href={REGISTER}>
-            <a
-              className={`button ${styles.registerButton}`}
-            >
+            <a className={`button ${styles.registerButton}`}>
               {t('auth:register')}
             </a>
           </Link>
@@ -44,9 +49,7 @@ export const LandingPage = () => {
         <div>
           <h2 className={styles.ctaTitle}>{t('landing-page:cta-title')}</h2>
           <Link href={REGISTER}>
-            <a
-              className={`button ${styles.registerButton}`}
-            >
+            <a className={`button ${styles.registerButton}`}>
               {t('auth:register')}
             </a>
           </Link>

@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/client';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { Layouts } from '@/layouts';
 import { useShow, useDatabase } from '@/context';
 import { ShowSettingsDashboard } from '@/components';
@@ -73,6 +75,15 @@ export default function EditShowPage() {
 
   return (
     <div className={styles.page}>
+      <Head>
+        <title>{`${appConfig.appName} - ${
+          isNewShow
+            ? t('artist-dashboard:create-show')
+            : `${t('artist-dashboard:edit-show')}${
+                currentShow?.title ? ` - ${currentShow?.title}` : ''
+              }`
+        }`}</title>
+      </Head>
       <div className={styles.top}>
         <h1 className={styles.title}>{currentShow?.title}</h1>
         <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>

@@ -18,6 +18,8 @@
   "stream-url-info": "Start a livestream on YouTube, then paste the URL of that livestream in this field.",
   "delete-show": "Delete this show",
   "create-show": "Create show",
+  "edit-show": "Edit show",
+  "perform-show": "Perform show",
   "song-requests": "Song requests",
   "chat": "Chat",
   "polls": "Polls",

@@ -18,6 +18,8 @@
   "stream-url-info": "Start een livestream op YouTube en plak vervolgens de URL van die livestream in dit veld.",
   "delete-show": "Verwijder deze show",
   "create-show": "Maak show",
+  "edit-show": "Bewerk show",
+  "perform-show": "Optredenweergave",
   "song-requests": "Verzoeknummers",
   "chat": "Chat",
   "polls": "Polls",

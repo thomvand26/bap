@@ -1,8 +1,10 @@
+import React from 'react'; { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { ShowList, LandingPage } from '@/components';
 import { Layouts } from '@/layouts';
 import { useDatabase, useShow } from '@/context';
@@ -56,6 +58,9 @@ export default function HomePage(props) {
 
   return session?.user?._id ? (
     <div className="page container">
+      <Head>
+        <title>{`${appConfig.appName} - ${t('home-page:page-title')}`}</title>
+      </Head>
       <div className={`container__content ${styles.top}`}>
         <h1 className={styles.top__title}>{t('home-page:page-title')}</h1>
         <p className={styles.top__intro}>{t('home-page:intro')}</p>

@@ -1,7 +1,9 @@
 import React from 'react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { Layouts } from '@/layouts';
 import { CookieForm } from '@/components';
 
@@ -12,6 +14,11 @@ export default function CookiesPrivacyPage() {
 
   return (
     <div className={`page container ${styles.page}`}>
+      <Head>
+        <title>{`${appConfig.appName} - ${t(
+          'cookies-privacy-page:page-title'
+        )}`}</title>
+      </Head>
       <div className="container__content container__content--fullText">
         <h1 className="page__title">{t('cookies-privacy-page:page-title')}</h1>
         <p>{t('cookies-privacy-page:intro')}</p>

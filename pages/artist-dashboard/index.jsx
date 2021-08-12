@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
+import { appConfig } from '@/config';
 import { ShowList, SearchForm } from '@/components';
 import { useShow } from '@/context';
 import { Layouts } from '@/layouts';
@@ -21,6 +23,11 @@ export default function ArtistDashboardPage() {
 
   return (
     <div className={`page container`}>
+      <Head>
+        <title>{`${appConfig.appName} - ${t(
+          'artist-dashboard-page:page-title'
+        )}`}</title>
+      </Head>
       <div className="container__content">
         <h2 className={`page__title ${styles.pageTitle}`}>
           {t('artist-dashboard-page:page-title')}
