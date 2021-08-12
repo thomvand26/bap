@@ -66,7 +66,7 @@ export const ChatroomSettings = () => {
   };
 
   return showChatroomSettings ? (
-    <FocusTrap>
+    <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
       <div className={styles?.container}>
         <div className={styles?.top}>
           <h3>

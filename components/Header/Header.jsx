@@ -31,7 +31,10 @@ export const Header = () => {
 
   return (
     <header className={styles.header}>
-      <FocusTrap active={!!openMenu}>
+      <FocusTrap
+        active={!!openMenu}
+        focusTrapOptions={{ allowOutsideClick: true }}
+      >
         <div
           className={`${styles.inner} ${
             !session?.user?._id ? styles['inner--visitor'] : ''

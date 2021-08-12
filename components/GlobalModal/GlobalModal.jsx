@@ -23,7 +23,7 @@ export const GlobalModal = () => {
       className={`container ${styles.container}`}
       onClick={handleContainerClick}
     >
-      <FocusTrap>
+      <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
         <div className={`container__content ${styles.content}`}>
           {modalData?.heading && (
             <h2 className={styles.heading}>{modalData.heading}</h2>

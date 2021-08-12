@@ -12,7 +12,10 @@ export const ParticipantsButton = ({ inDashboard, disabled }) => {
   const [showParticipants, setShowParticipants] = useState(false);
 
   return (
-    <FocusTrap active={showParticipants}>
+    <FocusTrap
+      active={showParticipants}
+      focusTrapOptions={{ allowOutsideClick: true }}
+    >
       <div
         className={`${styles.container} ${
           inDashboard ? styles['container--inDashboard'] : ''
