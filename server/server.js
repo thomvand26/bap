@@ -2,35 +2,21 @@ const express = require('express');
 const server = express();
 const http = require('http').Server(server);
 const io = require('socket.io')(http);
-const { Types } = require('mongoose');
 const next = require('next');
-const path = require('path');
 
 const {
   connectDB,
   getAllShows,
-  resetLastSocketShow,
   leaveShow,
-  emitShowsUpdate,
-  joinChatroom,
   emitChatUpdate,
-  defaultShowPopulation,
-  defaultChatroomPopulation,
-  defaultSongRequestPopulation,
   removeAllSocketConnectionsInModels,
 } = require('./utils');
-const { Show, ChatMessage, Chatroom, SongRequest, Poll } = require('../models');
+const { ChatMessage } = require('../models');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-
-// const emitClientsUpdate = () => {
-//   io.sockets.emit('clientsUpdate', {
-//     connectedSockets: [...io.sockets.sockets.keys()],
-//   });
-// };
 
 async function start() {
   await app.prepare();

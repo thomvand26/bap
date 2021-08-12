@@ -9,7 +9,7 @@ module.exports = withPWA({
     prependData: `@import "variables.scss";`,
   },
   pwa: {
-    dest: 'public'
+    dest: 'public',
   },
   i18n,
 });
