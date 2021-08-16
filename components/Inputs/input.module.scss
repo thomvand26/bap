@@ -7,8 +7,6 @@
   max-width: 100%;
 
   .label {
-    display: flex;
-    align-items: center;
     font-size: $font-size-s;
     font-weight: bold;
     color: $color-secondary-dark;
@@ -128,6 +126,7 @@
   & .label {
     position: unset;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     cursor: pointer;
   }

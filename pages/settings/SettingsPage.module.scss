@@ -16,6 +16,7 @@
 
 .deleteButton {
   margin-top: $length-xxl;
+  color: $color-danger;
 }
 
 @media (max-width: $breakpoint-l) {

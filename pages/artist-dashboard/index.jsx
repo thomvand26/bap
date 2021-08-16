@@ -29,9 +29,9 @@ export default function ArtistDashboardPage() {
         )}`}</title>
       </Head>
       <div className="container__content">
-        <h2 className={`page__title ${styles.pageTitle}`}>
+        <h1 className={`page__title ${styles.pageTitle}`}>
           {t('artist-dashboard-page:page-title')}
-        </h2>
+        </h1>
         <Link href={CREATE_SHOW}>
           <a
             className={`button ${styles.createShowButton}`}

@@ -85,7 +85,7 @@ export default function EditShowPage() {
         }`}</title>
       </Head>
       <div className={styles.top}>
-        <h1 className={styles.title}>{currentShow?.title}</h1>
+        <h1 className={`h2 ${styles.title}`}>{currentShow?.title}</h1>
         <Link href={{ pathname: PERFORM_SHOW, query: router.query }}>
           <a
             className={`button button--fit ${
