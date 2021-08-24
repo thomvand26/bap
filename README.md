@@ -1,34 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# RoomStage
 
-## Getting Started
+## About
 
-First, run the development server:
+RoomStage is a platform created as a bachelor's thesis within the specialization Graphic and Digital Media - Multimedia Production - New Media Development at Artevelde University of Applied Sciences.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The goal of this platform is to make online music performances more enjoyable and provide more ways to interact between artists and viewers.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The platform is intended to be an "extra layer" on top of the standard livestream experience. It uses YouTube URLs that point to YouTube livestreams. Artists are expected to go live on YouTube, and use the URL of that livestream to create a show on RoomStage.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Artists can create polls, view song requests and general chat messages, adjust show settings, moderate the show, etc.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Participants can vote on polls, make song requests, and chat in general or separate chat rooms. These separate chat rooms can be created by participants, after which they can invite other participants.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+A participant can only request a limited amount of songs (set by the owner of the show). Other participants can then vote on these, which gives the owner of the show insight into which songs the participants would like to hear the most.
