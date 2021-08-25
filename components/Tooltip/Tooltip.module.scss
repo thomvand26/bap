@@ -16,6 +16,7 @@
   border: 2px solid $color-primary-light;
   font-weight: bold;
   color: $color-secondary-darkest;
+  max-width: 90vw !important;
 
   &__arrow {
     padding-right: $length-xxs;
